@@ -18,7 +18,7 @@ namespace AiVacina.Models
         public string senha { get; set; }
 
         public string confSenha { get; set; }
-
+         
         public List<Vacina> vacinasTomadas { get; set; }
     }
 }
