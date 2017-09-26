@@ -12,7 +12,7 @@ namespace AiVacina.Models
         public string nomeEstacionamento { get; set; }
 
         public Endereco endereco { get; set; }
-
+         
         public string admPosto { get; set; }
 
         public string cpfAdmPosto { get; set; }
