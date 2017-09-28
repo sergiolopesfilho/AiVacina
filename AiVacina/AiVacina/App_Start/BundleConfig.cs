@@ -27,7 +27,9 @@ namespace AiVacina
                       "~/Content/site.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/inputmask").Include(
-            "~/Scripts/Script.js"));
+                "~/Scripts/jquery.mask.js",
+                "~/Scripts/jquery.mask.min",
+                "~/Scripts/Script.js"));
         }
     }
 }

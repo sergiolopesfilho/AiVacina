@@ -1,4 +1,5 @@
 ﻿$(document).ready(function () {
-    $(".telefone-mask").inputmask("99-9999999");  //static mask
-    $(".data-mask").inputmask("30/12/9999"); //mask with dynamic syntax
+    $('.cartao-cidadao').mask('000.0000.0000.0000', { reverse: true });
+    $('.money').mask('000.000.000.000.000,00', { reverse: true });
+    $('.data-mask').mask('00/00/0000');
 });

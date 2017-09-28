@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
 namespace AiVacina.Models
 {
+    [Table("pacientes")]
     public class Paciente
     {
+        [Key]
         [Required(ErrorMessage = "Campo obrigatório")]
         [Display(Name = "Cartão Cidadão:")]
         public string numCartaoCidadao { get; set; }
@@ -31,6 +34,7 @@ namespace AiVacina.Models
         [Required(ErrorMessage = "Campo obrigatório")]
         [Display(Name = "Confirmação senha:")]
         [DataType(DataType.Password)]
+        [Compare("senha", ErrorMessage = "As senhas devem ser iguais.")]
         public string confSenha { get; set; }
          
         public List<Vacina> vacinasTomadas { get; set; }

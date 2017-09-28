@@ -1,4 +1,6 @@
-﻿using AiVacina.Models;
+﻿using AiVacina.DAL;
+using AiVacina.Models;
+using AiVacina.Validação;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,26 +31,30 @@ namespace AiVacina.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    ValidaCadastro(paciente);
+
+                    DataBase.CadastrarPaciente(paciente);
                     ///TODO:
-                    ///Adicionar validação na model
+                    ///Adicionar ao banco
                 }
                 return View();
             }
             catch (Exception ex)
-            { 
-                return View();
+            {
+                ModelState.AddModelError("",ex.Message);
+                return View(paciente);
             }
         }
 
-        // GET: Home/Create
-        public ActionResult Create()
+        // GET: Home/Entrar
+        public ActionResult Entrar()
         {
             return View();
         }
 
-        // POST: Home/Create
+        // POST: Home/Entrar
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Entrar(Paciente paciente)
         {
             try
             {
@@ -104,6 +110,21 @@ namespace AiVacina.Controllers
             {
                 return View();
             }
+        }
+
+        private bool ValidaCadastro(Paciente paciente)
+        {
+            bool valido = true;
+            if (!Valida.Data(paciente.dataNascimento))
+            {
+                throw new Exception("Data invalida, por favor utilize uma data válida.");
+            }
+            //else if(!Valida.CartaoCidadao(paciente.numCartaoCidadao))
+            //{
+            //    throw new Exception("Número do Cartão Cidadão inválido.");
+            //}
+
+            return valido;
         }
     }
 }

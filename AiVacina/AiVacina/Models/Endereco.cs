@@ -8,6 +8,9 @@ namespace AiVacina.Models
 {
     public class Endereco
     {
+        [Key]
+        public int id { get; set; }
+
         [Required(ErrorMessage = "Campo obrigatório")]
         [Display(Name = "Rua:")]
         public string rua { get; set; }
