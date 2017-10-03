@@ -1,0 +1,58 @@
+﻿@model IEnumerable<AiVacina.Models.AgendamentoVacina>
+
+@{
+    ViewBag.Title = "Agenda";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Agenda</h2>
+
+
+@{
+    if (Model == null || Model.Count() <= 0)
+    {
+        <h2>Não existem agendamentos em seu nome.</h2>
+        <h3><a href="@Url.Action("Agendamento", "Paciente")">Clique aqui</a> para realizar um agendamento.</h3>
+    }
+    else
+    {
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.idPosto)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.idVacina)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.cartaocidadao)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.dataAgendamento)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.idPosto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.idVacina)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.cartaocidadao)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dataAgendamento)
+                    </td>
+                    
+                </tr>
+            }
+
+        </table>
+    }
+}

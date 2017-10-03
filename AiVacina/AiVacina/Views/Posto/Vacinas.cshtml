@@ -1,0 +1,64 @@
+﻿@model IEnumerable<AiVacina.Models.Vacina>
+
+@{
+    ViewBag.Title = "Vacinas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Vacinas</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.codVacina)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.loteVacina)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.nomeVacina)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.quantidade)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dataValidade)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.grupoAlvo)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.codVacina)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.loteVacina)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.nomeVacina)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.quantidade)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dataValidade)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.grupoAlvo)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

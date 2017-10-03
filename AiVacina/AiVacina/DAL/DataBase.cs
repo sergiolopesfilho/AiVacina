@@ -53,7 +53,78 @@ namespace AiVacina.DAL
             }
         }
 
+        public static IEnumerable<Vacina> ListaVacinas()
+        {
+            string listaVacinas = "SELECT codVacina, loteVacina, nomeVacina, quantidade, dataValidade,grupoalvo "
+                                + "FROM vacinas";
+            IEnumerable<Vacina> vacinas;
+            try
+            {
+                using (IDbConnection conn = new MySqlConnection(connectionString))
+                {
+                    vacinas = conn.Query<Vacina>(listaVacinas);
+                }
 
-        
+                return vacinas;
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static IEnumerable<Posto> ListaPostos()
+        {
+            string listaPostos = "SELECT * FROM postos LEFT JOIN enderecos "
+                                + "ON postos.idEndereco = enderecos.id";
+            IEnumerable<Posto> postos;
+            try
+            {
+                using (IDbConnection conn = new MySqlConnection(connectionString))
+                {
+                    postos = conn.Query<Posto, Endereco, Posto>(listaPostos, 
+                        (posto, endereco) => { posto.endereco = endereco; return posto; });
+                }
+
+                return postos;
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static bool SalvaAgendamento(AgendamentoVacina agendamento)
+        {
+            bool agendado = false;
+
+            string insertAgendamento = "INSERT INTO AgendamentoVacinas(idPosto, idVacina, cartaocidadao, dataAgendamento) "
+                              + "VALUES(@posto, @vacina, @cidadao, @data)";
+            try
+            {
+                int resultado = 0;
+                using (IDbConnection conn = new MySqlConnection(connectionString))
+                {
+                    resultado = conn.Execute(insertAgendamento, new
+                    {
+                        posto = agendamento.idPosto,
+                        vacina = agendamento.idVacina,
+                        cidadao = agendamento.cartaocidadao,
+                        data = agendamento.dataAgendamento
+                    });
+                }
+
+                agendado = (resultado > 0);
+
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return agendado;
+        }
+
+
+
     }
 }

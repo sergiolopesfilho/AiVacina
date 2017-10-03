@@ -1,0 +1,16 @@
+﻿@model IEnumerable<AiVacina.Models.Posto>
+
+
+
+<div class="list-group" id="divListaPostos">
+    @foreach (var item in Model)
+    {
+        <a href="#" class="list-group-item">
+            <p class="nomePosto">
+                @Html.DisplayTextFor(modelItem => item.nomeEstabelecimento)
+            </p>
+            <small>@Html.DisplayFor(modelItem => item.endereco.rua)</small>
+            <input type="hidden" value="@Html.DisplayTextFor(modelItem => item.idEstabelecimento)" id="idEstabelecimento"/>
+        </a>
+    }
+</div>

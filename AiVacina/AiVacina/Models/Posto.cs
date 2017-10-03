@@ -9,7 +9,7 @@ namespace AiVacina.Models
     {
         public int idEstabelecimento { get; set; }
 
-        public string nomeEstacionamento { get; set; }
+        public string nomeEstabelecimento { get; set; }
 
         public Endereco endereco { get; set; } 
          

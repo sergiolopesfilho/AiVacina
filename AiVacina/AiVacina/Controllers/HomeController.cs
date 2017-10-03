@@ -36,6 +36,7 @@ namespace AiVacina.Controllers
                     DataBase.CadastrarPaciente(paciente);
                     ///TODO:
                     ///Adicionar ao banco
+
                 }
                 return View();
             }

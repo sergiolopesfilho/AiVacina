@@ -24,12 +24,23 @@ namespace AiVacina
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/jquery-ui.css",
                       "~/Content/site.css"));
 
+            bundles.Add(new StyleBundle("~/Content/jqueryUi").Include(
+                      "~/Content/jquery-ui.min.css",
+                      "~/Content/jquery-ui.structure.min.css",
+                      "~/Content/jquery-ui.theme.min.css"));
+
             bundles.Add(new ScriptBundle("~/bundles/inputmask").Include(
-                "~/Scripts/jquery.mask.js",
-                "~/Scripts/jquery.mask.min",
+            //    "~/Scripts/jquery.mask.js",
+                "~/Scripts/jquery.mask.min.js",
+                "~/Scripts/jquery-ui-1.12.1.min.js",
+                "~/Scripts/jquery-ui.min.js",
                 "~/Scripts/Script.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/listavacinas").Include(
+                "~/Scripts/ListaVacinas.js"));
         }
     }
 }

@@ -1,0 +1,13 @@
+﻿@model IEnumerable<AiVacina.Models.Vacina>
+
+<select class="form-control margin-bottom-20px" id="selectListaVacinas">
+    <option selected="selected">
+        Escolha uma vacina
+    </option>
+    @foreach (var item in Model)
+    {
+        <option value="@Html.DisplayFor(modelItem => item.codVacina)">
+            @Html.DisplayFor(modelItem => item.nomeVacina)
+        </option>
+    }
+</select>
