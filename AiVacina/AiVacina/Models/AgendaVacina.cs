@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -7,14 +8,28 @@ namespace AiVacina.Models
 {
     public class AgendaVacina
     {
-        public Vacina vacina { get; set; }
 
-        public Posto posto { get; set; }
+        public int id { get; set; }
 
-        public DateTime data { get; set; }
+        [Display(Name ="Posto de Saúde")]
+        public string nomeEstabelecimento { get; set; }
 
-        public int quantidade { get; set; }
+        [Display(Name = "Endereço")]
+        public string rua { get; set; }
+        public string bairro { get; set; }
 
-        public Paciente paciente { get; set; }
+        [Display(Name ="Vacina")]
+        public string nomeVacina { get; set; }
+
+        [Display(Name = "Data")]
+        public DateTime dataAgendamento
+        {
+            get { return longDate; }
+            set{ shorDate = value.ToShortDateString();
+                 longDate = value;   }
+        }
+
+        public string shorDate;
+        private DateTime longDate;
     }
 }

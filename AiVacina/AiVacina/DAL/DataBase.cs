@@ -124,6 +124,34 @@ namespace AiVacina.DAL
             return agendado;
         }
 
+        public static IEnumerable<AgendaVacina> AgendamentosVacina(string cartaoCidadao)
+        {
+            IEnumerable<AgendaVacina> agendamentos;
+
+            string listaAgendamentos = "SELECT agendamento.id, p.nomeEstabelecimento, e.rua, e.bairro, v.nomeVacina, agendamento.dataAgendamento "
+                                + "FROM agendamentovacinas agendamento "
+                                + "JOIN postos p on p.idEstabelecimento = agendamento.idPosto "
+                                + "JOIN vacinas v on v.codVacina = agendamento.idVacina "
+                                + "JOIN enderecos e on e.id = p.idEndereco "
+                                + "WHERE agendamento.cartaocidadao = @cartao ";
+            try
+            {
+                using (IDbConnection conn = new MySqlConnection(connectionString))
+                {
+                    agendamentos = conn.Query<AgendaVacina>(listaAgendamentos, new
+                    {
+                        cartao = cartaoCidadao,
+                    });
+                }
+
+                return agendamentos;
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+        }
+
 
 
     }

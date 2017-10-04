@@ -41,6 +41,9 @@ namespace AiVacina
 
             bundles.Add(new ScriptBundle("~/bundles/listavacinas").Include(
                 "~/Scripts/ListaVacinas.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/pacientes").Include(
+                "~/Scripts/PacienteAgenda.js"));
         }
     }
 }

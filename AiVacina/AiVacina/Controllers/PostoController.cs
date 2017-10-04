@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AiVacina.DAL;
+using AiVacina.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,10 +16,11 @@ namespace AiVacina.Controllers
             return View();
         }
 
-        // GET: Posto/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Agenda()
         {
-            return View();
+            IEnumerable<AgendaVacina> agendamentos =
+                DataBase.AgendamentosVacina("123.1231.2312.1323");
+            return View(agendamentos);
         }
 
         // GET: Posto/Create

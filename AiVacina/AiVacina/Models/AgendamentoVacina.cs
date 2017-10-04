@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -13,4 +14,5 @@ namespace AiVacina.Models
         public string cartaocidadao { get; set; }
         public DateTime dataAgendamento { get; set; }
     }
+    
 }

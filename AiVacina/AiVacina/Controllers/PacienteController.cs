@@ -28,7 +28,9 @@ namespace AiVacina.Controllers
         // GET: Paciente/Agenda
         public ActionResult Agenda()
         {
-            return View();
+            IEnumerable<AgendaVacina> agendamentos = 
+                DataBase.AgendamentosVacina("123.1231.2312.1323");
+            return View(agendamentos);
         }
 
 

@@ -237,6 +237,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\ListaVacinas.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\PacienteAgenda.js" />
     <Content Include="Scripts\Script.js" />
     <Content Include="Service References\Application Insights\ConnectedService.json" />
     <Content Include="Views\Shared\Error.cshtml" />
@@ -251,8 +252,9 @@
     <Content Include="Views\Paciente\Agendamento.cshtml" />
     <Content Include="Views\Paciente\_Vacinas.cshtml" />
     <Content Include="Views\Paciente\_Postos.cshtml" />
-    <Content Include="Views\Paciente\Agenda.cshtml" />
+    <Content Include="Views\Posto\Agenda.cshtml" />
     <Content Include="Views\Posto\Vacinas.cshtml" />
+    <Content Include="Views\Paciente\Agenda.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

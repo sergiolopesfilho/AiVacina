@@ -1,0 +1,71 @@
+﻿@model IEnumerable<AiVacina.Models.AgendaVacina>
+
+@{
+    ViewBag.Title = "Agenda";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Agenda</h2>
+
+@{
+    if (Model == null || Model.Count() <= 0)
+    {
+        <h2>Não existem agendamentos em seu nome.</h2>
+        <h3><a href="@Url.Action("Agendamento", "Paciente")">Clique aqui</a> para realizar um agendamento.</h3>
+    }
+    else
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div id="datepicker"></div>
+                </div>
+
+                <div class="col-md-8">
+                    <table class="table" id="vacinas">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.nomeEstabelecimento)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.rua)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.nomeVacina)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.dataAgendamento)
+                            </th>
+                            <th></th>
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                            var linha = "data" + item.dataAgendamento.Day + item.dataAgendamento.Month;
+                            <tr linha-data="@linha">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.nomeEstabelecimento)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.rua), @Html.DisplayFor(modelItem => item.bairro)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.nomeVacina)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.dataAgendamento)
+                                </td>
+
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+}
+@section scripts {
+
+    @Scripts.Render("~/bundles/pacientes");
+}
