@@ -120,10 +120,10 @@ namespace AiVacina.Controllers
             {
                 throw new Exception("Data invalida, por favor utilize uma data válida.");
             }
-            //else if(!Valida.CartaoCidadao(paciente.numCartaoCidadao))
-            //{
-            //    throw new Exception("Número do Cartão Cidadão inválido.");
-            //}
+            else if (!Valida.CartaoCidadao(paciente.numCartaoCidadao))
+            {
+                throw new Exception("Número do Cartão Cidadão inválido.");
+            }
 
             return valido;
         }

@@ -221,6 +221,8 @@
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Custom\AdicionaPostos.js" />
+    <Content Include="Scripts\Custom\CadastrarCarteira.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
     <Content Include="Scripts\jquery-3.2.1.slim.js" />
@@ -235,10 +237,10 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\ListaVacinas.js" />
+    <Content Include="Scripts\Custom\ListaVacinas.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\PacienteAgenda.js" />
-    <Content Include="Scripts\Script.js" />
+    <Content Include="Scripts\Custom\PacienteAgenda.js" />
+    <Content Include="Scripts\Custom\Script.js" />
     <Content Include="Service References\Application Insights\ConnectedService.json" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
@@ -251,10 +253,15 @@
     <Content Include="Views\Home\Entrar.cshtml" />
     <Content Include="Views\Paciente\Agendamento.cshtml" />
     <Content Include="Views\Paciente\_Vacinas.cshtml" />
-    <Content Include="Views\Paciente\_Postos.cshtml" />
+    <Content Include="Views\Shared\_Postos.cshtml" />
     <Content Include="Views\Posto\Agenda.cshtml" />
     <Content Include="Views\Posto\Vacinas.cshtml" />
     <Content Include="Views\Paciente\Agenda.cshtml" />
+    <Content Include="Views\Paciente\CadastrarCarteira.cshtml" />
+    <Content Include="Views\Paciente\MinhaCarteira.cshtml" />
+    <Content Include="Views\Posto\CadastroAdministrador.cshtml" />
+    <Content Include="Views\Posto\Index.cshtml" />
+    <Content Include="Views\Posto\CadastrarVacinas.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

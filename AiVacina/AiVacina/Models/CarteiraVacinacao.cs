@@ -7,9 +7,11 @@ namespace AiVacina.Models
 {
     public class CarteiraVacinacao
     {
-        public Vacina vacina { get; set; }
+        public int id { get; set; }
+        //public Vacina vacina { get; set; }
         public string numCartaoCidadao { get; set; }
-        public DateTime dataVacinacao { get; set; }
-        public int idPosto { get; set; }
+        //public DateTime dataVacinacao { get; set; }
+        public Posto Posto { get; set; }
+        public List<Vacina> minhasVacinas{ get; set; }
     }
 }

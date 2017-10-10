@@ -37,13 +37,20 @@ namespace AiVacina
                 "~/Scripts/jquery.mask.min.js",
                 "~/Scripts/jquery-ui-1.12.1.min.js",
                 "~/Scripts/jquery-ui.min.js",
-                "~/Scripts/Script.js"));
+                "~/Scripts/Custom/Script.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/listavacinas").Include(
-                "~/Scripts/ListaVacinas.js"));
+                "~/Scripts/Custom/ListaVacinas.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/pacientes").Include(
-                "~/Scripts/PacienteAgenda.js"));
+                "~/Scripts/Custom/PacienteAgenda.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/cadastrarcarteira").Include(
+                "~/Scripts/Custom/CadastrarCarteira.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/adicionapostos").Include(
+                "~/Scripts/Custom/AdicionaPostos.js"));
+
         }
     }
 }

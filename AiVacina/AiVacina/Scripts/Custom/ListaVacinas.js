@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
     carregarVacinas();
-    carregarPostos();
+    //carregarPostos();
 
     var horario;
     var data;
@@ -49,20 +49,20 @@ function carregarVacinas()
 
 }
 
-function carregarPostos() {
-    $.ajax({
-        url: 'GetPostos',
-        type: 'GET',
-        success: function (result) {
-            console.log(result);
-            $("#listaPostos").html(result);
+//function carregarPostos() {
+//    $.ajax({
+//        url: 'GetPostos',
+//        type: 'GET',
+//        success: function (result) {
+//            console.log(result);
+//            $("#listaPostos").html(result);
 
-            $("#divListaPostos a").each(function () {
-                $(this).click(function () { 
-                    console.log($(this).find("#idEstabelecimento").val());
-                    $("#idPosto").val($(this).find("#idEstabelecimento").val());
-                });
-            });
-        }
-    });
-}
+//            $("#divListaPostos a").each(function () {
+//                $(this).click(function () { 
+//                    console.log($(this).find("#idEstabelecimento").val());
+//                    $("#idPosto").val($(this).find("#idEstabelecimento").val());
+//                });
+//            });
+//        }
+//    });
+//}

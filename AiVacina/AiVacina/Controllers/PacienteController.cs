@@ -1,5 +1,6 @@
 ﻿using AiVacina.DAL;
 using AiVacina.Models;
+using AiVacina.Validação;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,42 @@ namespace AiVacina.Controllers
                 DataBase.AgendamentosVacina("123.1231.2312.1323");
             return View(agendamentos);
         }
+
+        //GET: Paciente/CadastrarCarteira
+        [HttpGet]
+        public ActionResult CadastrarCarteira()
+        {
+            return View();
+        }
+
+        //POST: Paciente/CadastrarCarteira
+        [HttpPost]
+        public ActionResult CadastrarCarteira(CarteiraVacinacao carteira)
+        {
+            try
+            {
+                if (Valida.CartaoCidadao(carteira.numCartaoCidadao))
+                { 
+                    DataBase.CadastraCarteiraVacinacao(carteira);
+                    return RedirectToAction("MinhaCarteira");
+                }
+                else
+                    throw new Exception("Número do cartão cidadão invalido!");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                return View(carteira);
+            }
+        }
+
+        //GET: Paciente/MinhaCarteira
+        [HttpGet]
+        public ActionResult MinhaCarteira()
+        {
+            return View();
+        }
+
 
 
         // GET: Paciente/GetVacinas

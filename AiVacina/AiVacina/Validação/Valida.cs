@@ -8,18 +8,19 @@ namespace AiVacina.Validação
 {
     public static class Valida
     {
-        public static bool Data(DateTime data)
+        public static bool Data(string data)
         {
             bool resultado = false;
             Regex rxData = new Regex(@"^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$");
-            resultado = rxData.IsMatch(data.ToShortDateString());
+            //resultado = rxData.IsMatch(data.ToShortDateString());
+            resultado = rxData.IsMatch(data);
             return resultado;
         }
 
         public static bool CartaoCidadao(string numCartao)
         {
             bool resultado = false;
-            Regex rxData = new Regex(@"^(\d{3}\s\d{4}\s\d{4}\s\d{4})$");
+            Regex rxData = new Regex(@"^([0-9]{3}.[0-9]{4}.[0-9]{4}.[0-9]{4})$");
             resultado = rxData.IsMatch(numCartao);
             return resultado;
         }

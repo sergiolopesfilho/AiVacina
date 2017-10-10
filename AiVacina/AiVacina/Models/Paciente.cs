@@ -21,8 +21,8 @@ namespace AiVacina.Models
 
         [Required(ErrorMessage = "Campo obrigatório")]
         [Display(Name = "Data de Nascimento:")]
-        [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}",ApplyFormatInEditMode = true,NullDisplayText = "Estoque vazio")]
-        public DateTime dataNascimento { get; set; }
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}",ApplyFormatInEditMode = true,NullDisplayText = "Data de nascimento obrigatória.")]
+        public string dataNascimento { get; set; }
         
         public Endereco endereco { get; set; }
 

@@ -1,0 +1,12 @@
+﻿@model AiVacina.Models.CarteiraVacinacao
+
+@{
+    ViewBag.Title = "MinhaCarteira";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Minha Carteira</h2>
+
+<h4>Num - @Html.DisplayFor(model => model.id)</h4>
+<p>Cartão Cidadão: @Html.DisplayFor(model => model.numCartaoCidadao)</p>
+

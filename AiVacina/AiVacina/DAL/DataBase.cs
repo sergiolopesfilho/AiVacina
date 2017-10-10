@@ -1,20 +1,19 @@
 ﻿using AiVacina.Models;
 using MySql.Data.MySqlClient;
-using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
 using Dapper;
+using System;
+
 namespace AiVacina.DAL
 {
     public static class DataBase
     {
-        private static string connectionString = ConfigurationManager.ConnectionStrings["mySqlAiVacina"].ToString();
+        private static string connectionString = ConfigurationManager.ConnectionStrings["azureAiVacina"].ToString();
         //private static string connectionString = ConfigurationManager.ConnectionStrings["sqlAiVacina"].ConnectionString;
-        
+
 
         public static bool CadastrarPaciente(Paciente paciente)
         {
@@ -26,7 +25,7 @@ namespace AiVacina.DAL
 
             try
             {
-                using (IDbConnection conn = new MySqlConnection(connectionString))
+                using (IDbConnection conn = new SqlConnection(connectionString))
                 {
                     paciente.endereco.id = conn.Execute(insertEndereco, new
                     {
@@ -37,7 +36,7 @@ namespace AiVacina.DAL
 
                     conn.Execute(insertPaciente, new
                     {
-                        cartao= paciente.numCartaoCidadao,
+                        cartao = paciente.numCartaoCidadao,
                         nome = paciente.nome,
                         nascimento = paciente.dataNascimento,
                         senha = paciente.senha,
@@ -48,7 +47,7 @@ namespace AiVacina.DAL
                 return cadastrado;
             }
             catch (SqlException ex)
-            {
+                {
                 throw ex;
             }
         }
@@ -60,7 +59,7 @@ namespace AiVacina.DAL
             IEnumerable<Vacina> vacinas;
             try
             {
-                using (IDbConnection conn = new MySqlConnection(connectionString))
+                using (IDbConnection conn = new SqlConnection(connectionString))
                 {
                     vacinas = conn.Query<Vacina>(listaVacinas);
                 }
@@ -80,9 +79,9 @@ namespace AiVacina.DAL
             IEnumerable<Posto> postos;
             try
             {
-                using (IDbConnection conn = new MySqlConnection(connectionString))
+                using (IDbConnection conn = new SqlConnection(connectionString))
                 {
-                    postos = conn.Query<Posto, Endereco, Posto>(listaPostos, 
+                    postos = conn.Query<Posto, Endereco, Posto>(listaPostos,
                         (posto, endereco) => { posto.endereco = endereco; return posto; });
                 }
 
@@ -94,6 +93,34 @@ namespace AiVacina.DAL
             }
         }
 
+        public static void AtualizarAdmPosto(Posto posto)
+        {
+            string listaPostos = "UPDATE postos SET admPosto = @adm, "
+                                + "cpfAdmPosto = @cpf "
+                                + "WHERE idEstabelecimento = @id";
+            int atualizado = 0;
+            try
+            {
+                using (IDbConnection conn = new SqlConnection(connectionString))
+                {
+                    atualizado = conn.Execute(listaPostos, new
+                    {
+                        adm = posto.admPosto,
+                        cpf = posto.cpfAdmPosto,
+                        id = posto.idEstabelecimento
+                    });
+                }
+                if(atualizado <= 0 )
+                    throw new Exception("Posto não atualizado. Houve um erro interno, favor contate o administrador.");
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// TODO:
+        /// Arrumar o datetime, não reconhece por ser EN
         public static bool SalvaAgendamento(AgendamentoVacina agendamento)
         {
             bool agendado = false;
@@ -103,7 +130,7 @@ namespace AiVacina.DAL
             try
             {
                 int resultado = 0;
-                using (IDbConnection conn = new MySqlConnection(connectionString))
+                using (IDbConnection conn = new SqlConnection(connectionString))
                 {
                     resultado = conn.Execute(insertAgendamento, new
                     {
@@ -111,6 +138,34 @@ namespace AiVacina.DAL
                         vacina = agendamento.idVacina,
                         cidadao = agendamento.cartaocidadao,
                         data = agendamento.dataAgendamento
+                    });
+                }
+
+                agendado = (resultado > 0);
+
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return agendado;
+        }
+
+        public static bool CadastraCarteiraVacinacao(CarteiraVacinacao carteira)
+        {
+            bool agendado = false;
+
+            string insertCarteira = "INSERT INTO CarteiraVacinacao(cartaoCidadao, idPosto) "
+                              + "VALUES(@cartao,@posto)";
+            try
+            {
+                int resultado = 0;
+                using (IDbConnection conn = new SqlConnection(connectionString))
+                {
+                    resultado = conn.Execute(insertCarteira, new
+                    {
+                        posto = carteira.Posto.idEstabelecimento,
+                        cartao = carteira.numCartaoCidadao
                     });
                 }
 
@@ -136,7 +191,7 @@ namespace AiVacina.DAL
                                 + "WHERE agendamento.cartaocidadao = @cartao ";
             try
             {
-                using (IDbConnection conn = new MySqlConnection(connectionString))
+                using (IDbConnection conn = new SqlConnection(connectionString))
                 {
                     agendamentos = conn.Query<AgendaVacina>(listaAgendamentos, new
                     {
