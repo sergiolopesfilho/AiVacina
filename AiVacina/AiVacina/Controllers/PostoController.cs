@@ -1,5 +1,6 @@
 ﻿using AiVacina.DAL;
 using AiVacina.Models;
+using AiVacina.Validação;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,13 +40,19 @@ namespace AiVacina.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
-
+                vacina.loteVacina = vacina.loteVacina.ToUpper();
+                if (ValidaVacinas(vacina))
+                {
+                    if ((DateTime.Today.CompareTo(Convert.ToDateTime(vacina.dataValidade))) >= 0)
+                        throw new Exception("Data inválida, insira uma nova data.");
+                    DataBase.CadastrarVacina(vacina);
+                }
                 return RedirectToAction("Vacinas");
             }
-            catch
+            catch(Exception ex)
             {
-                return View();
+                ModelState.AddModelError("", ex.Message);
+                return View(vacina);
             }
         }
 
@@ -57,7 +64,7 @@ namespace AiVacina.Controllers
             return View();
         }
 
-        // POST: Posto/Edit/5
+        // POST: Posto/CadastroAdministrador/
         [HttpPost]
         public ActionResult CadastroAdministrador(Posto posto)
         {
@@ -83,33 +90,37 @@ namespace AiVacina.Controllers
             }
         }
 
-        // GET: Posto/Delete/5
-        public ActionResult Delete(int id)
+        // GET: Posto/Vacinas/
+        public ActionResult Vacinas()
         {
             return View();
         }
-
-        // POST: Posto/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        
 
         // GET: Paciente/GetPostos
         public ActionResult GetPostos()
         {
             IEnumerable<Posto> postos = DataBase.ListaPostos();
             return PartialView("~/Views/Shared/_Postos.cshtml", postos);
+        }
+
+        private bool ValidaVacinas(Vacina vacina)
+        {
+            bool valido = true;
+            if (!Valida.Data(vacina.dataValidade))
+            {
+                //throw new Exception("Data invalida, por favor utilize uma data válida.");
+            }
+            else if (!Valida.CodVacina(vacina.codVacina))
+            {
+                throw new Exception("Código inválido, por favor tente novamente.");
+            }
+            else if (!Valida.LoteVacina(vacina.loteVacina))
+            {
+                throw new Exception("Formato do Lote inválido, por favor insira um válido.");
+            }
+
+            return valido;
         }
     }
 }

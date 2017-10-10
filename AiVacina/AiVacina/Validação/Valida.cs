@@ -40,6 +40,22 @@ namespace AiVacina.Validação
             resultado = rxNomeAtelie.IsMatch(nomeAtelie);
             return resultado;
         }
+        
+        public static Boolean LoteVacina(String lote)
+        {
+            bool resultado = false;
+            Regex rxLote = new Regex(@"[A-Z]{5}[0-9]{3}[A-Z]{2}$");
+            resultado = rxLote.IsMatch(lote);
+            return resultado;
+        }
+
+        public static Boolean CodVacina(String cod)
+        {
+            bool resultado = false;
+            Regex rxCod = new Regex(@"[0-9]{5,8}$");
+            resultado = rxCod.IsMatch(cod);
+            return resultado;
+        }
 
     }
 }

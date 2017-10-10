@@ -9,7 +9,7 @@ namespace AiVacina.Models
     public class Vacina
     {
         [Display(Name = "Código da Vacina")]
-        public int codVacina { get; set; }
+        public string codVacina { get; set; }
 
         [Display(Name = "Lote da Vacina")]
         public string loteVacina { get; set; }
@@ -21,7 +21,7 @@ namespace AiVacina.Models
         public int quantidade { get; set; }
 
         [Display(Name = "Validade da Vacina")]
-        public DateTime dataValidade { get; set; }
+        public String dataValidade { get; set; }
 
         [Display(Name = "Grupo Alvo da Vacina")]
         public string grupoAlvo { get; set; }

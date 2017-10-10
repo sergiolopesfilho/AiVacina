@@ -7,7 +7,7 @@
 
 <h2>Cadastro de Vacinas</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("CadastrarVacinas","Posto",FormMethod.Post)) 
 {
     @Html.AntiForgeryToken()
     
@@ -18,7 +18,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.codVacina, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.codVacina, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.codVacina, new { htmlAttributes = new { @class = "form-control codeVacina-mask" } })
                 @Html.ValidationMessageFor(model => model.codVacina, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -26,7 +26,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.loteVacina, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.loteVacina, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.loteVacina, new { htmlAttributes = new { @class = "form-control loteVacina-mask" } })
                 @Html.ValidationMessageFor(model => model.loteVacina, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -50,7 +50,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.dataValidade, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.dataValidade, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.dataValidade, new { htmlAttributes = new { @class = "form-control data-mask" } })
                 @Html.ValidationMessageFor(model => model.dataValidade, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -65,7 +65,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Cadastrar Vacina" class="btn btn-default" />
             </div>
         </div>
     </div>

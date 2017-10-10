@@ -52,6 +52,36 @@ namespace AiVacina.DAL
             }
         }
 
+        public static bool CadastrarVacina(Vacina vacina)
+        {
+            bool cadastrado = false;
+            string insertVacina = "INSERT INTO Vacinas (codVacina,loteVacina,nomeVacina,quantidade,dataValidade,grupoalvo) "
+                                + "VALUES (@cod, @lote, @nome, @quant, @data, @grupo)";
+
+            try
+            {
+                var result = 0;
+                using (IDbConnection conn = new SqlConnection(connectionString))
+                {
+                    result = conn.Execute(insertVacina, new
+                    {
+                        cod = vacina.codVacina,
+                        lote = vacina.loteVacina,
+                        nome = vacina.nomeVacina,
+                        quant = vacina.quantidade,
+                        data = vacina.dataValidade,
+                        grupo = vacina.grupoAlvo
+                    });
+                }
+                cadastrado = (result > 0);
+                return cadastrado;
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+        }
+
         public static IEnumerable<Vacina> ListaVacinas()
         {
             string listaVacinas = "SELECT codVacina, loteVacina, nomeVacina, quantidade, dataValidade,grupoalvo "
