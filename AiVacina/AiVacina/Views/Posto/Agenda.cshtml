@@ -7,14 +7,6 @@
 
 <h2>Agenda</h2>
 
-@{
-    if (Model == null || Model.Count() <= 0)
-    {
-        <h2>Não existem agendamentos em seu nome.</h2>
-        <h3><a href="@Url.Action("Agendamento", "Paciente")">Clique aqui</a> para realizar um agendamento.</h3>
-    }
-    else
-    {
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
@@ -64,7 +56,6 @@
             </div>
         </div>
     }
-}
 @section scripts {
 
     @Scripts.Render("~/bundles/pacientes");

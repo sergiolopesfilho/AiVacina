@@ -43,7 +43,7 @@
     <div class="row">
         @using (Html.BeginForm("Agendamento", "Paciente", FormMethod.Post))
         {
-            @Html.HiddenFor(model => model.idPosto)
+            @Html.HiddenFor(model => model.idPosto, new { @id= "Posto_idEstabelecimento" })
             @Html.HiddenFor(model => model.idVacina)
             @Html.HiddenFor(model => model.dataAgendamento)
             <div class="form-group">

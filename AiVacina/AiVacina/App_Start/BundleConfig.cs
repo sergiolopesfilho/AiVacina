@@ -51,6 +51,9 @@ namespace AiVacina
             bundles.Add(new ScriptBundle("~/bundles/adicionapostos").Include(
                 "~/Scripts/Custom/AdicionaPostos.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/agenda").Include(
+                "~/Scripts/Custom/Agenda.js"));
+
         }
     }
 }

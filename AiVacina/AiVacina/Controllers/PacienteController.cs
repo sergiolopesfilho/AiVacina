@@ -11,27 +11,32 @@ namespace AiVacina.Controllers
 {
     public class PacienteController : Controller
     {
+
+        // GET: Paciente/Agenda
+        public ActionResult Agenda()
+        {
+            ///TODO:
+            /// Deixar dinamico de acordo com o paciente
+            IEnumerable<AgendaVacina> agendamentos =
+                DataBase.AgendamentosVacina("123.4567.8913.2413");
+            return View(agendamentos);
+        }
+
         // GET: Paciente/Agendamento
         public ActionResult Agendamento()
         {
             return View();
         }
-        
+
         // POST: Paciente/Agendamento
         [HttpPost]
         public ActionResult Agendamento(AgendamentoVacina agendamento)
         {
-            agendamento.cartaocidadao = "123.1231.2312.1323";
+            ///TODO:
+            /// Deixar dinamico de acordo com o paciente
+            agendamento.cartaocidadao = "123.4567.8913.2413";
             DataBase.SalvaAgendamento(agendamento);
             return RedirectToAction("Agenda");
-        }
-
-        // GET: Paciente/Agenda
-        public ActionResult Agenda()
-        {
-            IEnumerable<AgendaVacina> agendamentos = 
-                DataBase.AgendamentosVacina("123.1231.2312.1323");
-            return View(agendamentos);
         }
 
         //GET: Paciente/CadastrarCarteira
@@ -48,7 +53,7 @@ namespace AiVacina.Controllers
             try
             {
                 if (Valida.CartaoCidadao(carteira.numCartaoCidadao))
-                { 
+                {
                     DataBase.CadastraCarteiraVacinacao(carteira);
                     return RedirectToAction("MinhaCarteira");
                 }
@@ -81,8 +86,35 @@ namespace AiVacina.Controllers
         // GET: Paciente/GetPostos
         public ActionResult GetPostos()
         {
-            IEnumerable<Posto> postos= DataBase.ListaPostos();
+            IEnumerable<Posto> postos = DataBase.ListaPostos();
             return PartialView("_Postos", postos);
+        }
+
+        [HttpPost]
+        public JsonResult DeleteAgendamento(string id)
+        {
+            string resultado = string.Empty;
+            try
+            {
+                int intId = Convert.ToInt32(id);
+                if (intId > 0)
+                {
+                    if (DataBase.DeletaAgendamento(intId))
+                        resultado = "Agendamento deletado com sucesso!";
+                    else
+                        resultado = "Agendamento não pôde ser deletado. Tente novamente mais tarde.";
+                }
+                else
+                {
+                    resultado = "Agendamento invalido.";
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = ex.Message;
+            }
+            //return Json(new { success = resultado });
+            return Json(new { success = resultado });
         }
     }
 }

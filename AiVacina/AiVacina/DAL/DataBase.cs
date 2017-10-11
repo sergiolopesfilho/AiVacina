@@ -237,6 +237,32 @@ namespace AiVacina.DAL
             }
         }
 
+        public static bool DeletaAgendamento(int id) {
+
+            string deletAgendamento = "DELETE FROM AgendamentoVacinas  "
+                              + "WHERE id = @id";
+            bool deletado = false;
+            try
+            {
+                int resultado = 0;
+                using (IDbConnection conn = new SqlConnection(connectionString))
+                {
+                    resultado = conn.Execute(deletAgendamento, new
+                    {
+                        id = id
+                    });
+                }
+
+                deletado = (resultado > 0);
+
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+
+            return deletado;
+        }
 
 
     }

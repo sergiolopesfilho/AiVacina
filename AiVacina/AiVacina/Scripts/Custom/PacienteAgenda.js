@@ -1,5 +1,8 @@
 ﻿$(document).ready(function () {
     
+    $("#cancelaAgendamento").click(function () {
+        $("body").addClass("loading");
+    });
 
     $("#datepicker").datepicker({
         minDate: 0,

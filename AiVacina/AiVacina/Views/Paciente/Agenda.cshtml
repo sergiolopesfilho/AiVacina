@@ -5,54 +5,70 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Agenda</h2>
+<h2>Minha Agenda</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.nomeEstabelecimento)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.rua)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.bairro)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.nomeVacina)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.dataAgendamento)
-        </th>
-        <th></th>
-    </tr>
+@{
+    if (Model == null || Model.Count() <= 0)
+    {
+        <h2>Não há vacinas agendadas.</h2>
+        <h3><a href="@Url.Action("Agendamento", "Paciente")">Clique aqui</a> para realizar um agendamento.</h3>
+    }
+    else
+    {
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.nomeEstabelecimento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.rua)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.bairro)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.nomeVacina)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.dataAgendamento)
+                </th>
+                <th></th>
+            </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.nomeEstabelecimento)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.rua)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.bairro)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.nomeVacina)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.dataAgendamento)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
-        </td>
-    </tr>
-}
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nomeEstabelecimento)
+                        @Html.HiddenFor(modelItem => item.id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rua)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.bairro)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nomeVacina)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dataAgendamento)
+                    </td>
+                    <td>
+                        @*@Html.ActionLink("Cancelar Agendamento","", "", new { @id="cancelaAgendamento"})*@
 
-</table>
+                        <button class="btn btn-default" id="cancelaAgendamento">Cancelar Agendamento</button>
+                    </td>
+                </tr>
+            }
+        </table>
+
+        } }
+    <div class="modalCarregando">
+    </div>
+
+
+    @section scripts {
+
+        @Scripts.Render("~/bundles/agenda");
+    }

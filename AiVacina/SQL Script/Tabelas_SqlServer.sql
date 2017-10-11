@@ -26,7 +26,7 @@ create table Postos(
 
 
 create table Vacinas(
-	codVacina int IDENTITY(1,1) primary key,
+	codVacina int primary key,
     loteVacina varchar(100) not null,
     nomeVacina varchar(200) not null,
     quantidade int not null,
@@ -44,9 +44,8 @@ create table AgendamentoVacinas(
     constraint FK_AgendamentoPosto foreign key(idPosto) references postos(idEstabelecimento),
     constraint FK_AgendamentoVacina foreign key(idVacina) references vacinas(codVacina),
     constraint FK_AgendamentoUsuario foreign key(cartaocidadao) references pacientes(cartaoCidadao)
-    
 );
-
+/*
 create table CarteiraVacinacao(
 	id int IDENTITY(1,1) primary key,
     codVacina int,
@@ -56,7 +55,7 @@ create table CarteiraVacinacao(
     constraint FK_CarteiraVacinacaoVacina foreign key(codVacina) references vacinas(codVacina),
     constraint FK_CarteiraVacinacaoPosto foreign key(idPosto) references postos(idEstabelecimento)
 );
-
+*/
 
 create table CarteiraVacinacao(
 	id int IDENTITY(1,1) primary key,  
@@ -71,7 +70,9 @@ values(001,'Gripe A',30,'2020/05/03','Bebês e Idosos');
 insert into Vacinas(loteVacina,nomeVacina,quantidade,dataValidade,grupoalvo)
 values(002,'Gripe B',30,'2020/10/03','Bebês e Idosos');
 
+insert into Enderecos(rua,bairro,cidade)
+values('Rua Dona Firmina, 865','Bairro Santana','Pouso Alegre');
+
 --Checar se, na tabela endereços, existe o id utilizado nessa tabela 
 insert into postos(nomeEstabelecimento, admPosto, cpfAdmPosto,cnpj,idEndereco)
 values ('Posto São José','Antonio dos Santos','123.255.656-85','22.323.458/0001-79',1);
-
