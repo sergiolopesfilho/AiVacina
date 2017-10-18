@@ -24,14 +24,16 @@ create table Postos(
     constraint FK_PostoEndereco foreign key(idEndereco) references enderecos(id)
 );
 
-
+--Atualizar, o codVacina não pode ser PK pois pode ser cadastrado a mesma vacina pra lotes distintos
+--Aline sugeriu mudar a PK pra lote (dferente vacinas no mesmo lote)
 create table Vacinas(
 	codVacina int primary key,
     loteVacina varchar(100) not null,
     nomeVacina varchar(200) not null,
     quantidade int not null,
     dataValidade datetime not null,
-    grupoalvo varchar(200) not null
+    grupoalvo varchar(200) not null,
+	postoCNPJ varchar(18)
 );
 
 
@@ -64,11 +66,11 @@ create table CarteiraVacinacao(
     constraint FK_CarteiraVacinacaoPosto foreign key(idPosto) references postos(idEstabelecimento)
 );
 
-insert into Vacinas(loteVacina,nomeVacina,quantidade,dataValidade,grupoalvo)
-values(001,'Gripe A',30,'2020/05/03','Bebês e Idosos');
+insert into Vacinas(loteVacina,nomeVacina,quantidade,dataValidade,grupoalvo,postoCNPJ)
+values(001,'Gripe A',30,'2020/05/03','Bebês e Idosos','22.323.458/0001-79');
 
-insert into Vacinas(loteVacina,nomeVacina,quantidade,dataValidade,grupoalvo)
-values(002,'Gripe B',30,'2020/10/03','Bebês e Idosos');
+insert into Vacinas(loteVacina,nomeVacina,quantidade,dataValidade,grupoalvo,postoCNPJ)
+values(002,'Gripe B',30,'2020/10/03','Bebês e Idosos','22.323.458/0001-79');
 
 insert into Enderecos(rua,bairro,cidade)
 values('Rua Dona Firmina, 865','Bairro Santana','Pouso Alegre');

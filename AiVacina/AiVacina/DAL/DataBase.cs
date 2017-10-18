@@ -14,7 +14,6 @@ namespace AiVacina.DAL
         private static string connectionString = ConfigurationManager.ConnectionStrings["azureAiVacina"].ToString();
         //private static string connectionString = ConfigurationManager.ConnectionStrings["sqlAiVacina"].ConnectionString;
 
-
         public static bool CadastrarPaciente(Paciente paciente)
         {
             bool cadastrado = false;
@@ -55,8 +54,8 @@ namespace AiVacina.DAL
         public static bool CadastrarVacina(Vacina vacina)
         {
             bool cadastrado = false;
-            string insertVacina = "INSERT INTO Vacinas (codVacina,loteVacina,nomeVacina,quantidade,dataValidade,grupoalvo) "
-                                + "VALUES (@cod, @lote, @nome, @quant, @data, @grupo)";
+            string insertVacina = "INSERT INTO Vacinas (codVacina,loteVacina,nomeVacina,quantidade,dataValidade,grupoalvo,postoCNPJ) "
+                                + "VALUES (@cod, @lote, @nome, @quant, @data, @grupo,@cnpj)";
 
             try
             {
@@ -70,7 +69,8 @@ namespace AiVacina.DAL
                         nome = vacina.nomeVacina,
                         quant = vacina.quantidade,
                         data = vacina.dataValidade,
-                        grupo = vacina.grupoAlvo
+                        grupo = vacina.grupoAlvo,
+                        cnpj = "22.323.458/0001-79"
                     });
                 }
                 cadastrado = (result > 0);
@@ -84,7 +84,7 @@ namespace AiVacina.DAL
 
         public static IEnumerable<Vacina> ListaVacinas()
         {
-            string listaVacinas = "SELECT codVacina, loteVacina, nomeVacina, quantidade, dataValidade,grupoalvo "
+            string listaVacinas = "SELECT codVacina, loteVacina, nomeVacina, quantidade, dataValidade,grupoalvo,postoCNPJ "
                                 + "FROM vacinas";
             IEnumerable<Vacina> vacinas;
             try
@@ -92,6 +92,26 @@ namespace AiVacina.DAL
                 using (IDbConnection conn = new SqlConnection(connectionString))
                 {
                     vacinas = conn.Query<Vacina>(listaVacinas);
+                }
+
+                return vacinas;
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static IEnumerable<Vacina> ListaVacinas(string cnpj)
+        {
+            string listaVacinas = "SELECT codVacina, loteVacina, nomeVacina, quantidade, dataValidade,grupoalvo, postoCNPJ "
+                                + "FROM vacinas WHERE postoCNPJ = @cnpj and quantidade > 0 ";
+            IEnumerable<Vacina> vacinas;
+            try
+            {
+                using (IDbConnection conn = new SqlConnection(connectionString))
+                {
+                    vacinas = conn.Query<Vacina>(listaVacinas, new { cnpj = cnpj});
                 }
 
                 return vacinas;
@@ -209,16 +229,44 @@ namespace AiVacina.DAL
             return agendado;
         }
 
+        public static bool AdicionarHorariosBloqueados(HorariosBloqueados horarios)
+        {
+            bool bloqueado = false;
+
+            string insertCarteira = "INSERT INTO HorariosCancelados(dia, horarios) "
+                              + "VALUES(@diaBloquear,@horarioBloquear)";
+            try
+            {
+                int resultado = 0;
+                using (IDbConnection conn = new SqlConnection(connectionString))
+                {
+                    resultado = conn.Execute(insertCarteira, new
+                    {
+                        diaBloquear = horarios.diaBloqueado,
+                        horarioBloquear = horarios.horariosBloqueados
+                    });
+                }
+
+                bloqueado = (resultado > 0);
+
+            }
+            catch (SqlException ex)
+            {
+                return false;
+            }
+            return bloqueado;
+        }
+
         public static IEnumerable<AgendaVacina> AgendamentosVacina(string cartaoCidadao)
         {
             IEnumerable<AgendaVacina> agendamentos;
 
             string listaAgendamentos = "SELECT agendamento.id, p.nomeEstabelecimento, e.rua, e.bairro, v.nomeVacina, agendamento.dataAgendamento "
-                                + "FROM agendamentovacinas agendamento "
-                                + "JOIN postos p on p.idEstabelecimento = agendamento.idPosto "
-                                + "JOIN vacinas v on v.codVacina = agendamento.idVacina "
-                                + "JOIN enderecos e on e.id = p.idEndereco "
-                                + "WHERE agendamento.cartaocidadao = @cartao ";
+                                    + "FROM agendamentovacinas agendamento "
+                                    + "JOIN postos p on p.idEstabelecimento = agendamento.idPosto "
+                                    + "JOIN vacinas v on v.codVacina = agendamento.idVacina "
+                                    + "JOIN enderecos e on e.id = p.idEndereco "
+                                    + "WHERE agendamento.cartaocidadao = @cartao ";
             try
             {
                 using (IDbConnection conn = new SqlConnection(connectionString))
@@ -237,6 +285,62 @@ namespace AiVacina.DAL
             }
         }
 
+        public static IEnumerable<AgendaVacina> AgendamentosPosto(string cnpj)
+        {
+            IEnumerable<AgendaVacina> agendamentos;
+
+            string listaAgendamentos = "SELECT agendamento.id, p.nomeEstabelecimento, e.rua, e.bairro, v.nomeVacina, agendamento.dataAgendamento "
+                                    + "FROM agendamentovacinas agendamento "
+                                    + "JOIN postos p on p.idEstabelecimento = agendamento.idPosto "
+                                    + "JOIN vacinas v on v.codVacina = agendamento.idVacina "
+                                    + "JOIN enderecos e on e.id = p.idEndereco "
+                                    + "WHERE p.cnpj = @cnpj ";
+            try
+            {
+                using (IDbConnection conn = new SqlConnection(connectionString))
+                {
+                    agendamentos = conn.Query<AgendaVacina>(listaAgendamentos, new
+                    {
+                        cnpj = cnpj,
+                    });
+                }
+
+                return agendamentos;
+            }
+            catch (SqlException ex)
+            {
+                return null;
+            }
+        }
+
+        public static IEnumerable<AgendaVacina> AgendamentosPosto(string cnpj, DateTime data)
+        {
+            IEnumerable<AgendaVacina> agendamentos;
+
+            string listaAgendamentos = "SELECT agendamento.id, p.nomeEstabelecimento, e.rua, e.bairro, v.nomeVacina, agendamento.dataAgendamento "
+                                    + "FROM agendamentovacinas agendamento "
+                                    + "JOIN postos p on p.idEstabelecimento = agendamento.idPosto "
+                                    + "JOIN vacinas v on v.codVacina = agendamento.idVacina "
+                                    + "JOIN enderecos e on e.id = p.idEndereco "
+                                    + "WHERE p.cnpj = @cnpj and CAST(agendamento.dataAgendamento as date) = @data";
+            try
+            {
+                using (IDbConnection conn = new SqlConnection(connectionString))
+                {
+                    agendamentos = conn.Query<AgendaVacina>(listaAgendamentos, new
+                    {
+                        cnpj = cnpj,
+                        data = data
+                    });
+                }
+
+                return agendamentos;
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+        }
         public static bool DeletaAgendamento(int id) {
 
             string deletAgendamento = "DELETE FROM AgendamentoVacinas  "

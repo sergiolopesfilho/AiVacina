@@ -26,5 +26,10 @@ namespace AiVacina.Models
         [Display(Name = "Grupo Alvo da Vacina")]
         public string grupoAlvo { get; set; }
 
+        [Display(Name = "CNPJ do Posto")]
+        public String postoCNPJ { get; set; }
+
+
+
     }
 }

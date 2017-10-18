@@ -24,7 +24,7 @@ namespace AiVacina.Controllers
             ///assim que for selecionado um dia no datepicker
             ///deve aparecer só as vacinas daquele dia
             IEnumerable<AgendaVacina> agendamentos =
-                DataBase.AgendamentosVacina("123.1231.2312.1323");
+                DataBase.AgendamentosPosto("22.323.458/0001-79");
             return View(agendamentos);
         }
 
@@ -55,7 +55,6 @@ namespace AiVacina.Controllers
                 return View(vacina);
             }
         }
-
 
         // GET: Posto/Create
         [HttpGet]
@@ -93,15 +92,60 @@ namespace AiVacina.Controllers
         // GET: Posto/Vacinas/
         public ActionResult Vacinas()
         {
-            return View();
+            ///TODO:
+            ///Pegar o cnpj do posto
+            IEnumerable<Vacina> vacinasPosto = DataBase.ListaVacinas("22.323.458/0001-79");
+            return View(vacinasPosto);
         }
-        
+
+        [HttpPost]
+        public JsonResult BloquearHorarios(string diaBloquear, string horaBloquear)
+        {
+            HorariosBloqueados horarios = new HorariosBloqueados()
+            {
+                diaBloqueado = diaBloquear,
+                horariosBloqueados = horaBloquear
+            };
+
+            try
+            {
+                if (DataBase.AdicionarHorariosBloqueados(horarios))
+                {
+
+                    return Json(new { success = true });
+                }
+                else
+                {
+                    return Json(new { success = false });
+                }
+               
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = true });
+            }
+        }
 
         // GET: Paciente/GetPostos
         public ActionResult GetPostos()
         {
             IEnumerable<Posto> postos = DataBase.ListaPostos();
             return PartialView("~/Views/Shared/_Postos.cshtml", postos);
+        }
+
+        // GET: Paciente/GetPostos
+        public ActionResult GetVacinasPosto(string cnpj, string data)
+        {
+            IEnumerable<AgendaVacina> vacinas;
+            if (!string.IsNullOrEmpty(data))
+            {
+                vacinas = DataBase.AgendamentosPosto(cnpj, Convert.ToDateTime(data));
+            }
+            else
+            {
+                vacinas = DataBase.AgendamentosPosto(cnpj);
+            }
+            return PartialView("~/Views/Shared/_Agendamentos.cshtml", vacinas);
         }
 
         private bool ValidaVacinas(Vacina vacina)

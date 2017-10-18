@@ -225,6 +225,7 @@
     <Content Include="Scripts\Custom\AdicionaPostos.js" />
     <Content Include="Scripts\Custom\Agenda.js" />
     <Content Include="Scripts\Custom\CadastrarCarteira.js" />
+    <Content Include="Scripts\Custom\PostoAgenda.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
     <Content Include="Scripts\jquery-3.2.1.slim.js" />
@@ -264,6 +265,8 @@
     <Content Include="Views\Posto\CadastroAdministrador.cshtml" />
     <Content Include="Views\Posto\Index.cshtml" />
     <Content Include="Views\Posto\CadastrarVacinas.cshtml" />
+    <Content Include="Views\Shared\_Agendamentos.cshtml" />
+    <Content Include="Views\Posto\GerenciamentoAgenda.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -290,6 +293,7 @@
     <Compile Include="Models\AgendaVacina.cs" />
     <Compile Include="Models\CarteiraVacinacao.cs" />
     <Compile Include="Models\Endereco.cs" />
+    <Compile Include="Models\HorariosBloqueados.cs" />
     <Compile Include="Models\Paciente.cs" />
     <Compile Include="Models\Posto.cs" />
     <Compile Include="Models\Vacina.cs" />

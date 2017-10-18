@@ -21,8 +21,6 @@
             $("#vacinas tr").each(function(){
                 var data = $("this").attr("class");
 
-                console.log(data);
-
                 });
         }
     });

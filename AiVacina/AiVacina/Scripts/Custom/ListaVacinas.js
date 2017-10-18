@@ -20,7 +20,9 @@
             var fullDate =  $(this).datepicker('getDate');
             var day = fullDate.getDate();
             //$("#dataAgendamento").val(fullDate.getDate() + "/" + fullDate.getMonth() + "/" + fullDate.getFullYear() + " " + horario);
-            data = fullDate.getDate() + "/" + fullDate.getMonth() + "/" + fullDate.getFullYear();
+            
+            data = fullDate.getDate() + "/" + (fullDate.getMonth()+1) + "/" + fullDate.getFullYear();
+            console.log(data);
         }
     });
 

@@ -5,59 +5,126 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Agenda</h2>
+<h2>Agenda posto </h2>
 
-        <div class="container">
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div id="datepicker"></div>
+        </div>
+
+        <div class="col-md-8">
+            <div id="agendamentos"></div>
+        </div>
+    </div>
+    <div class="row">
+        <button class="btn btn-info" id="linkMostrarBloqueio">Bloquear Agenda</button>
+    </div>
+</div>
+
+<div class="container" style="display: none;" id="divBloqueio">
+    <h4>Por favor, selecione uma data e horário(s) para ser(em) bloquear(dos).</h4>
+    <div class="">
+        <label class="errorCancelamento danger"></label>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="datepickerCancelamento"></div>
+        </div>
+
+        <div class="col-md-7">
             <div class="row">
-                <div class="col-md-4">
-                    <div id="datepicker"></div>
+                <div class="col-md-4 checkbox">
+                    <label>
+                        <input type="checkbox" name="horarioCancelado" value="8:00">8:00
+                    </label>
                 </div>
-
-                <div class="col-md-8">
-                    <table class="table" id="vacinas">
-                        <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.nomeEstabelecimento)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.rua)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.nomeVacina)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.dataAgendamento)
-                            </th>
-                            <th></th>
-                        </tr>
-
-                        @foreach (var item in Model)
-                        {
-                            var linha = "data" + item.dataAgendamento.Day + item.dataAgendamento.Month;
-                            <tr linha-data="@linha">
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.nomeEstabelecimento)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.rua), @Html.DisplayFor(modelItem => item.bairro)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.nomeVacina)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.dataAgendamento)
-                                </td>
-
-                            </tr>
-                        }
-
-                    </table>
+                <div class="col-md-4 checkbox">
+                    <label>
+                        <input type="checkbox" name="horarioCancelado" value="8:30">8:30
+                    </label>
+                </div>
+                <div class="col-md-4 checkbox">
+                    <label>
+                        <input type="checkbox" name="horarioCancelado" value="09:00">09:00
+                    </label>
                 </div>
             </div>
-        </div>
-    }
-@section scripts {
+            <div class="row">
+                <div class="col-md-4 checkbox">
+                    <label>
+                        <input type="checkbox" name="horarioCancelado" value="09:30">09:30
+                    </label>
+                </div>
+                <div class="col-md-4 checkbox">
+                    <label>
+                        <input type="checkbox" name="horarioCancelado" value="10:00">10:00
+                    </label>
+                </div>
+                <div class="col-md-4 checkbox">
+                    <label>
+                        <input type="checkbox" name="horarioCancelado" value="10:30">10:30
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 checkbox">
+                    <label>
+                        <input type="checkbox" name="horarioCancelado" value="11:00">11:00
+                    </label>
+                </div>
+                <div class="col-md-4 checkbox">
+                    <label>
+                        <input type="checkbox" name="horarioCancelado" value="12:30">12:30
+                    </label>
+                </div>
+                <div class="col-md-4 checkbox">
+                    <label>
+                        <input type="checkbox" name="horarioCancelado" value="13:00">13:00
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 checkbox">
+                    <label>
+                        <input type="checkbox" name="horarioCancelado" value="13:30">13:30
+                    </label>
+                </div>
+                <div class="col-md-4 checkbox">
+                    <label>
+                        <input type="checkbox" name="horarioCancelado" value="14:00">14:00
+                    </label>
 
-    @Scripts.Render("~/bundles/pacientes");
-    @Scripts.Render("~/bundles/adicionapostos");
+                </div>
+
+                <div class="col-md-4 checkbox">
+                    <label>
+                        <input type="checkbox" name="horarioCancelado" value="14:30">14:30
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 checkbox">
+                    <label>
+                        <input type="checkbox" name="horarioCancelado" value="15:00">15:00
+                    </label>
+                </div>
+                <div class="col-md-4 checkbox">
+                    <label>
+                        <input type="checkbox" name="horarioCancelado" value="15:30">15:30
+                    </label>
+                </div>
+            </div>
+            <div>
+                <input type="hidden" id="dataCancelamento" value="" />
+            </div>
+            <div class="row">
+                <button class="btn btn-default" id="btnBloquearAgendamento" >Bloquear Agendamentos</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/postoagenda");
 }

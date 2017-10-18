@@ -1,0 +1,50 @@
+﻿@model IEnumerable<AiVacina.Models.AgendaVacina>
+
+@{ if (Model == null || Model.Count() <= 0)
+    {
+        <h2>Não foram agendadas vacinas nesta data.</h2>
+    }
+    else
+    {
+        <table class="table" id="vacinas">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.nomeEstabelecimento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.rua)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.nomeVacina)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.dataAgendamento)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                var linha = "data" + item.dataAgendamento.Day + item.dataAgendamento.Month;
+                <tr linha-data="@linha">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nomeEstabelecimento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rua), @Html.DisplayFor(modelItem => item.bairro)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nomeVacina)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dataAgendamento)
+                    </td>
+
+                </tr>
+            }
+
+        </table>
+    }
+}
+
+
