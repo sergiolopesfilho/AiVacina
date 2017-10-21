@@ -225,6 +225,7 @@
     <Content Include="Scripts\Custom\AdicionaPostos.js" />
     <Content Include="Scripts\Custom\Agenda.js" />
     <Content Include="Scripts\Custom\CadastrarCarteira.js" />
+    <Content Include="Scripts\Custom\PacienteAgendamento.js" />
     <Content Include="Scripts\Custom\PostoAgenda.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />

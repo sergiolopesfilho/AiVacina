@@ -5,9 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Agendamento de Vacina</h2>
+<h2>Agendamento de Vacinas</h2>
 
 <div class="container">
+    <div>
+        <p class="danger"id="error"></p>
+    </div>
     <div class="row">
         <div class="col-md-3">
             <div id="listaVacinas">
@@ -43,6 +46,7 @@
     <div class="row">
         @using (Html.BeginForm("Agendamento", "Paciente", FormMethod.Post))
         {
+            <input type="hidden" id="dataDia" />
             @Html.HiddenFor(model => model.idPosto, new { @id= "Posto_idEstabelecimento" })
             @Html.HiddenFor(model => model.idVacina)
             @Html.HiddenFor(model => model.dataAgendamento)
@@ -59,4 +63,5 @@
 
     @Scripts.Render("~/bundles/adicionapostos");
     @Scripts.Render("~/bundles/listavacinas");
+    @Scripts.Render("~/bundles/pacienteagendamento");
 }

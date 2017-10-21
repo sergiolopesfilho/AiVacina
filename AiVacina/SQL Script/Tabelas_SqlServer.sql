@@ -47,17 +47,13 @@ create table AgendamentoVacinas(
     constraint FK_AgendamentoVacina foreign key(idVacina) references vacinas(codVacina),
     constraint FK_AgendamentoUsuario foreign key(cartaocidadao) references pacientes(cartaoCidadao)
 );
-/*
-create table CarteiraVacinacao(
+
+create table HorariosCancelados(
 	id int IDENTITY(1,1) primary key,
-    codVacina int,
-    cartaoCidadao varchar(18) not null unique,
-    dataVacinacao datetime not null,
-    idPosto int,
-    constraint FK_CarteiraVacinacaoVacina foreign key(codVacina) references vacinas(codVacina),
-    constraint FK_CarteiraVacinacaoPosto foreign key(idPosto) references postos(idEstabelecimento)
+    dia varchar(50),
+    horarios varchar(max) not null
 );
-*/
+
 
 create table CarteiraVacinacao(
 	id int IDENTITY(1,1) primary key,  

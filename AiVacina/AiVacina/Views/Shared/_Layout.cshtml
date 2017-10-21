@@ -8,21 +8,47 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
+    <div class="form-inline">
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Início", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                @Html.ActionLink("Cadastro", "Cadastro", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                @Html.ActionLink("Cadastro Administrador", "CadastroAdministrador", "Posto", new { area = "" }, new { @class = "navbar-brand" })
-                @Html.ActionLink("Agenda Posto", "Agenda", "Posto", new { area = "" }, new { @class = "navbar-brand" })
-                                @Html.ActionLink("Cadastro de Vacinas", "CadastrarVacinas", "Posto", new { area = "" }, new { @class = "navbar-brand" })
-                                @Html.ActionLink("Realizar Agendamento", "Agendamento", "Paciente", new { area = "" }, new { @class = "navbar-brand" })
-                @Html.ActionLink("Minha Agenda", "Agenda", "Paciente", new { area = "" }, new { @class = "navbar-brand" })
+            <div style="display:inline">
+                <div class="dropdown pull-left">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                        Home
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Início", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })</li>
+                        <li>@Html.ActionLink("Cadastro", "Cadastro", "Home", new { area = "" }, new { @class = "navbar-brand" })</li>
+                    </ul>
+                </div>  
+
+
+                <div class="dropdown pull-left">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                        Posto
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Cadastro Administrador", "CadastroAdministrador", "Posto", new { area = "" }, new { @class = "navbar-brand" })</li>
+                        <li>@Html.ActionLink("Agenda Posto", "Agenda", "Posto", new { area = "" }, new { @class = "navbar-brand" })</li>
+                        <li>@Html.ActionLink("Cadastro de Vacinas", "CadastrarVacinas", "Posto", new { area = "" }, new { @class = "navbar-brand" })</li>
+                        <li>@Html.ActionLink("Cadastro de Vacinas", "CadastrarVacinas", "Posto", new { area = "" }, new { @class = "navbar-brand" })</li>
+                    </ul>
+                </div>  
+
+
+                <div class="dropdown pull-left">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                        Paciente
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Realizar Agendamento", "Agendamento", "Paciente", new { area = "" }, new { @class = "navbar-brand" })</li>
+                        <li>@Html.ActionLink("Minha Agenda", "Agenda", "Paciente", new { area = "" }, new { @class = "navbar-brand" })</li>
+                    </ul>
+                </div>  
+            </div>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">

@@ -257,6 +257,30 @@ namespace AiVacina.DAL
             return bloqueado;
         }
 
+        public static string GetHorariosBloqueados(string data)
+        {
+            string selectHorarios = "SELECT horarios from HorariosCancelados "
+                                    + "WHERE dia = @diaConsulta";
+            try
+            {
+                String resultado = String.Empty;
+                using (IDbConnection conn = new SqlConnection(connectionString))
+                {
+                    resultado = conn.QueryFirst<String>(selectHorarios, new
+                    {
+                        diaConsulta = data
+                    });
+                }
+
+                return resultado;
+
+            }
+            catch (Exception ex)
+            {
+                return String.Empty;
+            }
+        }
+
         public static IEnumerable<AgendaVacina> AgendamentosVacina(string cartaoCidadao)
         {
             IEnumerable<AgendaVacina> agendamentos;

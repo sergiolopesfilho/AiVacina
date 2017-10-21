@@ -11,6 +11,7 @@ namespace AiVacina.Controllers
 {
     public class PacienteController : Controller
     {
+        private const string horarios = "8:00;8:30;09:00;09:30;10:00;10:30;11:00;11:30;12:00;12:30;13:00;13:30;14:00;14:30;15:00;15:30;";
 
         // GET: Paciente/Agenda
         public ActionResult Agenda()
@@ -115,6 +116,33 @@ namespace AiVacina.Controllers
             }
             //return Json(new { success = resultado });
             return Json(new { success = resultado });
+        }
+
+        [HttpPost]
+        public JsonResult GetHorariosBloqueados(string dataTeste)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(dataTeste)) { 
+                    var resultado = DataBase.GetHorariosBloqueados(dataTeste).Split(';');
+                    if (resultado.Count() > 0)
+                    {
+                        var horariosDisponiveis = horarios.Split(';').Except(resultado);
+                        return Json(new { success = horariosDisponiveis });
+                    }
+                    else
+                    {
+                        var horariosDisponiveis = horarios.Split(';');
+                        return Json(new { success = horariosDisponiveis });
+                    }
+                }
+                else
+                    return Json(new { success = String.Empty });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = ex.Message});
+            }
         }
     }
 }
