@@ -7,8 +7,8 @@ $(document).on({
 
 $(document).ready(function () {
 
-    $("#cancelaAgendamento").click(function () {
-        deletaAgendamento($("#item_id").val());
+    $(".cancelaAgendamento").click(function () {
+        deletaAgendamento($(this).val());
     });
 });
 
