@@ -16,7 +16,8 @@
             var fullDate = $(this).datepicker('getDate');
             var day = fullDate.getDate();
 
-            data = fullDate.getDate() + "/" + (fullDate.getMonth() + 1) + "/" + fullDate.getFullYear();
+            //data = fullDate.getDate() + "/" + (fullDate.getMonth() + 1) + "/" + fullDate.getFullYear();
+            data = (fullDate.getMonth() + 1) + "/" + fullDate.getDate() + "/" + fullDate.getFullYear();
             $("#dataDia").val(data);
             getHorariosBloqueados(data);
         }

@@ -1,11 +1,10 @@
-﻿$(document).ready(function () {
-    carregarVacinas();
+﻿//$(document).ready(function () {
+//    carregarVacinas();
 
 
-});
+//});
 
-function carregarVacinas()
-{
+(function () {
     $.ajax({
         url: 'GetVacinas',
         type: 'GET',
@@ -17,4 +16,4 @@ function carregarVacinas()
         }
     });
 
-}
+})();

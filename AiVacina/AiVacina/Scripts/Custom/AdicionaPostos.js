@@ -1,8 +1,8 @@
-﻿$(document).ready(function () {
+﻿//$(document).ready(function () {
 
-    carregarPostos();
-});
-function carregarPostos() {
+//    carregarPostos();
+//});
+(function () {
     $.ajax({
         url: 'GetPostos',
         type: 'GET',
@@ -18,4 +18,4 @@ function carregarPostos() {
             });
         }
     });
-}
+})();
