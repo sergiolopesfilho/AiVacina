@@ -16,7 +16,7 @@ namespace AiVacina.DAL
 
         public static bool CadastrarPaciente(Paciente paciente)
         {
-            bool cadastrado = false;
+            int cadastrado = 0;
             string insertEndereco = "INSERT INTO enderecos (rua,bairro,cidade) "
                                 + "VALUES (@rua, @bairro, @cidade)";
             string insertPaciente = "INSERT INTO pacientes (cartaoCidadao,nome,dataNascimento,senha,idEndereco) "
@@ -33,21 +33,21 @@ namespace AiVacina.DAL
                         cidade = paciente.endereco.cidade
                     });
 
-                    conn.Execute(insertPaciente, new
+                    cadastrado = conn.Execute(insertPaciente, new
                     {
                         cartao = paciente.numCartaoCidadao,
                         nome = paciente.nome,
-                        nascimento = paciente.dataNascimento,
+                        nascimento = paciente.data,
                         senha = paciente.senha,
                         idEndereco = paciente.endereco.id
                     });
                 }
 
-                return cadastrado;
+                return (cadastrado > 0);
             }
             catch (SqlException ex)
-                {
-                throw ex;
+            {
+                return false;
             }
         }
 
@@ -78,7 +78,7 @@ namespace AiVacina.DAL
             }
             catch (SqlException ex)
             {
-                throw ex;
+                throw new Exception("Código e/ou lote da vacina ja cadastrados.");
             }
         }
 
@@ -168,15 +168,25 @@ namespace AiVacina.DAL
                 throw ex;
             }
         }
-
-        /// TODO:
-        /// Arrumar o datetime, não reconhece por ser EN
+        
         public static bool SalvaAgendamento(AgendamentoVacina agendamento)
         {
             bool agendado = false;
+            //string insertAgendamento = "INSERT INTO AgendamentoVacinas(idPosto, idVacina, cartaocidadao, dataAgendamento) "
+            //                  + "VALUES(@posto, @vacina, @cidadao, @data)";
 
-            string insertAgendamento = "INSERT INTO AgendamentoVacinas(idPosto, idVacina, cartaocidadao, dataAgendamento) "
-                              + "VALUES(@posto, @vacina, @cidadao, @data)";
+
+            string insertAgendamento = "IF ((SELECT COUNT(*) FROM AgendamentoVacinas WHERE dataAgendamento = @data) < 2 "
+                                       + "AND (SELECT COUNT(*) FROM AgendamentoVacinas WHERE dataAgendamento = @data "
+                                       + "AND cartaocidadao = @cidadao AND idPosto = @posto) < 1) "
+                                       + "BEGIN "
+                                            + "INSERT INTO AgendamentoVacinas(idPosto, idVacina, cartaocidadao, dataAgendamento) "
+                                            + "VALUES(@posto, @vacina, @cidadao, @data) "
+                                       + "END ELSE BEGIN "
+                                            + "RAISERROR('As vagas para este horario estão cheias ou você ja tem um agendamento neste horário.', 16, 16) "
+                                       + "END"; 
+                                      
+
             try
             {
                 int resultado = 0;
@@ -196,7 +206,11 @@ namespace AiVacina.DAL
             }
             catch (SqlException ex)
             {
-                throw ex;
+                throw new Exception(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Não foi possível realizar o agendamento. Por favor, tente mais tarde.");
             }
             return agendado;
         }
@@ -365,6 +379,7 @@ namespace AiVacina.DAL
                 throw ex;
             }
         }
+
         public static bool DeletaAgendamento(int id) {
 
             string deletAgendamento = "DELETE FROM AgendamentoVacinas  "
@@ -392,6 +407,53 @@ namespace AiVacina.DAL
             return deletado;
         }
 
+        public static PacienteLogin GetLoginPaciente(string cartaoCidadao)
+        {
 
+            string selectPaciente = "SELECT nome, cartaoCidadao as numCartaoCidadao, senha from pacientes "
+                                    + "WHERE cartaoCidadao = @cartao";
+            try
+            {
+                PacienteLogin paciente;
+                using (IDbConnection conn = new SqlConnection(connectionString))
+                {
+                    paciente = conn.QueryFirst<PacienteLogin>(selectPaciente, new
+                    {
+                        cartao = cartaoCidadao
+                    });
+                }
+
+                return paciente;
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public static String GetRolesPaciente(string cartaoCidadao)
+        {
+            string selectPaciente = "SELECT perfil from pacientes "
+                                    + "WHERE cartaoCidadao = @cartao";
+            try
+            {
+                String perfil;
+                using (IDbConnection conn = new SqlConnection(connectionString))
+                {
+                    perfil = conn.QueryFirst<String>(selectPaciente, new
+                    {
+                        cartao = cartaoCidadao
+                    });
+                }
+
+                return perfil;
+
+            }
+            catch (Exception ex)
+            {
+                return String.Empty;
+            }
+        }
     }
 }

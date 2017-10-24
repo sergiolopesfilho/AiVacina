@@ -12,6 +12,12 @@ namespace AiVacina.Controllers
     public class PacienteController : Controller
     {
         private const string horarios = "8:00;8:30;09:00;09:30;10:00;10:30;11:00;11:30;12:00;12:30;13:00;13:30;14:00;14:30;15:00;15:30;";
+        
+        // GET: Home/MeusDados/
+        public ActionResult MeusDados(Paciente paciente)
+        {
+            return View(paciente);
+        }
 
         // GET: Paciente/Agenda
         public ActionResult Agenda()
@@ -36,8 +42,16 @@ namespace AiVacina.Controllers
             ///TODO:
             /// Deixar dinamico de acordo com o paciente
             agendamento.cartaocidadao = "123.4567.8913.2413";
-            DataBase.SalvaAgendamento(agendamento);
-            return RedirectToAction("Agenda");
+            try
+            {
+                DataBase.SalvaAgendamento(agendamento);
+                return RedirectToAction("Agenda");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                return View(agendamento);
+            }
         }
 
         //GET: Paciente/CadastrarCarteira
@@ -49,6 +63,7 @@ namespace AiVacina.Controllers
 
         //POST: Paciente/CadastrarCarteira
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult CadastrarCarteira(CarteiraVacinacao carteira)
         {
             try
@@ -101,7 +116,7 @@ namespace AiVacina.Controllers
                 if (intId > 0)
                 {
                     if (DataBase.DeletaAgendamento(intId))
-                        resultado = "Agendamento deletado com sucesso!";
+                        resultado = "Agendamento cancelado com sucesso!";
                     else
                         resultado = "Agendamento não pôde ser deletado. Tente novamente mais tarde.";
                 }
@@ -119,6 +134,7 @@ namespace AiVacina.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public JsonResult GetHorariosBloqueados(string dataTeste)
         {
             try

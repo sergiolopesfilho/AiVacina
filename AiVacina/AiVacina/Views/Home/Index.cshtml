@@ -10,8 +10,15 @@
             <h2>AiVacina</h2>
             <h4>Sistema de gerenciamento de doses, estoques e agendamento de vacinas</h4>
         </div>
-        <div>
+        @if (Session["Nome"] != null)
+        {
+            <p><h3>Bem vindo(a) </h3> <h1>@Session["Nome"].ToString()</h1></p>
+        }
+        else
+        { 
+        @*<div>
             <a href="@Url.Action("Cadastro", "Home")">Cadastro/Entrar</a>
-        </div>
+        </div>*@
+        }
     </div>
 </div>

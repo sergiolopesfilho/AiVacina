@@ -60,7 +60,7 @@ var getHorariosBloqueados = function (dataConsulta) {
                 });
             }
             else {
-                console.log("RETORNOUR SUCESSO COM ERRO");
+                console.log("RETORNOU SUCESSO COM ERRO");
             }
         },
         error: function (jqXHR, exception) {

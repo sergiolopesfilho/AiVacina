@@ -5,69 +5,91 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Cadastro de Vacinas</h2>
+<h2>Vacinas</h2>
 
-@using (Html.BeginForm("CadastrarVacinas","Posto",FormMethod.Post)) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
+<div class="container">
+    <div class="row">
+        <div class="col-md-6"><h4>Cadastrar Vacina</h4></div>
+        <div class="col-md-6"><h4>Lista de Vacinas</h4></div>
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            
+            @using (Html.BeginForm("CadastrarVacinas", "Posto", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
 
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.codVacina, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.codVacina, new { htmlAttributes = new { @class = "form-control codeVacina-mask" } })
-                @Html.ValidationMessageFor(model => model.codVacina, "", new { @class = "text-danger" })
-            </div>
+                <div class="form-horizontal">
+
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.codVacina, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.codVacina, new { htmlAttributes = new { @class = "form-control codeVacina-mask" } })
+                            @Html.ValidationMessageFor(model => model.codVacina, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.loteVacina, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.loteVacina, new { htmlAttributes = new { @class = "form-control loteVacina-mask" } })
+                            @Html.ValidationMessageFor(model => model.loteVacina, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.nomeVacina, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.nomeVacina, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.nomeVacina, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.quantidade, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.quantidade, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.quantidade, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.dataValidade, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.dataValidade, new { htmlAttributes = new { @class = "form-control data-mask" } })
+                            @Html.ValidationMessageFor(model => model.dataValidade, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.grupoAlvo, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.grupoAlvo, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.grupoAlvo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Cadastrar Vacina" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>
+            }
+
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.loteVacina, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.loteVacina, new { htmlAttributes = new { @class = "form-control loteVacina-mask" } })
-                @Html.ValidationMessageFor(model => model.loteVacina, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.nomeVacina, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.nomeVacina, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.nomeVacina, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.quantidade, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.quantidade, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.quantidade, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.dataValidade, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.dataValidade, new { htmlAttributes = new { @class = "form-control data-mask" } })
-                @Html.ValidationMessageFor(model => model.dataValidade, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.grupoAlvo, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.grupoAlvo, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.grupoAlvo, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Cadastrar Vacina" class="btn btn-default" />
-            </div>
+        <div class="col-md-7" style="margin-top:1.6%">
+            
+            <div id="listaVacinas"></div>
         </div>
     </div>
-}
+</div>
 
+
+@section scripts {
+
+    @Scripts.Render("~/bundles/postocadastrarvacina");
+}

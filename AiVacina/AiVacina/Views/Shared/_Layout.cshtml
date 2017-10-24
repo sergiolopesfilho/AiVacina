@@ -19,7 +19,6 @@
                     </button>
                     <ul class="dropdown-menu">
                         <li>@Html.ActionLink("Início", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })</li>
-                        <li>@Html.ActionLink("Cadastro", "Cadastro", "Home", new { area = "" }, new { @class = "navbar-brand" })</li>
                     </ul>
                 </div>  
 
@@ -30,7 +29,7 @@
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("Cadastro Administrador", "CadastroAdministrador", "Posto", new { area = "" }, new { @class = "navbar-brand" })</li>
+                        <li>@Html.ActionLink("Cadastro do Administrador", "CadastroAdministrador", "Posto", new { area = "" }, new { @class = "navbar-brand" })</li>
                         <li>@Html.ActionLink("Agenda Posto", "Agenda", "Posto", new { area = "" }, new { @class = "navbar-brand" })</li>
                         <li>@Html.ActionLink("Cadastro de Vacinas", "CadastrarVacinas", "Posto", new { area = "" }, new { @class = "navbar-brand" })</li>
                     </ul>
@@ -45,6 +44,7 @@
                     <ul class="dropdown-menu">
                         <li>@Html.ActionLink("Realizar Agendamento", "Agendamento", "Paciente", new { area = "" }, new { @class = "navbar-brand" })</li>
                         <li>@Html.ActionLink("Minha Agenda", "Agenda", "Paciente", new { area = "" }, new { @class = "navbar-brand" })</li>
+                        <li>@Html.ActionLink("Realizar Cadastro", "Cadastro", "Home", new { area = "" }, new { @class = "navbar-brand" })</li>
                     </ul>
                 </div>  
             </div>

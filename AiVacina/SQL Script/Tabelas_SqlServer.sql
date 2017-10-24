@@ -11,6 +11,7 @@ create table Pacientes(
     dataNascimento datetime,
     senha varchar(150) not null,
     idEndereco int not null,
+	perfil varchar(100),
     constraint FK_PacienteEndereco foreign key(idEndereco) references enderecos(id)
 );
 

@@ -1,0 +1,72 @@
+﻿@model IEnumerable<AiVacina.Models.Vacina>
+
+
+
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.loteVacina)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.nomeVacina)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.quantidade)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dataValidade)
+        </th>
+        @*<th>
+                    @Html.DisplayNameFor(model => model.codVacina)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.grupoAlvo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.postoCNPJ)
+            </th>*@
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr style="cursor:pointer">
+            <td>
+                @Html.DisplayFor(modelItem => item.codVacina)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.loteVacina)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.nomeVacina)
+            </td>
+            <td>
+                @{
+                    var dia = item.dataValidade.Split(' ');
+                    var dataFinal = dia[0];
+
+                }
+                @dataFinal
+            </td>
+            @*<td>
+
+                    @Html.DisplayFor(modelItem => item.quantidade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.grupoAlvo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.postoCNPJ)
+                </td>*@
+
+            <td>
+                <button type="button" class="btn btn-info" value="">Editar</button>
+            </td>
+            <td>
+                <span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style="cursor:pointer"></span>
+            </td>
+        </tr>
+                    }
+
+</table>

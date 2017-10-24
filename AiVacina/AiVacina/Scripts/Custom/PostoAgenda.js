@@ -6,7 +6,6 @@
         data: JSON.stringify({ cnpj: '22.323.458/0001-79' }),
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
-            console.log(response);
             if (response != null)
             {
                 $("#agendamentos").html(response);

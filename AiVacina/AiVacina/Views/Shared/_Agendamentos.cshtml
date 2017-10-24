@@ -1,50 +1,91 @@
 ﻿@model IEnumerable<AiVacina.Models.AgendaVacina>
 
-@{ if (Model == null || Model.Count() <= 0)
-    {
-        <h2>Não foram agendadas vacinas nesta data.</h2>
-    }
-    else
-    {
-        <table class="table" id="vacinas">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.nomeEstabelecimento)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.rua)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.nomeVacina)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.dataAgendamento)
-                </th>
-                <th></th>
-            </tr>
-
-            @foreach (var item in Model)
-            {
-                var linha = "data" + item.dataAgendamento.Day + item.dataAgendamento.Month;
-                <tr linha-data="@linha">
-                    <td>
-                        @Html.DisplayFor(modelItem => item.nomeEstabelecimento)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.rua), @Html.DisplayFor(modelItem => item.bairro)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.nomeVacina)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.dataAgendamento)
-                    </td>
-
+<div class="partialAgendamento">
+    @{ if (Model == null || Model.Count() <= 0)
+        {
+            <h2>Não foram agendadas vacinas nesta data.</h2>
+        }
+        else
+        {
+            <table class="table" id="vacinas">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.nomeEstabelecimento)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.rua)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.nomeVacina)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.dataAgendamento)
+                    </th>
+                    <th></th>
                 </tr>
-            }
 
-        </table>
+                @foreach (var item in Model)
+                {
+                    var linha = "data" + item.dataAgendamento.Day + item.dataAgendamento.Month;
+                    <tr linha-data="@linha">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.nomeEstabelecimento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.rua), @Html.DisplayFor(modelItem => item.bairro)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.nomeVacina)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.dataAgendamento)
+                        </td>
+                        <td>
+                            <span class="glyphicon glyphicon-remove-sign cancelar" aria-hidden="true" id="@linha" idValue="@item.id"  style="cursor:pointer"></span>
+                        </td>
+
+                    </tr>
+                }
+
+            </table>
+        }
     }
-}
+    <div class="modalCarregando">
+    </div>
+
+    @*<div class="modal-content" id="modalAgendamento">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p id="textModal"></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+        </div>
+    </div>
+</div>*@
 
 
+    <script>
+    $(".cancelar").click(function (event) {
+        var idAgendamento = $("#data2610").attr("idValue");
+
+        $.ajax({
+            url: 'DeleteAgendamento',
+            type: 'POST',
+            data: JSON.stringify({ id: idAgendamento }),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (result) {
+                console.log(result.success);
+               alert(result.success);
+               location.reload();
+            },
+            erro: function () { },
+            async: true,
+        });
+
+    });
+
+    </script>

@@ -16,6 +16,8 @@ namespace AiVacina.Models
 
         [Display(Name = "Endereço")]
         public string rua { get; set; }
+
+        [Display(Name = "Bairro")]
         public string bairro { get; set; }
 
         [Display(Name ="Vacina")]

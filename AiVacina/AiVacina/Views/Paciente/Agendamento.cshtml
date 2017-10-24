@@ -9,7 +9,9 @@
 
 <div class="container">
     <div>
-        <p class="danger"id="error"></p>
+        <p class="danger"id="error">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </p>
     </div>
     <div class="row">
         <div class="col-md-3">
@@ -46,6 +48,7 @@
     <div class="row">
         @using (Html.BeginForm("Agendamento", "Paciente", FormMethod.Post))
         {
+           
             <input type="hidden" id="dataDia" />
             @Html.HiddenFor(model => model.idPosto, new { @id= "Posto_idEstabelecimento" })
             @Html.HiddenFor(model => model.idVacina)

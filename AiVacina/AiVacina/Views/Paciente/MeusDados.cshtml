@@ -1,0 +1,57 @@
+﻿@model AiVacina.Models.Paciente
+
+@{
+    ViewBag.Title = "MeusDados";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Meus Dados</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.nome)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nome)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dataNascimento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dataNascimento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.senha)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.senha)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.confSenha)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.confSenha)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.perfil)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.perfil)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id = Model.numCartaoCidadao })
+</p>

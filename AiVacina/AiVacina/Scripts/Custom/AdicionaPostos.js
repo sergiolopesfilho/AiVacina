@@ -16,6 +16,10 @@
                     $("#Posto_idEstabelecimento").val($(this).find("#idEstabelecimento").val());
                 });
             });
+        },
+        error: function (jqXHR, exception) {
+            console.log(jqXHR);
+            console.log(exception);
         }
     });
 })();

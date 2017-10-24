@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace AiVacina.Controllers
 {
+   
     public class PostoController : Controller
     {
         // GET: Posto
@@ -29,6 +30,7 @@ namespace AiVacina.Controllers
         }
 
         // GET: Posto/Create
+        
         public ActionResult CadastrarVacinas()
         {
             return View();
@@ -36,6 +38,7 @@ namespace AiVacina.Controllers
 
         // POST: Posto/Create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult CadastrarVacinas(Vacina vacina)
         {
             try
@@ -65,6 +68,7 @@ namespace AiVacina.Controllers
 
         // POST: Posto/CadastroAdministrador/
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult CadastroAdministrador(Posto posto)
         {
             try
@@ -97,8 +101,18 @@ namespace AiVacina.Controllers
             IEnumerable<Vacina> vacinasPosto = DataBase.ListaVacinas("22.323.458/0001-79");
             return View(vacinasPosto);
         }
+        
+        // GET: Posto/Vacinas/
+        public ActionResult VacinasAjax()
+        {
+            ///TODO:
+            ///Pegar o cnpj do posto
+            IEnumerable<Vacina> vacinas = DataBase.ListaVacinas("22.323.458/0001-79");
+            return PartialView("_Vacinas", vacinas);
+        }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public JsonResult BloquearHorarios(string diaBloquear, string horaBloquear)
         {
             HorariosBloqueados horarios = new HorariosBloqueados()
@@ -165,6 +179,33 @@ namespace AiVacina.Controllers
             }
 
             return valido;
+        }
+
+        [HttpPost]
+        public JsonResult DeleteAgendamento(string id)
+        {
+            string resultado = string.Empty;
+            try
+            {
+                int intId = Convert.ToInt32(id);
+                if (intId > 0)
+                {
+                    if (DataBase.DeletaAgendamento(intId))
+                        resultado = "Agendamento cancelado com sucesso!";
+                    else
+                        resultado = "Agendamento não pôde ser deletado. Tente novamente mais tarde.";
+                }
+                else
+                {
+                    resultado = "Agendamento invalido.";
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = ex.Message;
+            }
+            //return Json(new { success = resultado });
+            return Json(new { success = resultado });
         }
     }
 }
