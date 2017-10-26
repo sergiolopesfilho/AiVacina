@@ -48,8 +48,8 @@ namespace AiVacina.Controllers
                 {
                     if ((DateTime.Today.CompareTo(Convert.ToDateTime(vacina.dataValidade))) >= 0)
                         throw new Exception("Data inválida, insira uma nova data.");
-                    String[] data = vacina.dataValidade.Split('/');
-                    vacina.dataValidade = (data[1] + "/" + data[0] + "/" + data[2]);
+                    //String[] data = vacina.dataValidade.Split('/');
+                    //vacina.dataValidade = (data[1] + "/" + data[0] + "/" + data[2]);
                     DataBase.CadastrarVacina(vacina);
                 }
                 return RedirectToAction("Vacinas");
