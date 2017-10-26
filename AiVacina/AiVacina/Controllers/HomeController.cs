@@ -34,9 +34,9 @@ namespace AiVacina.Controllers
                 {
                     ValidaCadastro(paciente);
 
-                    //String[] data = paciente.dataNascimento.Split('/');
-                    //paciente.data = DateTime.Parse((data[1] + "/" + data[0] + "/"+data[2]));
-                    paciente.data = DateTime.Parse(paciente.dataNascimento);
+                    String[] data = paciente.dataNascimento.Split('/');
+                    paciente.data = DateTime.Parse((data[1] + "/" + data[0] + "/" + data[2]));
+                    //paciente.data = DateTime.Parse(paciente.dataNascimento);
                     if (DataBase.CadastrarPaciente(paciente))
                     {
                         return RedirectToAction("MeusDados", "Paciente", paciente);

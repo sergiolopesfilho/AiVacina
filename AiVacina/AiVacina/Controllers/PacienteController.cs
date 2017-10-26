@@ -22,7 +22,16 @@ namespace AiVacina.Controllers
         // GET: Home/MeusDados/
         public ActionResult MeusDados(Paciente paciente)
         {
-            return View(paciente);
+            if (paciente == null)
+            {
+                ModelState.AddModelError("", "Por favor, realize seu cadastro.");
+                return RedirectToAction("Cadastro", "Home");
+
+            }
+            else
+            {
+                return View(paciente);
+            }
         }
 
         // GET: Paciente/Agenda
@@ -47,8 +56,8 @@ namespace AiVacina.Controllers
         {
             ///TODO:
             /// Deixar dinamico de acordo com o paciente
-            //agendamento.cartaocidadao = "123.4567.8913.2413";
-            agendamento.cartaocidadao = "111.1111.1111.1111";
+            agendamento.cartaocidadao = "123.4567.8913.2413";
+            //agendamento.cartaocidadao = "111.1111.1111.1111";
             try
             {
                 DataBase.SalvaAgendamento(agendamento);

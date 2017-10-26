@@ -69,9 +69,23 @@ values(001,'Gripe A',30,'2020/05/03','Bebês e Idosos','22.323.458/0001-79');
 insert into Vacinas(loteVacina,nomeVacina,quantidade,dataValidade,grupoalvo,postoCNPJ)
 values(002,'Gripe B',30,'2020/10/03','Bebês e Idosos','22.323.458/0001-79');
 
+insert into Vacinas(codVacina,loteVacina,nomeVacina,quantidade,dataValidade,grupoalvo,postoCNPJ)
+values('564862',002,'Gripe B',30,'2020/10/03','Bebês e Idosos','11.564.858/0001-98');
+
+insert into Vacinas(codVacina,loteVacina,nomeVacina,quantidade,dataValidade,grupoalvo,postoCNPJ)
+values('8564',004,'Gripe C',30,'2020/10/03','Bebês e Idosos','22.333.444/0001-53');
+
 insert into Enderecos(rua,bairro,cidade)
 values('Rua Dona Firmina, 865','Bairro Santana','Pouso Alegre');
 
 --Checar se, na tabela endereços, existe o id utilizado nessa tabela 
 insert into postos(nomeEstabelecimento, admPosto, cpfAdmPosto,cnpj,idEndereco)
 values ('Posto São José','Antonio dos Santos','123.255.656-85','22.323.458/0001-79',1);
+
+--Checar se, na tabela endereços, existe o id utilizado nessa tabela 
+insert into postos(nomeEstabelecimento, admPosto, cpfAdmPosto,cnpj,idEndereco)
+values ('Posto São Vincente','José Bonifacio','555.666.777-88','22.333.444/0001-53',1);
+
+--Checar se, na tabela endereços, existe o id utilizado nessa tabela 
+insert into postos(nomeEstabelecimento, admPosto, cpfAdmPosto,cnpj,idEndereco)
+values ('Posto Vila Clarice','Amaro da Silva','564.678.525-99','11.564.858/0001-98',1);

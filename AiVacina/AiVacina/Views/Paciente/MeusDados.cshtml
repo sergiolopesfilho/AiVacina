@@ -27,31 +27,36 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.senha)
+            @Html.DisplayNameFor(model => model.numCartaoCidadao)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.senha)
+            @Html.DisplayFor(model => model.numCartaoCidadao)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.endereco.rua)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.endereco.rua)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.confSenha)
+            @Html.DisplayNameFor(model => model.endereco.bairro)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.confSenha)
+            @Html.DisplayFor(model => model.endereco.bairro)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.perfil)
+            @Html.DisplayNameFor(model => model.endereco.cidade)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.perfil)
-        </dd>
+            @Html.DisplayFor(model => model.endereco.cidade)
+        </dd>*@
 
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Editar", "Edit", new { id = Model.numCartaoCidadao })
-</p>
