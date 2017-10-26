@@ -26,18 +26,17 @@
 })();
 
 $(document).ready(function () {
-    $("#agendar").click(function () {
-        //var horario = $("")
-    });
 
     $("#agendar").mouseover(function () {
         $("#dataAgendamento").val($("#dataDia").val() + " " + $("#horarioVacina").val() + ":00");
     });
 
-    $("#horarioVacina").change(function () {
-        //console.log($(this).val());
-        //horario = $(this).val() + ":00";
+    $("#selectListaVacinas").change(function () {
+        var lote = $("#selectListaVacinas option:selected").val();
+        $("#idVacina").val(lote);
+        adicionaPostos(lote);
     });
+
 });
 
 
@@ -60,11 +59,38 @@ var getHorariosBloqueados = function (dataConsulta) {
                 });
             }
             else {
-                console.log("RETORNOU SUCESSO COM ERRO");
             }
         },
         error: function (jqXHR, exception) {
-            console.log("RETORNOUR  ERRO");
+            console.log(jqXHR);
+            console.log(exception);
         }
     });
+}
+
+var adicionaPostos = function (lote) {
+    console.log(lote);
+    $.ajax({
+        url: 'GetPostosPorLote',
+        type: 'POST',
+        data: JSON.stringify({ lote: lote }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (result) {
+            console.log(result);
+            $("#listaPostos").html(result);
+
+
+            $("#divListaPostos a").each(function () {
+                $(this).click(function () {
+                    console.log($(this).find("#idEstabelecimento").val());
+                    $("#Posto_idEstabelecimento").val($(this).find("#idEstabelecimento").val());
+                });
+            });
+        },
+        error: function (jqXHR, exception) {
+            console.log(jqXHR);
+            console.log(exception);
+        }
+    });
+    
 }

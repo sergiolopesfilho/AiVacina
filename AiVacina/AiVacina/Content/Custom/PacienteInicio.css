@@ -1,0 +1,10 @@
+﻿.divProximaVacina {
+    position: fixed;
+    display: none;
+    top: 65%;
+    left: 66%;
+    padding: 20px 10px;
+    border-radius:5px;
+    border-style: solid;
+    box-shadow: 10px 5px 15px #888888;
+}

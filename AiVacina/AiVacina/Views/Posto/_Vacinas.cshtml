@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<AiVacina.Models.Vacina>
 
 
+@Styles.Render("~/Content/postovacinas")
 
-<table class="table">
+<table class="table table-sm">
     <tr>
-
         <th>
-            @Html.DisplayNameFor(model => model.loteVacina)
+            @Html.DisplayNameFor(model => model.codVacina)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.nomeVacina)
@@ -17,29 +17,34 @@
         <th>
             @Html.DisplayNameFor(model => model.dataValidade)
         </th>
-        @*<th>
-                    @Html.DisplayNameFor(model => model.codVacina)
-                </th>
-            <th>
-                @Html.DisplayNameFor(model => model.grupoAlvo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.postoCNPJ)
-            </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.loteVacina)
+        </th>
         <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr style="cursor:pointer">
+
+        var linhaMarcada = "";
+        if (item.quantidade < 5)
+        {
+            linhaMarcada = "linhaVermelha";
+        }
+        else if (item.quantidade <= 10)
+        {
+            linhaMarcada = "linhaLaranja";
+        }
+
+        <tr class="@linhaMarcada linhaVacina">
             <td>
                 @Html.DisplayFor(modelItem => item.codVacina)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.loteVacina)
+                @Html.DisplayFor(modelItem => item.nomeVacina)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.nomeVacina)
+                @Html.DisplayFor(modelItem => item.quantidade)
             </td>
             <td>
                 @{
@@ -49,22 +54,14 @@
                 }
                 @dataFinal
             </td>
-            @*<td>
-
-                    @Html.DisplayFor(modelItem => item.quantidade)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.grupoAlvo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.postoCNPJ)
-                </td>*@
-
             <td>
-                <button type="button" class="btn btn-info" value="">Editar</button>
+                @Html.DisplayFor(modelItem => item.loteVacina)
             </td>
             <td>
-                <span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style="cursor:pointer"></span>
+                <button type="button" class="btn btn-default" value="">Editar</button>
+            </td>
+            <td>
+                <span class="glyphicon glyphicon-remove-circle deletaVacina" aria-hidden="true" style="cursor:pointer" id=""></span>
             </td>
         </tr>
                     }

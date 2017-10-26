@@ -101,8 +101,9 @@ namespace AiVacina.Controllers
             IEnumerable<Vacina> vacinasPosto = DataBase.ListaVacinas("22.323.458/0001-79");
             return View(vacinasPosto);
         }
-        
+
         // GET: Posto/Vacinas/
+        [ChildActionOnly]
         public ActionResult VacinasAjax()
         {
             ///TODO:
@@ -112,7 +113,6 @@ namespace AiVacina.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public JsonResult BloquearHorarios(string diaBloquear, string horaBloquear)
         {
             HorariosBloqueados horarios = new HorariosBloqueados()
@@ -205,6 +205,31 @@ namespace AiVacina.Controllers
                 resultado = ex.Message;
             }
             //return Json(new { success = resultado });
+            return Json(new { success = resultado });
+        }
+
+        [HttpPost]
+        public JsonResult DeleteVacina(string lote)
+        {
+            string resultado = string.Empty;
+            try
+            {
+                if (!String.IsNullOrEmpty(lote))
+                {
+                    if (DataBase.DeletaVacina(lote, "22.323.458/0001-79"))
+                        resultado = "Vacina deletada com sucesso!";
+                    else
+                        resultado = "A vacina não pôde ser deletada. Tente novamente mais tarde.";
+                }
+                else
+                {
+                    resultado = "Vacina inválida.";
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = ex.Message;
+            }
             return Json(new { success = resultado });
         }
     }

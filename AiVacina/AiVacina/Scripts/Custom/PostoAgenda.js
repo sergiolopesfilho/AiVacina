@@ -37,8 +37,9 @@
         prevText: 'Anterior',
         onSelect: function (dateText, inst) {
             var fullDate = $(this).datepicker('getDate');
-            //var dataEscolhida = 
-            filtraAgendamentos(fullDate);
+            //var dataEscolhida = fullDate.getDate() + "/" + (fullDate.getMonth() + 1) + "/" + fullDate.getFullYear();
+            var dataEscolhida = (fullDate.getMonth() + 1) + "/" + fullDate.getDate() + "/" + fullDate.getFullYear();
+            filtraAgendamentos(dataEscolhida);
 
         }
     });

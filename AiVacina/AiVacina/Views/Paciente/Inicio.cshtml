@@ -1,0 +1,27 @@
+﻿@model AiVacina.Models.Paciente
+
+@{
+    ViewBag.Title = "Inicio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/Content/pacienteIicio")
+<h2>Bem Vindo</h2>
+
+<button type="button" class="btn btn-secondary " style="display:none" id="mostrarProximaVacina">Proxima Vacina</button>
+
+<div class="divProximaVacina" style="" id="divProximaVacina">
+    Aviso: Próxima Vacina!
+
+    <p id="proximoTexto"></p>
+    <p id="proximaData"></p>
+    <p id="proximoVacina"></p>
+    <p id="proximoLugar"></p>
+    <button type="button" class="btn btn-secondary" id="fecharProximaVacina">Fechar</button>
+</div>
+
+
+@section scripts {
+
+    @Scripts.Render("~/bundles/pacienteIicio");
+}

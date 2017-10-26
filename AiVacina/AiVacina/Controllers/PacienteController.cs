@@ -12,7 +12,13 @@ namespace AiVacina.Controllers
     public class PacienteController : Controller
     {
         private const string horarios = "8:00;8:30;09:00;09:30;10:00;10:30;11:00;11:30;12:00;12:30;13:00;13:30;14:00;14:30;15:00;15:30;";
-        
+
+        // GET: Home/Inicio/
+        public ActionResult Inicio(Paciente paciente)
+        {
+            return View();
+        }
+
         // GET: Home/MeusDados/
         public ActionResult MeusDados(Paciente paciente)
         {
@@ -41,7 +47,8 @@ namespace AiVacina.Controllers
         {
             ///TODO:
             /// Deixar dinamico de acordo com o paciente
-            agendamento.cartaocidadao = "123.4567.8913.2413";
+            //agendamento.cartaocidadao = "123.4567.8913.2413";
+            agendamento.cartaocidadao = "111.1111.1111.1111";
             try
             {
                 DataBase.SalvaAgendamento(agendamento);
@@ -90,8 +97,6 @@ namespace AiVacina.Controllers
             return View();
         }
 
-
-
         // GET: Paciente/GetVacinas
         public ActionResult GetVacinas()
         {
@@ -104,6 +109,16 @@ namespace AiVacina.Controllers
         {
             IEnumerable<Posto> postos = DataBase.ListaPostos();
             return PartialView("_Postos", postos);
+        }
+        
+        // POST: Paciente/GetPostos
+        [HttpPost]
+        public ActionResult GetPostosPorLote(string lote)
+        {
+            IEnumerable<Posto> postos = DataBase.ListaPostosPorVacina(lote);
+
+            return  PartialView("_Postos", postos);
+            
         }
 
         [HttpPost]
@@ -158,6 +173,38 @@ namespace AiVacina.Controllers
             catch (Exception ex)
             {
                 return Json(new { success = ex.Message});
+            }
+        }
+
+        [HttpGet]
+        public JsonResult GetProximoAgendamento()
+        {
+            try
+            {
+                AgendaVacina proximo = DataBase.GetProximoAgendamento("123.4567.8913.2413");
+                if (proximo != null)
+                {
+                    var faltam = proximo.dataAgendamento.Subtract(DateTime.Now);
+                    string texto = String.Empty;
+                    if (faltam.Days > 0)
+                    {
+                        texto = "Sua próxima vacina será em " + proximo.dataAgendamento.ToShortDateString() + ". Visite sua agenda!";
+                    }
+                    else
+                    {
+                        texto = "Faltam apenas " + faltam.Hours + " horas para seu próximo agendamento!";
+                    }
+
+                    return Json(new { proximo.nomeVacina, proximo.nomeEstabelecimento, texto, data = proximo.dataAgendamento.ToLongDateString() }, JsonRequestBehavior.AllowGet);
+                }
+                string semAgendamento = "Você não tem agendamentos cadastrados!";
+                return Json(new { resposta = semAgendamento }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                string semAgendamento = "Você não tem agendamentos cadastrados!";
+                return Json(new { resposta = semAgendamento }, JsonRequestBehavior.AllowGet);
+
             }
         }
     }

@@ -3,14 +3,21 @@
 
 
 <div class="list-group" id="divListaPostos">
-    @foreach (var item in Model)
+    @if (Model != null && Model.Count() > 0)
     {
-        <a href="#" class="list-group-item">
-            <p class="nomePosto">
-                @Html.DisplayTextFor(modelItem => item.nomeEstabelecimento)
-            </p>
-            <small>@Html.DisplayFor(modelItem => item.endereco.rua)</small>
-            <input type="hidden" value="@Html.DisplayTextFor(modelItem => item.idEstabelecimento)" id="idEstabelecimento"/>
-        </a>
+        foreach (var item in Model)
+        {
+            <a href="#" class="list-group-item">
+                <p class="nomePosto">
+                    @Html.DisplayTextFor(modelItem => item.nomeEstabelecimento)
+                </p>
+                <small>@Html.DisplayFor(modelItem => item.endereco.rua)</small>
+                <input type="hidden" value="@Html.DisplayTextFor(modelItem => item.idEstabelecimento)" id="idEstabelecimento"/>
+            </a>
+        }
+    }
+    else
+    {
+        <h2>Não temos nenhum posto cadastrado.</h2>
     }
 </div>

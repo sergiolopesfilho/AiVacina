@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-md-3">
             <div id="listaVacinas">
-
+                @Html.Action("GetVacinas","Paciente")
             </div>
             <div class="container-fluid" id="listaPostos" style="height:330px;overflow:auto;">
             </div>
@@ -64,7 +64,7 @@
 </div>
 @section scripts {
 
-    @Scripts.Render("~/bundles/adicionapostos");
-    @Scripts.Render("~/bundles/listavacinas");
+    @*@Scripts.Render("~/bundles/adicionapostos");*@
+    @*@Scripts.Render("~/bundles/listavacinas");*@
     @Scripts.Render("~/bundles/pacienteagendamento");
 }

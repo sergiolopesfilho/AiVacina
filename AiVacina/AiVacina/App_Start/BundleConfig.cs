@@ -66,6 +66,14 @@ namespace AiVacina
             bundles.Add(new ScriptBundle("~/bundles/partialpostoagendamento").Include(
                 "~/Scripts/Custom/PartialPostoAgendamento.js"));
 
+            bundles.Add(new StyleBundle("~/Content/pacienteIicio").Include(
+                      "~/Content/Custom/PacienteInicio.css"));
+
+            bundles.Add(new StyleBundle("~/Content/postovacinas").Include(
+                      "~/Content/Custom/PostoVacinas.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/pacienteIicio").Include(
+                "~/Scripts/Custom/PacienteInicio.js"));
         }
     }
 }
