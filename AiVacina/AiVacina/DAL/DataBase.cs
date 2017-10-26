@@ -68,7 +68,7 @@ namespace AiVacina.DAL
                         lote = vacina.loteVacina,
                         nome = vacina.nomeVacina,
                         quant = vacina.quantidade,
-                        data = vacina.dataValidade,
+                        data = DateTime.Parse(vacina.dataValidade),
                         grupo = vacina.grupoAlvo,
                         cnpj = "22.323.458/0001-79"
                     });
