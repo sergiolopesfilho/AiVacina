@@ -68,7 +68,7 @@ namespace AiVacina.DAL
                         lote = vacina.loteVacina,
                         nome = vacina.nomeVacina,
                         quant = vacina.quantidade,
-                        data = vacina.dataValidade,
+                        data = DateTime.Parse(vacina.dataValidade),
                         grupo = vacina.grupoAlvo,
                         cnpj = "22.323.458/0001-79"
                     });
@@ -86,7 +86,8 @@ namespace AiVacina.DAL
         {
             string listaVacinas = "SELECT codVacina, loteVacina, nomeVacina, quantidade, dataValidade,grupoalvo,postoCNPJ "
                                 + "FROM vacinas "
-                                + "WHERE quantidade > 0";
+                                + "WHERE quantidade > 0 "
+                                +"ORDER BY dataValidade";
 
             IEnumerable<Vacina> vacinas;
             try
@@ -108,7 +109,8 @@ namespace AiVacina.DAL
         {
             string listaVacinas = "SELECT codVacina, loteVacina, nomeVacina, quantidade, dataValidade,grupoalvo,postoCNPJ "
                                 + "FROM vacinas "
-                                + "WHERE quantidade > 0 AND loteVacina = @lote";
+                                + "WHERE quantidade > 0 AND loteVacina = @lote "
+                                + "ORDER BY dataValidade";
 
             IEnumerable<Vacina> vacinas;
             try
@@ -129,7 +131,8 @@ namespace AiVacina.DAL
         public static IEnumerable<Vacina> ListaVacinas(string cnpj)
         {
             string listaVacinas = "SELECT codVacina, loteVacina, nomeVacina, quantidade, dataValidade,grupoalvo, postoCNPJ "
-                                + "FROM vacinas WHERE postoCNPJ = @cnpj and quantidade > 0 ";
+                                + "FROM vacinas WHERE postoCNPJ = @cnpj and quantidade > 0 "
+                                + "ORDER BY dataValidade";
             IEnumerable<Vacina> vacinas;
             try
             {
@@ -142,7 +145,7 @@ namespace AiVacina.DAL
             }
             catch (SqlException ex)
             {
-                throw ex;
+                throw new Exception("Não foi possível cadastrar esta vacina, tente novamente mais tarde.");
             }
         }
 
