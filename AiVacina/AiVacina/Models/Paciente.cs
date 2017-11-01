@@ -41,6 +41,10 @@ namespace AiVacina.Models
 
         public string perfil { get; set; }
 
+
+        [Display(Name = "CPF:")]
+        public string cpfAdmPosto { get; set; }
+
         public List<Vacina> vacinasTomadas { get; set; }
     }
 

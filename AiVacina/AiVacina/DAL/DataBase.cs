@@ -13,6 +13,9 @@ namespace AiVacina.DAL
     {
         private static string connectionString = ConfigurationManager.ConnectionStrings["azureAiVacina"].ToString();
         //private static string connectionString = ConfigurationManager.ConnectionStrings["sqlAiVacina"].ConnectionString;
+        private static List<String> perfisPaciente = new List<string>() {
+            "Paciente", "Administrador"
+        };
 
         public static bool CadastrarPaciente(Paciente paciente)
         {
@@ -196,9 +199,14 @@ namespace AiVacina.DAL
 
         public static void AtualizarAdmPosto(Posto posto)
         {
-            string listaPostos = "UPDATE postos SET admPosto = @adm, "
+            string listaPostos =  "UPDATE postos SET admPosto = @adm, "
                                 + "cpfAdmPosto = @cpf "
-                                + "WHERE idEstabelecimento = @id";
+                                + "WHERE idEstabelecimento = @id "
+                                + "INSERT INTO pacientes(nome, senha,idEndereco, perfil,cpfAdmPosto ) "
+                                + "VALUES(@adm, @senha, 0, 'Administrador' @cpf) ";
+                                
+
+            
             int atualizado = 0;
             try
             {
@@ -207,6 +215,7 @@ namespace AiVacina.DAL
                     atualizado = conn.Execute(listaPostos, new
                     {
                         adm = posto.admPosto,
+                        senha = posto.endereco == null ? 0 : posto.endereco.id,
                         cpf = posto.cpfAdmPosto,
                         id = posto.idEstabelecimento
                     });
@@ -216,7 +225,7 @@ namespace AiVacina.DAL
             }
             catch (SqlException ex)
             {
-                throw ex;
+                throw new Exception("Houve um erro ao realizar o cadastro do administrador. Contate o suporte.");
             }
         }
         
@@ -524,7 +533,7 @@ namespace AiVacina.DAL
         public static PacienteLogin GetLoginPaciente(string cartaoCidadao)
         {
 
-            string selectPaciente = "SELECT nome, cartaoCidadao as numCartaoCidadao, senha from pacientes "
+            string selectPaciente = "SELECT nome, cartaoCidadao as numCartaoCidadao, senha, perfil from pacientes "
                                     + "WHERE cartaoCidadao = @cartao";
             try
             {
@@ -536,13 +545,60 @@ namespace AiVacina.DAL
                         cartao = cartaoCidadao
                     });
                 }
-
-                return paciente;
+                if (paciente == null)
+                {
+                    throw new Exception("Usuário inexistente, por favor cadastre-se.");
+                }
+                else if (perfisPaciente.Contains(paciente.perfil))
+                {
+                    return paciente;
+                }
+                else
+                {
+                    throw new Exception("Você não tem autorização para acessar essa página. Contate o administrador do posto.");
+                }
+                
 
             }
             catch (Exception ex)
             {
-                return null;
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public static PacienteLogin GetLoginPacienteCPF(string cpf)
+        {
+
+            string selectPaciente = "SELECT nome, cpfAdmPosto as numCartaoCidadao, senha, perfil from pacientes "
+                                    + "WHERE cpfAdmPosto = @cpf";
+            try
+            {
+                PacienteLogin paciente;
+                using (IDbConnection conn = new SqlConnection(connectionString))
+                {
+                    paciente = conn.QueryFirst<PacienteLogin>(selectPaciente, new
+                    {
+                        cpf = cpf
+                    });
+                }
+                if (paciente == null)
+                {
+                    throw new Exception("Usuário inexistente, por favor cadastre-se.");
+                }
+                else if (perfisPaciente.Contains(paciente.perfil))
+                {
+                    return paciente;
+                }
+                else
+                {
+                    throw new Exception("Você não tem autorização para acessar essa página. Contate o administrador do posto.");
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 

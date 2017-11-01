@@ -21,6 +21,9 @@ namespace AiVacina.Models
         [Display(Name = "CPF do administrador: ")]
         public string cpfAdmPosto { get; set; }
 
+        [Display(Name = "Senha: ")]
+        public string senha { get; set; }
+
         [Display(Name = "CNPJ do posto: ")]
         public string cnpj { get; set; }
     }

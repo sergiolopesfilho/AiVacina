@@ -76,11 +76,11 @@ namespace AiVacina.Controllers
             if (ModelState.IsValid)
             {
                 if (!String.IsNullOrEmpty(paciente.numCartaoCidadao) || !String.IsNullOrEmpty(paciente.senha))
-                { 
+                {
                     try
                     {
                         PacienteLogin dbPaciente = DataBase.GetLoginPaciente(paciente.numCartaoCidadao);
-                        if(dbPaciente != null && !String.IsNullOrEmpty(paciente.numCartaoCidadao) 
+                        if (dbPaciente != null && !String.IsNullOrEmpty(paciente.numCartaoCidadao)
                             && !String.IsNullOrEmpty(paciente.senha))
                         {
                             if (paciente.senha.Equals(dbPaciente.senha))
@@ -88,6 +88,9 @@ namespace AiVacina.Controllers
                                 FormsAuthentication.SetAuthCookie(paciente.nome, false);
                                 Session["Nome"] = dbPaciente.nome;
                                 Session["Cartao"] = dbPaciente.numCartaoCidadao;
+                                Session["Perfil"] = dbPaciente.perfil;
+
+                                return RedirectToAction("Inicio", "Paciente");
                             }
                             else
                             {
@@ -99,66 +102,26 @@ namespace AiVacina.Controllers
                         else
                         {
                             ModelState.AddModelError("", "Usuário não existe, favor cadastre-se.");
-                                return View(paciente);
+                            return View(paciente);
                         }
                         return RedirectToAction("Index");
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        ModelState.AddModelError("", "Não foi possível realizar seu login, tente novamente mais tarde.");
+                        ModelState.AddModelError("", ex.Message);
                         return View(paciente);
                     }
                 }
                 else
+                {
+                    ModelState.AddModelError("", "Por favor, forneça o número de seu cartão cidadão e sua senha para logar.");
                     return View(paciente);
+                }
             }
             else
+            {
+                ModelState.AddModelError("", "Não foi possível realizar seu login. Tente novamente mais tarde.");
                 return View(paciente);
-        }
-
-        // GET: Home/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Home/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Home/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Home/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
             }
         }
 

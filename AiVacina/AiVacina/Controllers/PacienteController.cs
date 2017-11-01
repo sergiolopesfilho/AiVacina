@@ -14,12 +14,14 @@ namespace AiVacina.Controllers
         private const string horarios = "8:00;8:30;09:00;09:30;10:00;10:30;11:00;11:30;12:00;12:30;13:00;13:30;14:00;14:30;15:00;15:30;";
 
         // GET: Home/Inicio/
+        [Authorize]
         public ActionResult Inicio(Paciente paciente)
         {
             return View();
         }
 
         // GET: Home/MeusDados/
+        [Authorize]
         public ActionResult MeusDados(Paciente paciente)
         {
             if (paciente == null)
@@ -35,32 +37,88 @@ namespace AiVacina.Controllers
         }
 
         // GET: Paciente/Agenda
+        [Authorize]
         public ActionResult Agenda()
         {
             ///TODO:
             /// Deixar dinamico de acordo com o paciente
-            IEnumerable<AgendaVacina> agendamentos =
-                DataBase.AgendamentosVacina("123.4567.8913.2413");
-            return View(agendamentos);
+
+            try
+            {
+                String perfil = Session["Perfil"] == null ? String.Empty : Session["Perfil"].ToString();
+                if (String.IsNullOrEmpty(perfil))
+                {
+                    return RedirectToAction("Entrar", "Home");
+                }
+                else if (perfil.Equals("Paciente", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    String cartao = Session["Cartao"] == null ? String.Empty : Session["Cartao"].ToString();
+                    if (String.IsNullOrEmpty(cartao))
+                    {
+
+                        return RedirectToAction("Entrar", "Home");
+                    }
+                    else
+                    {
+                        IEnumerable<AgendaVacina> agendamentos =
+                        //DataBase.AgendamentosVacina("123.4567.8913.2413");
+                        DataBase.AgendamentosVacina(cartao);
+                        return View(agendamentos);
+                    }
+                }
+                else
+                {
+                    throw new Exception("Você não está autorizado a acessar essa página.");
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                return View();
+
+            }
         }
 
         // GET: Paciente/Agendamento
+        [Authorize]
         public ActionResult Agendamento()
         {
-            return View();
+            String perfil = Session["Perfil"] == null ? String.Empty : Session["Perfil"].ToString();
+            if (String.IsNullOrEmpty(perfil))
+            {
+                return RedirectToAction("Entrar", "Home");
+            }
+            else if (perfil.Equals("Paciente", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return View();
+            }
+            else
+            {
+                ModelState.AddModelError("","Por favor, realizeseu cadastro para fazer um agendamento.");
+                return RedirectToAction("Entrar", "Home");
+            }
         }
 
         // POST: Paciente/Agendamento
         [HttpPost]
         public ActionResult Agendamento(AgendamentoVacina agendamento)
         {
-            ///TODO:
-            /// Deixar dinamico de acordo com o paciente
-            agendamento.cartaocidadao = "123.4567.8913.2413";
-            //agendamento.cartaocidadao = "111.1111.1111.1111";
             try
             {
-                DataBase.SalvaAgendamento(agendamento);
+                String perfil = Session["Perfil"] == null ? String.Empty : Session["Perfil"].ToString();
+                if (perfil.Equals("Paciente", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    String cartao = Session["Cartao"] == null ? String.Empty : Session["Cartao"].ToString();
+                    if (String.IsNullOrEmpty(cartao))
+                    {
+                        return RedirectToAction("Entrar", "Home");
+                    }
+                    else
+                    {
+                        agendamento.cartaocidadao = cartao;
+                        DataBase.SalvaAgendamento(agendamento);
+                    }
+                }
                 return RedirectToAction("Agenda");
             }
             catch (Exception ex)
@@ -72,9 +130,23 @@ namespace AiVacina.Controllers
 
         //GET: Paciente/CadastrarCarteira
         [HttpGet]
+        [Authorize]
         public ActionResult CadastrarCarteira()
         {
-            return View();
+            String perfil = Session["Perfil"] == null ? String.Empty : Session["Perfil"].ToString();
+            if (String.IsNullOrEmpty(perfil))
+            {
+                return RedirectToAction("Entrar", "Home");
+            }
+            else if (perfil.Equals("Paciente", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return View();
+            }
+            else
+            {
+                ModelState.AddModelError("", "Por favor, realizeseu cadastro para fazer um agendamento.");
+                return RedirectToAction("Entrar", "Home");
+            }
         }
 
         //POST: Paciente/CadastrarCarteira
@@ -101,9 +173,23 @@ namespace AiVacina.Controllers
 
         //GET: Paciente/MinhaCarteira
         [HttpGet]
+        [Authorize]
         public ActionResult MinhaCarteira()
         {
-            return View();
+            String perfil = Session["Perfil"] == null ? String.Empty : Session["Perfil"].ToString();
+            if (String.IsNullOrEmpty(perfil))
+            {
+                return RedirectToAction("Entrar", "Home");
+            }
+            else if (perfil.Equals("Paciente", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return View();
+            }
+            else
+            {
+                ModelState.AddModelError("", "Por favor, realizeseu cadastro para fazer um agendamento.");
+                return RedirectToAction("Entrar", "Home");
+            }
         }
 
         // GET: Paciente/GetVacinas
@@ -119,15 +205,22 @@ namespace AiVacina.Controllers
             IEnumerable<Posto> postos = DataBase.ListaPostos();
             return PartialView("_Postos", postos);
         }
-        
+
         // POST: Paciente/GetPostos
         [HttpPost]
         public ActionResult GetPostosPorLote(string lote)
         {
-            IEnumerable<Posto> postos = DataBase.ListaPostosPorVacina(lote);
+            try
+            {
+                IEnumerable<Posto> postos = DataBase.ListaPostosPorVacina(lote);
 
-            return  PartialView("_Postos", postos);
-            
+                return PartialView("_Postos", postos);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                return View();
+            }
         }
 
         [HttpPost]
@@ -163,7 +256,8 @@ namespace AiVacina.Controllers
         {
             try
             {
-                if (!String.IsNullOrEmpty(dataTeste)) { 
+                if (!String.IsNullOrEmpty(dataTeste))
+                {
                     var resultado = DataBase.GetHorariosBloqueados(dataTeste).Split(';');
                     if (resultado.Count() > 0)
                     {
@@ -181,7 +275,7 @@ namespace AiVacina.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { success = ex.Message});
+                return Json(new { success = ex.Message });
             }
         }
 

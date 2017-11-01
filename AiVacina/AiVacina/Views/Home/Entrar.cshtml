@@ -24,7 +24,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.senha, htmlAttributes: new { @class = "control-label col-md-3" })
             <div class="col-md-9">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                @*<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>*@
                 @Html.EditorFor(model => model.senha, new { htmlAttributes = new { @class = "form-control input-lg" } })
                 @Html.ValidationMessageFor(model => model.senha, "", new { @class = "text-danger" })
             </div>
