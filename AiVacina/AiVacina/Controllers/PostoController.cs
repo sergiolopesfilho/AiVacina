@@ -109,9 +109,9 @@ namespace AiVacina.Controllers
 
                     vacina.postoCNPJ = Session["CNPJ"] == null ? String.Empty : Session["CNPJ"].ToString();
                     String[] data = vacina.dataValidade.Split('/');
-                    //DateTime dataUS = DateTime.Parse(data[1] + "/" + data[0] + "/" + data[2]);
-                    DateTime dataUS = new DateTime();
-                    vacina.dataValidade = (data[2] + "-" + data[1] + "-" + data[0]);
+                    DateTime dataUS = DateTime.Parse(data[1] + "/" + data[0] + "/" + data[2]);
+                    //DateTime dataUS = new DateTime();
+                    vacina.dataValidade = (data[1] + "/" + data[0] + "-" + data[2]);
                     DataBase.CadastrarVacina(vacina, dataUS);
                 }
                 return RedirectToAction("Vacinas");
