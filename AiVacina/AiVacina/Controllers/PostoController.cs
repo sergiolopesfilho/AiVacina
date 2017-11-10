@@ -118,7 +118,7 @@ namespace AiVacina.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", ex.Message);
+                ModelState.AddModelError("", "Houve um erro na controler : " + ex.Message);
                 return View(vacina);
             }
         }
