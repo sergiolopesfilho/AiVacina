@@ -55,7 +55,7 @@ namespace AiVacina.DAL
             }
         }
 
-        public static bool CadastrarVacina(Vacina vacina, DateTime data)
+        public static bool CadastrarVacina(Vacina vacina)
         {
             bool cadastrado = false;
             string insertVacina = "INSERT INTO Vacinas (codVacina,loteVacina,nomeVacina,quantidade,dataValidade,grupoalvo,postoCNPJ) "
