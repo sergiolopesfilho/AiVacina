@@ -1,0 +1,176 @@
+﻿@model AiVacina.Models.CarteiraVacinacao
+
+@{
+    ViewBag.Title = "CarteiraPaciente";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Carteira do Paciente</h2>
+@Html.Partial("_PostoLayout")
+
+@using (Html.BeginForm("CarteiraPaciente", "Posto", FormMethod.Post))
+{
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <strong>Número da Carteira do Paciente: </strong>
+            <div class="col-md-10">
+                <input type="text" id="txtCartaoCidadao" name="cartaoCidadao" class="form-control cartao-cidadao" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-5">
+                <input type="submit" value="Buscar" class="btn btn-default" />
+            </div>
+            <div class="col-md-5">
+                @*<button type="button" class="btn btn-info" data-toggle="modal" id="btnCadastrarVacina" data-target="#modalCadastroVacina">Cadastrar Vacina</button>*@
+                <button type="button" class="btn btn-info" id="btnCadastrarVacina">Cadastrar Vacina</button>
+            </div>
+        </div>
+    </div>
+}
+
+@{
+    if (Model != null)
+    {
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    <strong> @Html.DisplayNameFor(model => model.nome)</strong>
+                </div>
+                <div class="col-md-5">
+                    @Html.DisplayFor(model => model.nome)
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-2">
+                    <strong>@Html.DisplayNameFor(model => model.id)</strong>
+                </div>
+                <div class="col-md-5">
+                    @Html.DisplayFor(model => model.id)
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-2">
+                    <strong>@Html.DisplayNameFor(model => model.dataNascimento)</strong>
+                </div>
+                <div class="col-md-5">
+                    @{
+                     var data = Model.dataNascimento.Split(' ').First();
+                    }
+                    @data
+                  </div>
+  
+              </div>
+  
+            @*<div class="row">
+                <div class="col-md-2">
+                    <strong>@Html.DisplayNameFor(model => model.Posto.nomeEstabelecimento)</strong>
+                </div>
+                <div class="col-md-5">
+                    @Html.DisplayFor(model => model.Posto.nomeEstabelecimento)
+                </div>
+            </div>*@
+        </div>
+        <br />
+
+        if (Model.minhasVacinas == null || Model.minhasVacinas.Count <= 0)
+        {
+            <h4>Ainda não foram adicionadas vacinas nesta carteira.</h4>
+        }
+        else
+        {
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.minhasVacinas.First().vacina)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.minhasVacinas.First().dataVacinação)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.minhasVacinas.First().dataReforco)
+                    </th>
+                </tr>
+                @foreach (var item in Model.minhasVacinas)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.vacina)
+                        </td>
+                        <td>
+                            @item.dataVacinação.ToShortDateString()
+                        </td>
+                        <td>
+                            @item.dataReforco.ToShortDateString()
+                        </td>
+                    </tr>
+                }
+
+            </table>
+
+        }
+    }
+
+}
+
+<!-- Modal -->
+<div id="modalCadastroVacina" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Adcionar Vacina Aplicada</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-2"><strong>Vacina: </strong></div>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" id="txtNomeVacinaAplicada" />
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-2">
+                                    <strong>Data da Aplicação: </strong>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control data-mask" id="txtDataAplicada" />
+                                </div>
+                            </div>
+                                </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-2">
+                                        <strong>Data do Reforço: </strong>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control data-mask" id="txtDataReforço" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" id="btnCadastrarAplicacao">Cadastrar</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">Fechar</button>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+    @section scripts {
+        @Scripts.Render("~/bundles/postocarteirapaciente");
+    }

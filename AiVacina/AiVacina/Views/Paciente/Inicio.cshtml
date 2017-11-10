@@ -6,9 +6,34 @@
 }
 
 @Styles.Render("~/Content/pacienteIicio")
-<h2>Bem Vindo</h2>
+@{ 
+    var nome = Session["Nome"];
 
-<button type="button" class="btn btn-secondary " style="display:none" id="mostrarProximaVacina">Proxima Vacina</button>
+    if (nome == null)
+    {
+        nome = String.Empty;
+    }
+}
+<h2>Bem Vindo(a) @nome</h2>
+
+@Html.Partial("_PacienteLayout")
+
+<div class="container">
+
+    <button type="button" class="btn btn-secondary " style="display:none" id="mostrarProximaVacina">Proxima Vacina</button>
+
+    <div class="row">
+        <h5>Consulte as vacinas disponíveis nos postos de nossa rede.</h5>
+    </div>
+    <br />
+
+    <div class="row">
+        @Html.Action("GetSelectPostos", "Paciente")
+    </div>
+    <div class="row">
+        <div id="vacinas"></div>
+    </div>
+</div>
 
 <div class="divProximaVacina" style="" id="divProximaVacina">
     Aviso: Próxima Vacina!

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<AiVacina.Models.Vacina>
+
+
+@{if (Model != null && Model.Count() > 0)
+    {
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.nomeVacina)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.quantidade)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.grupoAlvo)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.nomeVacina)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.quantidade)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.grupoAlvo)
+        </td>
+    </tr>
+}
+
+</table>
+    }
+    else
+    {
+        <h5>Nenhuma vacina foi encontrada.</h5>
+    }
+}

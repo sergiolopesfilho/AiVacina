@@ -151,13 +151,15 @@ namespace AiVacina.Controllers
 
         //POST: Paciente/CadastrarCarteira
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult CadastrarCarteira(CarteiraVacinacao carteira)
         {
             try
             {
+                carteira.numCartaoCidadao = Session["Cartao"] == null ? String.Empty : Session["Cartao"].ToString();
                 if (Valida.CartaoCidadao(carteira.numCartaoCidadao))
                 {
+                    carteira.dataCadastro = DateTime.Now;
+
                     DataBase.CadastraCarteiraVacinacao(carteira);
                     return RedirectToAction("MinhaCarteira");
                 }
@@ -183,11 +185,13 @@ namespace AiVacina.Controllers
             }
             else if (perfil.Equals("Paciente", StringComparison.InvariantCultureIgnoreCase))
             {
-                return View();
+                String cartao = Session["Cartao"] == null ? String.Empty : Session["Cartao"].ToString();
+                CarteiraVacinacao carteira = DataBase.GetCarteiraVacinacao(cartao);
+                return View(carteira);
             }
             else
             {
-                ModelState.AddModelError("", "Por favor, realizeseu cadastro para fazer um agendamento.");
+                ModelState.AddModelError("", "Por favor, realize seu cadastro para fazer um agendamento.");
                 return RedirectToAction("Entrar", "Home");
             }
         }
@@ -199,11 +203,25 @@ namespace AiVacina.Controllers
             return PartialView("_Vacinas", vacinas);
         }
 
+        // GET: Paciente/GetVacinas
+        public ActionResult GetVacinasPortPosto(string idEstabelecimento)
+        {
+            IEnumerable<Vacina> vacinas = DataBase.ListaVacinas();
+            return PartialView("_Vacinas", vacinas);
+        }
+
         // GET: Paciente/GetPostos
         public ActionResult GetPostos()
         {
             IEnumerable<Posto> postos = DataBase.ListaPostos();
             return PartialView("_Postos", postos);
+        }
+
+        // GET: Paciente/GetPostos
+        public ActionResult GetSelectPostos()
+        {
+            IEnumerable<Posto> postos = DataBase.ListaPostos();
+            return PartialView("_SelectPostos", postos);
         }
 
         // POST: Paciente/GetPostos
@@ -309,6 +327,14 @@ namespace AiVacina.Controllers
                 return Json(new { resposta = semAgendamento }, JsonRequestBehavior.AllowGet);
 
             }
+        }
+
+        // GET: Posto/Vacinas/
+        [HttpPost]
+        public ActionResult VacinasPorPosto(string cnpj)
+        {
+            IEnumerable<Vacina> vacinas = DataBase.ListaVacinas(cnpj);
+            return PartialView("_VacinasPorPosto", vacinas);
         }
     }
 }

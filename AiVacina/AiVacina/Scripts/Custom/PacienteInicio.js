@@ -31,5 +31,32 @@ $(document).ready(function () {
     $("#mostrarProximaVacina").click(function () {
         $(".divProximaVacina").toggle("slow");
         $("#mostrarProximaVacina").toggle("slow");
-    });;
+    });
+
+
+    $("#selectPosto").change(function () {
+        //var cnpj = $(this).find("#cnpjEstabelecimento").val();
+        var cnpj = $(this).val();
+        adicionaVacinas(cnpj);
+    });
 });
+
+var adicionaVacinas = function (cnpj) {
+    console.log(cnpj);
+    $.ajax({
+        url: 'VacinasPorPosto',
+        type: 'POST',
+        data: JSON.stringify({ cnpj }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (result) {
+            console.log(result);
+            if(result != null)
+                $("#vacinas").html(result);
+        },
+        error: function (jqXHR, exception) {
+            console.log(jqXHR);
+            console.log(exception);
+        }
+    });
+
+}

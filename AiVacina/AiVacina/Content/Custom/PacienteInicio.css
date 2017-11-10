@@ -8,3 +8,7 @@
     border-style: solid;
     box-shadow: 10px 5px 15px #888888;
 }
+
+.subMenuEspacamento {
+    margin: auto;
+}

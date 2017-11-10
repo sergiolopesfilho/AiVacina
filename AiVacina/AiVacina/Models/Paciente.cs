@@ -63,5 +63,7 @@ namespace AiVacina.Models
         [Display(Name = "Senha:")]
         [DataType(DataType.Password)]
         public string senha { get; set; }
+
+        public string cnpj { get; set; }
     }
 }

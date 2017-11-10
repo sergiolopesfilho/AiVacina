@@ -7,6 +7,8 @@
 
 <h2>Vacinas</h2>
 
+@Html.Partial("_PostoLayout")
+
 <div class="container">
     <div class="row">
         <div class="col-md-6"><h4>Cadastrar Vacina</h4></div>
@@ -17,7 +19,7 @@
             
             @using (Html.BeginForm("CadastrarVacinas", "Posto", FormMethod.Post))
             {
-                @Html.AntiForgeryToken()
+                @*@Html.AntiForgeryToken()*@
 
                 <div class="form-horizontal">
 

@@ -272,6 +272,7 @@
     <Content Include="Scripts\Custom\PartialPostoAgendamento.js" />
     <Content Include="Scripts\Custom\PostoAgenda.js" />
     <Content Include="Scripts\Custom\PostoCadastrarVacina.js" />
+    <Content Include="Scripts\Custom\PostoCarteiraPaciente.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
     <Content Include="Scripts\jquery-3.2.1.slim.js" />
@@ -316,6 +317,11 @@
     <Content Include="Views\Paciente\MeusDados.cshtml" />
     <Content Include="Views\Posto\_Vacinas.cshtml" />
     <Content Include="Views\Paciente\Inicio.cshtml" />
+    <Content Include="Views\Posto\CarteiraPaciente.cshtml" />
+    <Content Include="Views\Paciente\_VacinasPorPosto.cshtml" />
+    <Content Include="Views\Shared\_SelectPostos.cshtml" />
+    <Content Include="Views\Shared\_PacienteLayout.cshtml" />
+    <Content Include="Views\Shared\_PostoLayout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

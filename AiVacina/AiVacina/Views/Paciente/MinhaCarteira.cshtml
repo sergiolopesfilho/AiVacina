@@ -7,6 +7,58 @@
 
 <h2>Minha Carteira</h2>
 
-<h4>Num - @Html.DisplayFor(model => model.id)</h4>
-<p>Cartão Cidadão: @Html.DisplayFor(model => model.numCartaoCidadao)</p>
+@Html.Partial("_PacienteLayout")
 
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            <strong> @Html.DisplayNameFor(model => model.nome)</strong>
+        </div>
+        <div class="col-md-5">
+            @Html.DisplayFor(model => model.nome)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2">
+            <strong>@Html.DisplayNameFor(model => model.id)</strong>
+        </div>
+        <div class="col-md-5">
+            @Html.DisplayFor(model => model.id)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2">
+            <strong>@Html.DisplayNameFor(model => model.dataNascimento)</strong>
+        </div>
+        <div class="col-md-5">
+            @Html.DisplayFor(model => model.dataNascimento)
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-2">
+            <strong>@Html.DisplayNameFor(model => model.Posto.nomeEstabelecimento)</strong>
+        </div>
+        <div class="col-md-5">
+            @Html.DisplayFor(model => model.Posto.nomeEstabelecimento)
+        </div>
+    </div>
+</div>
+
+@{
+    if (Model.minhasVacinas == null || Model.minhasVacinas.Count <= 0)
+    {
+        <h4>Ainda não foram adicionadas vacinas nesta carteira.</h4>
+    }
+    else
+    {
+        foreach (var vacina in Model.minhasVacinas)
+        {
+            <h5>@vacina.nomeVacina</h5>
+        }
+
+    }
+}

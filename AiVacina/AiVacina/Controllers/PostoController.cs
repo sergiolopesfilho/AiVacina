@@ -34,7 +34,7 @@ namespace AiVacina.Controllers
                     Session["Nome"] = dbAdm.nome;
                     Session["Cartao"] = dbAdm.numCartaoCidadao;
                     Session["Perfil"] = dbAdm.perfil;
-                    Session["CNPJ"] = dbAdm.perfil;
+                    Session["CNPJ"] = dbAdm.cnpj;
 
                     return RedirectToAction("CadastrarVacinas");
                 }
@@ -51,7 +51,6 @@ namespace AiVacina.Controllers
             }
         }
 
-        
         public ActionResult Agenda()
         {
             String perfil = Session["Perfil"] == null ? String.Empty : Session["Perfil"].ToString();
@@ -70,7 +69,7 @@ namespace AiVacina.Controllers
             else
             {
                 ModelState.AddModelError("", "Você não está autorizado a acessar essa pagina.");
-                return RedirectToAction("Entrar", "Home");
+                return RedirectToAction("Index", "Posto");
             }
         }
 
@@ -91,13 +90,13 @@ namespace AiVacina.Controllers
             else
             {
                 ModelState.AddModelError("", "Você não está autorizado a acessar essa pagina.");
-                return RedirectToAction("Entrar", "Home");
+                return RedirectToAction("Index", "Posto");
             }
         }
 
         // POST: Posto/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult CadastrarVacinas(Vacina vacina)
         {
             try
@@ -107,8 +106,11 @@ namespace AiVacina.Controllers
                 {
                     if ((DateTime.Today.CompareTo(Convert.ToDateTime(vacina.dataValidade))) >= 0)
                         throw new Exception("Data de validade não pode ser menor que o dia atual.");
+
+                    vacina.postoCNPJ = Session["CNPJ"] == null ? String.Empty : Session["CNPJ"].ToString();
                     String[] data = vacina.dataValidade.Split('/');
-                    DateTime dataUS = DateTime.Parse(data[1] + "/" + data[0] + "/" + data[2]);
+                    //DateTime dataUS = DateTime.Parse(data[1] + "/" + data[0] + "/" + data[2]);
+                    DateTime dataUS = new DateTime();
                     vacina.dataValidade = (data[2] + "-" + data[1] + "-" + data[0]);
                     DataBase.CadastrarVacina(vacina, dataUS);
                 }
@@ -140,7 +142,7 @@ namespace AiVacina.Controllers
             else
             {
                 ModelState.AddModelError("", "Você não está autorizado a acessar essa pagina.");
-                return RedirectToAction("Entrar", "Home");
+                return RedirectToAction("Index", "Posto");
             }
         }
 
@@ -170,13 +172,55 @@ namespace AiVacina.Controllers
             {
 
                 ModelState.AddModelError("", ex.Message);
-                return RedirectToAction("Cadastro", "Home");
+                return RedirectToAction("Index", "Posto");
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
                 return View(posto);
             }
+        }
+
+        // GET: Posto/CarteiraPaciente
+        [HttpGet]
+        public ActionResult CarteiraPaciente()
+        {
+            String perfil = Session["Perfil"] == null ? String.Empty : Session["Perfil"].ToString();
+            if (String.IsNullOrEmpty(perfil))
+            {
+                return RedirectToAction("Index");
+            }
+            else if (perfil.Equals("Administrador", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return View();
+            }
+            else
+            {
+                ModelState.AddModelError("", "Você não está autorizado a acessar essa pagina.");
+                return RedirectToAction("Index", "Posto");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult CarteiraPaciente(string cartaoCidadao)
+        {
+            CarteiraVacinacao carteira = DataBase.GetCarteiraVacinacao(cartaoCidadao);
+                return View(carteira);
+            //String perfil = Session["Perfil"] == null ? String.Empty : Session["Perfil"].ToString();
+            //if (String.IsNullOrEmpty(perfil))
+            //{
+            //    return RedirectToAction("Index");
+            //}
+            //else if (perfil.Equals("Administrador", StringComparison.InvariantCultureIgnoreCase))
+            //{
+            //    CarteiraVacinacao carteira = DataBase.GetCarteiraVacinacao(cartaoCidadao);
+            //    return View(carteira);
+            //}
+            //else
+            //{
+            //    ModelState.AddModelError("", "Você não está autorizado a acessar essa pagina.");
+            //    return RedirectToAction("Index", "Posto");
+            //}
         }
 
         // GET: Posto/Vacinas/
@@ -340,5 +384,44 @@ namespace AiVacina.Controllers
             }
             return Json(new { success = resultado });
         }
+
+        [HttpPost]
+        public JsonResult AdicionaVacinaAplicada(string cartao, string vacina, string aplicacao, string reforco)
+        {
+            String resultado = String.Empty;
+            try
+            {
+                if (!String.IsNullOrEmpty(vacina) && !String.IsNullOrEmpty(aplicacao)
+                    && !String.IsNullOrEmpty(reforco) && !String.IsNullOrEmpty(cartao))
+                {
+
+                    String perfil = Session["Perfil"] == null ? String.Empty : Session["Perfil"].ToString();
+                    if (!String.IsNullOrEmpty(perfil))
+                    {
+                        DateTime dataAplic = DateTime.Parse(aplicacao);
+                        DateTime dataRef = DateTime.Parse(reforco);
+
+                        if (DataBase.SalvaVacinaAplicada(vacina, dataAplic, dataRef, cartao))
+                            resultado = "Vacina adicionada com sucesso!";
+                        else
+                            resultado = "A vacina não pôde ser adicionada. Tente novamente mais tarde.";
+                    }
+                    else
+                    {
+                        resultado = "Favor fazer login antes de executar essa ação.";
+                    }
+                }
+                else
+                {
+                    resultado = "Informações inválidas, verifique os dados inseridos.";
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = ex.Message;
+            }
+            return Json(new { success = resultado });
+        }
+
     }
 }

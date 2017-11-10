@@ -1,5 +1,8 @@
 ﻿@model IEnumerable<AiVacina.Models.Vacina>
 
+@{ 
+    if (Model != null && Model.Count() > 0)
+    {
 <select class="form-control margin-bottom-20px" id="selectListaVacinas">
     <option selected="selected">
         Escolha uma vacina
@@ -11,3 +14,9 @@
         </option>
     }
 </select>
+    }
+    else
+    {
+        <h5>Nenhuma vacina foi encontrada.</h5>
+    }
+}

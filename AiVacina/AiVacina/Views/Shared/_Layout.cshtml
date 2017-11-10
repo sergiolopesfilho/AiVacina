@@ -8,53 +8,38 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="form-inline">
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div style="display:inline">
-                <div class="dropdown pull-left">
-                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                        Home
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("Início", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })</li>
-                    </ul>
-                </div>  
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        @Html.ActionLink("Home", "Index", "Home", new { @class = "navbar-brand" })
 
-
-                <div class="dropdown pull-left">
-                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                        Posto
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("Cadastro do Administrador", "CadastroAdministrador", "Posto", new { area = "" }, new { @class = "navbar-brand" })</li>
-                        <li>@Html.ActionLink("Agenda Posto", "Agenda", "Posto", new { area = "" }, new { @class = "navbar-brand" })</li>
-                        <li>@Html.ActionLink("Cadastro de Vacinas", "CadastrarVacinas", "Posto", new { area = "" }, new { @class = "navbar-brand" })</li>
-                    </ul>
-                </div>  
-
-
-                <div class="dropdown pull-left">
-                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                        Paciente
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("Realizar Agendamento", "Agendamento", "Paciente", new { area = "" }, new { @class = "navbar-brand" })</li>
-                        <li>@Html.ActionLink("Minha Agenda", "Agenda", "Paciente", new { area = "" }, new { @class = "navbar-brand" })</li>
-                        <li>@Html.ActionLink("Realizar Cadastro", "Cadastro", "Home", new { area = "" }, new { @class = "navbar-brand" })</li>
-                    </ul>
-                </div>  
-            </div>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                </ul>
-            </div>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contato <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Quem Somos</a>
+                </li>
+                <li class="nav-item">
+                    @Html.ActionLink("Posto", "Index", "Posto",null, new { @class = "nav-link" })
+                </li>
+            </ul>
         </div>
-    </div>
+        @{
+            var session = Session["Nome"];
+            if (session == null)
+            {
+            <div>
+                @Html.ActionLink("Cadastre-se", "Cadastro", "Home", new { @class = "btn btn-outline-secondary" })
+                @Html.ActionLink("Entrar", "Entrar", "Home", new { @class = "btn btn-outline-secondary" })
+            </div>
+            }
+            else
+            {
+                @Html.ActionLink("Sair", "", "Home", new { @class = "btn btn-outline-secondary" })
+            }
+
+        }
+    </nav>
 
     <div class="container body-content">
         @RenderBody()

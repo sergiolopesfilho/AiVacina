@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using Dapper;
 using System;
+using System.Linq;
 
 namespace AiVacina.DAL
 {
@@ -71,10 +72,10 @@ namespace AiVacina.DAL
                         lote = vacina.loteVacina,
                         nome = vacina.nomeVacina,
                         quant = vacina.quantidade,
-                        //data = DateTime.Parse(vacina.dataValidade),
-                        data = vacina.dataValidade,
+                        data = DateTime.Parse(vacina.dataValidade),
+                        //data = vacina.dataValidade,
                         grupo = vacina.grupoAlvo,
-                        cnpj = "22.323.458/0001-79"
+                        cnpj = vacina.postoCNPJ
                     });
                 }
                 cadastrado = (result > 0);
@@ -202,7 +203,7 @@ namespace AiVacina.DAL
             string listaPostos =  "UPDATE postos SET admPosto = @adm, "
                                 + "cpfAdmPosto = @cpf "
                                 + "WHERE idEstabelecimento = @id "
-                                + "INSERT INTO pacientes(nome, senha,idEndereco, perfil,cpfAdmPosto ) "
+                                + "INSERT INTO pacientes(nome, senha,idEndereco, perfil,cpfAdm ) "
                                 + "VALUES(@adm, @senha, 0, 'Administrador' @cpf) ";
                                 
 
@@ -275,12 +276,47 @@ namespace AiVacina.DAL
             return agendado;
         }
 
+        public static bool SalvaVacinaAplicada(string vacina, DateTime dataVacinacao, DateTime dataReforco, string cartao)
+        {
+            string insertVacina = "INSERT INTO VacinasAplicadas(vacina, dataVacinação, dataReforco, idCarteira) "
+                                + "VALUES(@vacina, @dataAplicada, @dataReforceo, "
+                                + "(SELECT id from CarteiraVacinacao WHERE cartaoCidadao = @cartao)) ";
+            bool agendado = false;
+
+            try
+            {
+                int resultado = 0;
+                using (IDbConnection conn = new SqlConnection(connectionString))
+                {
+                    resultado = conn.Execute(insertVacina, new
+                    {
+                        vacina = vacina,
+                        dataAplicada = dataVacinacao,
+                        dataReforceo = dataReforco,
+                        cartao = cartao
+                    });
+                }
+
+                agendado = (resultado > 0);
+
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Não foi possível adicionar a vacina "+vacina +" a carteira de Vacinacao. Por favor, tente mais tarde.");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Houve um erro, por favor contate o adminstrador e tente mais tarde.");
+            }
+            return agendado;
+        }
+
         public static bool CadastraCarteiraVacinacao(CarteiraVacinacao carteira)
         {
             bool agendado = false;
 
-            string insertCarteira = "INSERT INTO CarteiraVacinacao(cartaoCidadao, idPosto) "
-                              + "VALUES(@cartao,@posto)";
+            string insertCarteira = "INSERT INTO CarteiraVacinacao(cartaoCidadao, idPosto,nomeCompleto,dataNascimento) "
+                              + "VALUES(@cartao,@posto,@nome,@nascimento)";
             try
             {
                 int resultado = 0;
@@ -289,7 +325,9 @@ namespace AiVacina.DAL
                     resultado = conn.Execute(insertCarteira, new
                     {
                         posto = carteira.Posto.idEstabelecimento,
-                        cartao = carteira.numCartaoCidadao
+                        cartao = carteira.numCartaoCidadao,
+                        nome = carteira.nome,
+                        nascimento = carteira.dataNascimento
                     });
                 }
 
@@ -301,6 +339,43 @@ namespace AiVacina.DAL
                 throw ex;
             }
             return agendado;
+        }
+
+        public static CarteiraVacinacao GetCarteiraVacinacao(string cartao)
+        {
+            //string selectCarteira = "SELECT carteira.id,carteira.nomeCompleto as nome,carteira.dataNascimento,carteira.cartaoCidadao as numCartaoCidadao,"
+            //                        + "postos.idEstabelecimento,postos.nomeEstabelecimento "
+            //                        + "FROM carteiravacinacao carteira LEFT JOIN postos on postos.idEstabelecimento = carteira.idPosto "
+            //                        + "WHERE carteira.cartaoCidadao = @cartao";
+            string selectCarteira = "SELECT carteira.id,carteira.nomeCompleto as nome,carteira.dataNascimento,carteira.cartaoCidadao as numCartaoCidadao "
+                                    + "FROM carteiravacinacao carteira WHERE carteira.cartaoCidadao = @cartao";
+            string selectVacinas = "SELECT vacinas.idVacinaAplicada,vacinas.vacina,vacinas.dataVacinação,vacinas.dataReforco "
+                                    + "FROM  VacinasAplicadas vacinas WHERE vacinas.idCarteira = @idCarteira ";
+
+            try
+            {
+                CarteiraVacinacao carteira = null;
+                using (IDbConnection conn = new SqlConnection(connectionString))
+                {
+                    //carteira = conn.Query<CarteiraVacinacao, Posto, CarteiraVacinacao>(selectCarteira,
+                    //     (carteiravacinacao, posto) => { carteiravacinacao.Posto = posto; return carteiravacinacao; },
+                    //    new { cartao = cartao },
+                    //    splitOn: "idEstabelecimento").First();
+
+                   carteira = conn.Query<CarteiraVacinacao>(selectCarteira,
+                        new { cartao = cartao }).First();
+
+                    carteira.minhasVacinas = conn.Query<VacinaAplicada > (selectVacinas,
+                        new { idCarteira = carteira.id }).ToList();
+                }
+
+                return carteira;
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
         public static bool AdicionarHorariosBloqueados(HorariosBloqueados horarios)
@@ -569,7 +644,8 @@ namespace AiVacina.DAL
         public static PacienteLogin GetLoginPacienteCPF(string cpf)
         {
 
-            string selectPaciente = "SELECT nome, cpfAdmPosto as numCartaoCidadao, senha, perfil from pacientes "
+            string selectPaciente = "SELECT pacientes.nome, pacientes.cpfAdm as numCartaoCidadao, pacientes.senha, pacientes.perfil, postos.cnpj "
+                                    + "FROM pacientes JOIN postos on postos.cpfAdmPosto = @cpf "
                                     + "WHERE cpfAdmPosto = @cpf";
             try
             {

@@ -33,7 +33,7 @@ create table Vacinas(
     loteVacina varchar(100) not null,
     nomeVacina varchar(200) not null,
     quantidade int not null,
-    dataValidade datetime not null,
+    dataValidade datetime2 not null,
     grupoalvo varchar(200) not null,
 	postoCNPJ varchar(18)
 );
@@ -59,9 +59,21 @@ create table HorariosCancelados(
 
 create table CarteiraVacinacao(
 	id int IDENTITY(1,1) primary key,  
-    cartaoCidadao varchar(18) not null unique,  
+    cartaoCidadao varchar(18) not null unique, 
+	nomeCompleto varchar(max) not null,
+	dataNascimento datetime2 not null, 
     idPosto int,
     constraint FK_CarteiraVacinacaoPosto foreign key(idPosto) references postos(idEstabelecimento)
+);
+
+create table VacinasAplicadas(
+	idVacinaAplicada int IDENTITY(1,1) not null,
+	vacina varchar(200) not null,
+	dataVacinação datetime2 not null,
+	dataReforco datetime2 not null,
+	idCarteira int not null,
+	CONSTRAINT Pk_VacinasAplicadas PRIMARY KEY (id),
+    CONSTRAINT FK_VacinaAplicadaCarteira FOREIGN KEY (idCarteira) REFERENCES CarteiraVacinacao(id)
 );
 
 insert into Vacinas(loteVacina,nomeVacina,quantidade,dataValidade,grupoalvo,postoCNPJ)

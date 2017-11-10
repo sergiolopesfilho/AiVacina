@@ -29,7 +29,24 @@ namespace AiVacina.Models
         [Display(Name = "CNPJ do Posto")]
         public String postoCNPJ { get; set; }
 
-
-
     }
-}
+
+        public class VacinaAplicada
+    {
+            
+            public int idVacinaAplicada { get; set; }
+
+            [Display(Name = "Vacina")]
+            public string vacina { get; set; }
+
+            [Display(Name = "Data do Reforço")]
+            public DateTime dataReforco { get; set; }
+
+            [Display(Name = "Data Vacinacao")]
+            public DateTime dataVacinação { get; set; }
+
+            [Display(Name = "N° Carteira de Vacinação")]
+            public int idCarteira { get; set; }
+
+        }
+    }

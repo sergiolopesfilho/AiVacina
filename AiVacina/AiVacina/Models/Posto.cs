@@ -22,6 +22,7 @@ namespace AiVacina.Models
         public string cpfAdmPosto { get; set; }
 
         [Display(Name = "Senha: ")]
+        [DataType(DataType.Password)]
         public string senha { get; set; }
 
         [Display(Name = "CNPJ do posto: ")]
