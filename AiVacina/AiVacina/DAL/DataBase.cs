@@ -85,6 +85,10 @@ namespace AiVacina.DAL
             {
                 throw new Exception("Código e/ou lote da vacina ja cadastrados.");
             }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao cadastrar a vacina no banco.");
+            }
         }
 
         public static IEnumerable<Vacina> ListaVacinas()
