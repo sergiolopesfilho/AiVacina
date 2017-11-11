@@ -4,6 +4,7 @@ using AiVacina.Validação;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -104,21 +105,22 @@ namespace AiVacina.Controllers
                 vacina.loteVacina = vacina.loteVacina.ToUpper();
                 if (ValidaVacinas(vacina))
                 {
-                    if ((DateTime.Today.CompareTo(Convert.ToDateTime(vacina.dataValidade))) >= 0)
+                    String[] dataSplit = vacina.dataValidade.Split('/');
+                    if(Convert.ToInt32(dataSplit[1]) == 2 && Convert.ToInt32(dataSplit[0]) > 28)
+                        throw new Exception("O mês comercial de Fevereiro vai ate dia 28.");
+                    if ((DateTime.Today.CompareTo(DateTime.ParseExact(vacina.dataValidade + " 00:00",
+                         "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture))) >= 0)
                         throw new Exception("Data de validade não pode ser menor que o dia atual.");
 
                     vacina.postoCNPJ = Session["CNPJ"] == null ? String.Empty : Session["CNPJ"].ToString();
-                    String[] data = vacina.dataValidade.Split('/');
-                    //DateTime dataUS = DateTime.Parse(data[1] + "/" + data[0] + "/" + data[2]);
-                    //DateTime dataUS = new DateTime();
-                    vacina.dataValidade = (data[1] + "/" + data[0] + "-" + data[2]);
+                
                     DataBase.CadastrarVacina(vacina);
                 }
                 return RedirectToAction("Vacinas");
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "Houve um erro na controler : " + ex.Message);
+                ModelState.AddModelError("", ex.Message);
                 return View(vacina);
             }
         }
