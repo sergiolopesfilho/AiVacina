@@ -1,9 +1,15 @@
 ﻿.linhaVermelha {
-    background-color:#FF716F;   
+    background-color:#FF7F77;   
     font-weight: bold;
+    color: black;
 }
 
 .linhaLaranja {
     background-color:#FFE95E;
     font-weight: bold;
+    color: black;
+}
+
+.letrasPreta {
+    color: black;
 }

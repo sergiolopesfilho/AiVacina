@@ -4,6 +4,7 @@
 
     $("#datepicker").datepicker({
         minDate: 0,
+        beforeShowDay: $.datepicker.noWeekends,
         dateFormat: 'dd/mm/yy',
         dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
         dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S', 'D'],

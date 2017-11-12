@@ -206,9 +206,9 @@ namespace AiVacina.DAL
         {
             string listaPostos =  "UPDATE postos SET admPosto = @adm, "
                                 + "cpfAdmPosto = @cpf "
-                                + "WHERE idEstabelecimento = @id "
-                                + "INSERT INTO pacientes(nome, senha,idEndereco, perfil,cpfAdm ) "
-                                + "VALUES(@adm, @senha, 0, 'Administrador' @cpf) ";
+                                + "WHERE cnpj = @cnpj "
+                                + "INSERT INTO pacientes(nome, senha,idEndereco, perfil,cpfAdm, cartaoCidadao ) "
+                                + "VALUES(@adm, @senha, 1, 'Administrador', @cpf, @cartaoCidadao) ";
                                 
 
             
@@ -220,9 +220,10 @@ namespace AiVacina.DAL
                     atualizado = conn.Execute(listaPostos, new
                     {
                         adm = posto.admPosto,
-                        senha = posto.endereco == null ? 0 : posto.endereco.id,
+                        senha = posto.senha,
                         cpf = posto.cpfAdmPosto,
-                        id = posto.idEstabelecimento
+                        cnpj = posto.cnpj,
+                        cartaoCidadao = String.Empty
                     });
                 }
                 if(atualizado <= 0 )

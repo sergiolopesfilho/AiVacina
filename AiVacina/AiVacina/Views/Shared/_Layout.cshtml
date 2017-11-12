@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - AiVacina</title>
-    @Styles.Render("~/Content/css")
+        @Styles.Render("~/Content/css")
+        @Styles.Render("~/Content/layout")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
@@ -35,6 +36,7 @@
             }
             else
             {
+                <p class="bemVindo">Bem vindo(a) @Session["Nome"].ToString()</p>  
                 @Html.ActionLink("Sair", "", "Home", new { @class = "btn btn-outline-secondary" })
             }
 

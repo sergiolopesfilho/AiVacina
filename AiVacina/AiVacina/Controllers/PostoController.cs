@@ -155,10 +155,10 @@ namespace AiVacina.Controllers
         {
             try
             {
-                if (posto.idEstabelecimento <= 0)
+                String cnpj = Session["CNPJ"] != null? Session["CNPJ"].ToString() : String.Empty;
+                if (String.IsNullOrEmpty(cnpj))
                 {
-                    ModelState.AddModelError("", "Favor escolha o posto a ser atualizado.");
-                    return View(posto);
+                    return RedirectToAction("Index", "Posto");
                 }
                 else if (String.IsNullOrEmpty(posto.cpfAdmPosto)
                     || String.IsNullOrEmpty(posto.admPosto))
@@ -166,7 +166,7 @@ namespace AiVacina.Controllers
                     ModelState.AddModelError("", "Favor inserir o nume e cpf do novo administrador.");
                     return View(posto);
                 }
-
+                posto.cnpj = cnpj;
                 DataBase.AtualizarAdmPosto(posto);
                 return RedirectToAction("Index");
             }
