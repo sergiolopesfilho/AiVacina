@@ -296,6 +296,7 @@ namespace AiVacina.Controllers
         public ActionResult GetVacinasPosto(string cnpj, string data)
         {
             IEnumerable<AgendaVacina> vacinas;
+            cnpj = Session["CNPJ"] == null ? String.Empty : Session["CNPJ"].ToString();
             if (!string.IsNullOrEmpty(data))
             {
                 vacinas = DataBase.AgendamentosPosto(cnpj, Convert.ToDateTime(data));

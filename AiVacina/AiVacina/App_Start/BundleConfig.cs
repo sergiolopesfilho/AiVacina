@@ -80,6 +80,9 @@ namespace AiVacina
 
             bundles.Add(new StyleBundle("~/Content/layout").Include(
                       "~/Content/Custom/Layout.css"));
+
+            bundles.Add(new StyleBundle("~/Content/listasPostos").Include(
+                      "~/Content/Custom/ListaPostos.css"));
         }
     }
 }

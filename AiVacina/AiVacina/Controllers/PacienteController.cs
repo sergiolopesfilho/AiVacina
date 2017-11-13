@@ -17,31 +17,53 @@ namespace AiVacina.Controllers
         [Authorize]
         public ActionResult Inicio(Paciente paciente)
         {
-            return View();
+            String perfil = Session["Perfil"] == null ? String.Empty : Session["Perfil"].ToString();
+            if (String.IsNullOrEmpty(perfil))
+            {
+                return RedirectToAction("Entrar", "Home");
+            }
+            else if (perfil.Equals("Paciente", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Entrar", "Home");
+            }
+          
         }
 
         // GET: Home/MeusDados/
         [Authorize]
-        public ActionResult MeusDados(Paciente paciente)
+        public ActionResult MeusDados()
         {
-            if (paciente == null)
+            String perfil = Session["Perfil"] == null ? String.Empty : Session["Perfil"].ToString();
+            if (String.IsNullOrEmpty(perfil))
             {
-                ModelState.AddModelError("", "Por favor, realize seu cadastro.");
-                return RedirectToAction("Cadastro", "Home");
+                return RedirectToAction("Entrar", "Home");
+            }
+            else if (perfil.Equals("Paciente", StringComparison.InvariantCultureIgnoreCase))
+            {
+
+                String cartao = Session["Cartao"] == null ? String.Empty : Session["Cartao"].ToString();
+                if (String.IsNullOrEmpty(cartao))
+                    return RedirectToAction("Entrar", "Home");
+
+                Paciente paciente = DataBase.GetDadosPaciente(cartao);
+                return View(paciente);
 
             }
             else
             {
-                return View(paciente);
+                return RedirectToAction("Entrar", "Home");
             }
+
         }
 
         // GET: Paciente/Agenda
         [Authorize]
         public ActionResult Agenda()
         {
-            ///TODO:
-            /// Deixar dinamico de acordo com o paciente
 
             try
             {
@@ -140,7 +162,12 @@ namespace AiVacina.Controllers
             }
             else if (perfil.Equals("Paciente", StringComparison.InvariantCultureIgnoreCase))
             {
-                return View();
+                String cartao = Session["Cartao"] == null ? String.Empty : Session["Cartao"].ToString();
+
+                if (!String.IsNullOrEmpty(cartao) && DataBase.CarteiraVacinacaoCadastrada(cartao))
+                    return RedirectToAction("MinhaCarteira");
+                else
+                    return View();
             }
             else
             {
@@ -302,7 +329,8 @@ namespace AiVacina.Controllers
         {
             try
             {
-                AgendaVacina proximo = DataBase.GetProximoAgendamento("123.4567.8913.2413");
+                String cartao = Session["Cartao"] == null ? String.Empty : Session["Cartao"].ToString();
+                AgendaVacina proximo = DataBase.GetProximoAgendamento(cartao);
                 if (proximo != null)
                 {
                     var faltam = proximo.dataAgendamento.Subtract(DateTime.Now);

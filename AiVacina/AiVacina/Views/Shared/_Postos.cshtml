@@ -2,6 +2,7 @@
 
 
 
+@Styles.Render("~/Content/listasPostos")
 <div class="list-group" id="divListaPostos">
     @if (Model != null && Model.Count() > 0)
     {
@@ -9,7 +10,7 @@
         {
             <a href="#" class="list-group-item linkPosto">
                 <p class="nomePosto">
-                    @Html.DisplayTextFor(modelItem => item.nomeEstabelecimento)
+                    <strong> @Html.DisplayTextFor(modelItem => item.nomeEstabelecimento)</strong>
                 </p>
                 <small>@Html.DisplayFor(modelItem => item.endereco.rua)</small>
                 <input type="hidden" value="@Html.DisplayTextFor(modelItem => item.idEstabelecimento)" id="idEstabelecimento"/>
@@ -22,3 +23,12 @@
         <h2>Não temos nenhum posto cadastrado.</h2>
     }
 </div>
+<script>
+    $(".linkPosto").click(function (e) {
+        var selecionadoAnteriormente = $(".postoSelecionado");
+        selecionadoAnteriormente.removeClass("postoSelecionado");
+
+        $(this).addClass("postoSelecionado");
+
+    });
+</script>

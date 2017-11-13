@@ -125,6 +125,12 @@ namespace AiVacina.Controllers
             }
         }
 
+        public ActionResult Logoff()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index","Home");
+        }
+
         private bool ValidaCadastro(Paciente paciente)
         {
             bool valido = true;

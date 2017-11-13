@@ -320,8 +320,8 @@ namespace AiVacina.DAL
         {
             bool agendado = false;
 
-            string insertCarteira = "INSERT INTO CarteiraVacinacao(cartaoCidadao, idPosto,nomeCompleto,dataNascimento) "
-                              + "VALUES(@cartao,@posto,@nome,@nascimento)";
+            string insertCarteira = "INSERT INTO CarteiraVacinacao(cartaoCidadao,nomeCompleto,dataNascimento) "
+                              + "VALUES(@cartao,@nome,@nascimento)";
             try
             {
                 int resultado = 0;
@@ -329,10 +329,9 @@ namespace AiVacina.DAL
                 {
                     resultado = conn.Execute(insertCarteira, new
                     {
-                        posto = carteira.Posto.idEstabelecimento,
                         cartao = carteira.numCartaoCidadao,
                         nome = carteira.nome,
-                        nascimento = carteira.dataNascimento
+                        nascimento = Convert.ToDateTime(carteira.dataNascimento)
                     });
                 }
 
@@ -341,9 +340,33 @@ namespace AiVacina.DAL
             }
             catch (SqlException ex)
             {
-                throw ex;
+                throw new Exception("Houve um erro no cadastro de sua carteira. Por favor tente mais tarde.");
             }
             return agendado;
+        }
+
+        public static bool CarteiraVacinacaoCadastrada(string cartao)
+        {
+            string selectCarteira = "SELECT carteira.id,carteira.nomeCompleto as nome,carteira.dataNascimento,carteira.cartaoCidadao as numCartaoCidadao "
+                                    + "FROM carteiravacinacao carteira WHERE carteira.cartaoCidadao = @cartao";
+
+            try
+            {
+                CarteiraVacinacao carteira = null;
+                using (IDbConnection conn = new SqlConnection(connectionString))
+                {
+
+                    carteira = conn.Query<CarteiraVacinacao>(selectCarteira,
+                         new { cartao = cartao }).First();
+                }
+
+                return (carteira !=null);
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         public static CarteiraVacinacao GetCarteiraVacinacao(string cartao)
@@ -704,6 +727,33 @@ namespace AiVacina.DAL
             catch (Exception ex)
             {
                 return String.Empty;
+            }
+        }
+
+        public static Paciente GetDadosPaciente(string cartao)
+        {
+            string selectPaciente = "SELECT p.cartaoCidadao as numCartaoCidadao, p.nome, p.dataNascimento,  "
+                                  + "e.rua, e.bairro, e.cidade "
+                                  + "FROM pacientes p join Enderecos e on p.idEndereco = e.id "
+                                  + "WHERE cartaoCidadao = @cartao";
+
+            try
+            {
+                Paciente paciente = null;
+                using (IDbConnection conn = new SqlConnection(connectionString))
+                {
+                    paciente = conn.QueryFirst<Paciente>(selectPaciente, new
+                    {
+                        cartao = cartao
+                    });
+                }
+
+                return paciente;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Houve um erro ao acessar os dados do paciente. Por favor tente mais tarde.");
             }
         }
     }

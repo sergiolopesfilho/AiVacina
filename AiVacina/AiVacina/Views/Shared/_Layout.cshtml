@@ -4,8 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - AiVacina</title>
+
         @Styles.Render("~/Content/css")
         @Styles.Render("~/Content/layout")
+
+    @RenderSection("Styles", required: false)
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
@@ -30,14 +33,14 @@
             if (session == null)
             {
             <div>
-                @Html.ActionLink("Cadastre-se", "Cadastro", "Home", new { @class = "btn btn-outline-secondary" })
-                @Html.ActionLink("Entrar", "Entrar", "Home", new { @class = "btn btn-outline-secondary" })
+                @Html.ActionLink("Cadastre-se", "Cadastro", "Home", null, new { @class = "btn btn-outline-secondary" })
+                @Html.ActionLink("Entrar", "Entrar", "Home",null, new { @class = "btn btn-outline-secondary" })
             </div>
             }
             else
             {
                 <p class="bemVindo">Bem vindo(a) @Session["Nome"].ToString()</p>  
-                @Html.ActionLink("Sair", "", "Home", new { @class = "btn btn-outline-secondary" })
+                @Html.ActionLink("Sair", "Logoff", "Home", null, new { @class = "btn btn-outline-secondary" })
             }
 
         }

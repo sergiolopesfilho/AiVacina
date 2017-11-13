@@ -1,0 +1,14 @@
+﻿.nomePosto {
+    font-weight: bold;
+    font-size: 130%;
+}
+
+.linkPosto:hover {
+    background-color: #033C73;
+    color: white;
+}
+
+.postoSelecionado {
+    background-color: #033C73;
+    color: white;
+}
