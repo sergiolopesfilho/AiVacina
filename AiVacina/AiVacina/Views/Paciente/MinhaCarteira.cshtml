@@ -33,32 +33,62 @@
             <strong>@Html.DisplayNameFor(model => model.dataNascimento)</strong>
         </div>
         <div class="col-md-5">
-            @Html.DisplayFor(model => model.dataNascimento)
+            @{ 
+                var data = Model.dataNascimento.Split(' ')[0];
+
+            }
+            @data
         </div>
     </div>
 
 
-    <div class="row">
-        <div class="col-md-2">
-            <strong>@Html.DisplayNameFor(model => model.Posto.nomeEstabelecimento)</strong>
-        </div>
-        <div class="col-md-5">
-            @Html.DisplayFor(model => model.Posto.nomeEstabelecimento)
-        </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-6">
+        @{
+            if (Model.minhasVacinas == null || Model.minhasVacinas.Count <= 0)
+            {
+                <h4>Ainda não foram adicionadas vacinas nesta carteira.</h4>
+            }
+            else
+            {
+                <table class="table">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.minhasVacinas[0].vacina)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.minhasVacinas[0].dataVacinação)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.minhasVacinas[0].dataReforco)
+                        </th>
+                    </tr>
+
+                    @foreach (var vacina in Model.minhasVacinas)
+                {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => vacina.vacina)
+                            </td>
+                            <td>
+                                @vacina.dataVacinação.ToShortDateString()
+                            </td>
+                            <td>
+                                @vacina.dataReforco.ToShortDateString()
+                            </td>
+
+                        </tr>
+                    }
+                </table>
+
+            }
+        }
+    </div>
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-4">
+        <img src="~/images/Cadastro_CarteiraVacinaca.jpg" class="img-fluid" />
     </div>
 </div>
-
-@{
-    if (Model.minhasVacinas == null || Model.minhasVacinas.Count <= 0)
-    {
-        <h4>Ainda não foram adicionadas vacinas nesta carteira.</h4>
-    }
-    else
-    {
-        foreach (var vacina in Model.minhasVacinas)
-        {
-            <h5>@vacina.vacina</h5>
-        }
-
-    }
-}

@@ -190,6 +190,7 @@
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.icon-large.min.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Custom\Layout.css" />
     <Content Include="Content\Custom\ListaPostos.css" />
@@ -242,7 +243,11 @@
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="fonts\glyphicons.png" />
     <Content Include="Global.asax" />
+    <Content Include="images\c1.PNG" />
+    <Content Include="images\c2.PNG" />
+    <Content Include="images\c3.PNG" />
     <Content Include="images\Cadastro_CarteiraVacinaca.jpg" />
     <Content Include="Content\images\ui-icons_444444_256x240.png" />
     <Content Include="Content\images\ui-icons_555555_256x240.png" />
@@ -251,6 +256,9 @@
     <Content Include="Content\images\ui-icons_cc0000_256x240.png" />
     <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
     <Content Include="images\carregando.gif" />
+    <Content Include="images\Index1.PNG" />
+    <Content Include="images\pacienteAgendamento.jpg" />
+    <Content Include="images\pacienteInicio.jpg" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -274,6 +282,7 @@
     <Content Include="Scripts\Custom\PartialPostoAgendamento.js" />
     <Content Include="Scripts\Custom\PostoAgenda.js" />
     <Content Include="Scripts\Custom\PostoCadastrarVacina.js" />
+    <Content Include="Scripts\Custom\PostoCadastroAdministrador.js" />
     <Content Include="Scripts\Custom\PostoCarteiraPaciente.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
@@ -324,6 +333,8 @@
     <Content Include="Views\Shared\_SelectPostos.cshtml" />
     <Content Include="Views\Shared\_PacienteLayout.cshtml" />
     <Content Include="Views\Shared\_PostoLayout.cshtml" />
+    <Content Include="Views\Shared\_ModalSucesso.cshtml" />
+    <Content Include="Views\Home\DadosTeste.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

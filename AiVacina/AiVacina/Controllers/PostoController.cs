@@ -27,21 +27,28 @@ namespace AiVacina.Controllers
             if (ModelState.IsValid && !String.IsNullOrEmpty(adm.cpfAdmPosto)
                 && !String.IsNullOrEmpty(adm.senha))
             {
-                PacienteLogin dbAdm = DataBase.GetLoginPacienteCPF(adm.cpfAdmPosto);
-                if (dbAdm.senha.Equals(adm.senha) && dbAdm.perfil.Equals("Administrador", StringComparison.InvariantCultureIgnoreCase) 
-                    && dbAdm.numCartaoCidadao.Equals(adm.cpfAdmPosto))
-                {
-                    System.Web.Security.FormsAuthentication.SetAuthCookie(dbAdm.nome, false);
-                    Session["Nome"] = dbAdm.nome;
-                    Session["Cartao"] = dbAdm.numCartaoCidadao;
-                    Session["Perfil"] = dbAdm.perfil;
-                    Session["CNPJ"] = dbAdm.cnpj;
+                try {
+                    PacienteLogin dbAdm = DataBase.GetLoginPacienteCPF(adm.cpfAdmPosto);
+                    if (dbAdm.senha.Equals(adm.senha) && dbAdm.perfil.Equals("Administrador", StringComparison.InvariantCultureIgnoreCase)
+                        && dbAdm.numCartaoCidadao.Equals(adm.cpfAdmPosto))
+                    {
+                        System.Web.Security.FormsAuthentication.SetAuthCookie(dbAdm.nome, false);
+                        Session["Nome"] = dbAdm.nome;
+                        Session["Cartao"] = dbAdm.numCartaoCidadao;
+                        Session["Perfil"] = dbAdm.perfil;
+                        Session["CNPJ"] = dbAdm.cnpj;
 
-                    return RedirectToAction("CadastrarVacinas");
+                        return RedirectToAction("CadastrarVacinas");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Senha incorreta, tente novamente");
+                        return View(adm);
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "Senha incorreta, tente novamente");
+                    ModelState.AddModelError("", ex.Message);
                     return View(adm);
                 }
             }
@@ -150,37 +157,45 @@ namespace AiVacina.Controllers
 
         // POST: Posto/CadastroAdministrador/
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult CadastroAdministrador(Posto posto)
+        public JsonResult CadastroAdministrador(Posto posto)
         {
+            String resultado = String.Empty;
             try
             {
                 String cnpj = Session["CNPJ"] != null? Session["CNPJ"].ToString() : String.Empty;
-                if (String.IsNullOrEmpty(cnpj))
+                if (String.IsNullOrEmpty(posto.cnpj))
                 {
-                    return RedirectToAction("Index", "Posto");
+                    ModelState.AddModelError("", "Favor inserir o CNPJ do posto.");
+                    resultado = "Favor inserir CPF do administrador.";
                 }
                 else if (String.IsNullOrEmpty(posto.cpfAdmPosto)
                     || String.IsNullOrEmpty(posto.admPosto))
                 {
-                    ModelState.AddModelError("", "Favor inserir o nume e cpf do novo administrador.");
-                    return View(posto);
+                    ModelState.AddModelError("", "Favor inserir CPF do administrador e o nome do administrador.");
+                    resultado = "Favor inserir CPF do administrador.";
                 }
-                posto.cnpj = cnpj;
-                DataBase.AtualizarAdmPosto(posto);
-                return RedirectToAction("Index");
+                else if (String.IsNullOrEmpty(posto.senha))
+                {
+                    ModelState.AddModelError("", "Favor inserir uma senha para o administrador.");
+                    resultado = "Favor inserir CPF do administrador.";
+                }
+                else
+                {
+                    DataBase.AtualizarAdmPosto(posto);
+                    resultado = "True";
+                }
             }
             catch (SqlException ex)
             {
-
                 ModelState.AddModelError("", ex.Message);
-                return RedirectToAction("Index", "Posto");
+                resultado = ex.Message;
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
-                return View(posto);
+                resultado = ex.Message;
             }
+            return Json(new { success = resultado });
         }
 
         // GET: Posto/CarteiraPaciente

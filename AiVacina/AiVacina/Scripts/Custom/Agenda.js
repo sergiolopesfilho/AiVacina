@@ -10,6 +10,11 @@ $(document).ready(function () {
     $(".cancelaAgendamento").click(function () {
         deletaAgendamento($(this).val());
     });
+
+
+    $(".fechaModal").click(function () {
+        location.reload();
+    });
 });
 
 
@@ -21,10 +26,14 @@ function deletaAgendamento(idAgendamento) {
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         success: function (result) {
-            alert(result.success);
-            location.reload();
+            //alert(result.success);
+            $("#modalSucesso").modal();
+           
         },
-        erro: function(){},
+        erro: function (qXHR, exception) {
+            console.log(qXHR);
+            console.log(exception);
+        },
         async: true,
     });
 }

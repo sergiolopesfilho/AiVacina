@@ -5,6 +5,19 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    .fade.in {
+  opacity: 1;
+}
+.modal.in .modal-dialog {
+  -webkit-transform: translate(0, 0);
+  -o-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+.modal-backdrop.in {
+  opacity: 0.5;
+}
+</style>
 <h2>Minha Agenda</h2>
 
 @Html.Partial("_PacienteLayout")
@@ -74,10 +87,27 @@
             }
         </table>
 
-        } }
-    <div class="modalCarregando">
-    </div>
+        }
+                             }
+   
+<div id="modalSucesso" class="modal fade modal-fix" role="dialog">
+    <div class="modal-dialog">
 
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close fechaModal" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Agendamento Cancelado com sucesso!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success fechaModal" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 
     @section scripts {
 

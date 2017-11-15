@@ -27,6 +27,11 @@
             alert("Todos os campos são obrigatórios.");
         }
     });
+
+    $(".fechaModal").click(function () {
+        $("#modalCadastroVacina").modal();
+        location.reload();
+    });
 });
 
 
@@ -39,9 +44,7 @@ function realizarCadastroAplicacal(cartao, vacina, aplicacao, reforco) {
         success: function (result) {
             console.log(result);
             if (result.success != null && result.success) {
-                alert(result.success);
-                $("#modalCadastroVacina").modal();
-                location.reload();
+                $("#modalSucesso").modal();
             }
             else
             {

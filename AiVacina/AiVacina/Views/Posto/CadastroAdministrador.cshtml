@@ -9,15 +9,22 @@
 
 @Html.Partial("_PostoLayout")
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
-    @Html.AntiForgeryToken()
-    
+    <p class="text-danger" id="warning"></p>
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.HiddenFor(model => model.idEstabelecimento, new { @id= "Posto_idEstabelecimento" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.cnpj, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.cnpj, new { htmlAttributes = new { @class = "form-control cnpj-mask" } })
+                @Html.ValidationMessageFor(model => model.cnpj, "", new { @class = "text-danger" })
+            </div>
         </div>
 
         <div class="form-group">
@@ -43,9 +50,32 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Atualizar" class="btn btn-default" />
+                <input type="button" value="Atualizar" id="atualizarCadastro" class="btn btn-primary" />
             </div>
         </div>
     </div>
 }
 
+<div id="modalSucesso" class="modal fade modal-fix" role="dialog" data-toggle="modal" 
+     data-target="#modalSucesso">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close fechaModal" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Administrador Cadastrado!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success fechaModal" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+@section scripts {
+
+    @Scripts.Render("~/bundles/postocadastroadministrador");
+}

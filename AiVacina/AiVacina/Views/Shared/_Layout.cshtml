@@ -18,10 +18,7 @@
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contato <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Quem Somos</a>
+                    @Html.ActionLink("Dados para Teste", "DadosTeste", "Home", null, new { @class = "nav-link" })
                 </li>
                 <li class="nav-item">
                     @Html.ActionLink("Posto", "Index", "Posto",null, new { @class = "nav-link" })
@@ -54,7 +51,8 @@
             <p>&copy; @DateTime.Now.Year - AiVacina</p>
         </footer>
     </div>
-
+    <div class="modalCarregando">
+    </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/inputmask")

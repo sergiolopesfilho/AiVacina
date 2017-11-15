@@ -127,6 +127,7 @@ namespace AiVacina.Controllers
 
         public ActionResult Logoff()
         {
+            Session.Abandon();
             FormsAuthentication.SignOut();
             return RedirectToAction("Index","Home");
         }
@@ -144,6 +145,11 @@ namespace AiVacina.Controllers
             }
 
             return valido;
+        }
+        // GET: Home
+        public ActionResult DadosTeste()
+        {
+            return View();
         }
     }
 }

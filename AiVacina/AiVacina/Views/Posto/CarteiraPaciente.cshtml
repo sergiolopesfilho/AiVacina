@@ -125,15 +125,15 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Adcionar Vacina Aplicada</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="container">
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-2"><strong>Vacina: </strong></div>
-                            <div class="col-md-2">
+                            <div class="col-md-12">
                                 <input type="text" class="form-control" id="txtNomeVacinaAplicada" />
                             </div>
                         </div>
@@ -143,7 +143,7 @@
                                 <div class="col-md-2">
                                     <strong>Data da Aplicação: </strong>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-12">
                                     <input type="text" class="form-control data-mask" id="txtDataAplicada" />
                                 </div>
                             </div>
@@ -153,7 +153,7 @@
                                     <div class="col-md-2">
                                         <strong>Data do Reforço: </strong>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-12">
                                         <input type="text" class="form-control data-mask" id="txtDataReforço" />
                                     </div>
                                 </div>
@@ -169,7 +169,24 @@
             </div>
 
         </div>
+<div id="modalSucesso" class="modal fade modal-fix" role="dialog">
+    <div class="modal-dialog">
 
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close fechaModal" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Vacina Cadastrada!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success fechaModal" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 
     @section scripts {
         @Scripts.Render("~/bundles/postocarteirapaciente");

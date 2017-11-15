@@ -23,7 +23,7 @@
             <div class="container-fluid" id="listaPostos" style="height:330px;overflow:auto;">
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div id="datepicker"></div>
             <label for="sel1">Horário:</label>
             <select class="form-control" id="horarioVacina">
@@ -46,6 +46,9 @@
                 <option>15:30</option>
             </select>
         </div>
+        <div class="col-md-5">
+            <img src="~/images/pacienteAgendamento.jpg" class="" />
+        </div>
     </div>
     <div class="row">
         @using (Html.BeginForm("Agendamento", "Paciente", FormMethod.Post))
@@ -57,7 +60,7 @@
             @Html.HiddenFor(model => model.dataAgendamento)
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Agendar" id="agendar" class="btn btn-default" />
+                    <input type="submit" value="Agendar" id="agendar" class="btn btn-primary" />
                 </div>
             </div>
         }
