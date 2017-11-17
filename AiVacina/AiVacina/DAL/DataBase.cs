@@ -23,8 +23,8 @@ namespace AiVacina.DAL
             int cadastrado = 0;
             string insertEndereco = "INSERT INTO enderecos (rua,bairro,cidade) "
                                 + "VALUES (@rua, @bairro, @cidade)";
-            string insertPaciente = "INSERT INTO pacientes (cartaoCidadao,nome,dataNascimento,senha,idEndereco) "
-                                + "VALUES (@cartao, @nome, @nascimento,@senha, @idEndereco)";
+            string insertPaciente = "INSERT INTO pacientes (cartaoCidadao,nome,dataNascimento,senha,idEndereco,perfil) "
+                                + "VALUES (@cartao, @nome, @nascimento,@senha, @idEndereco,'Paciente')";
 
             try
             {
@@ -72,8 +72,8 @@ namespace AiVacina.DAL
                         lote = vacina.loteVacina,
                         nome = vacina.nomeVacina,
                         quant = vacina.quantidade,
-                        data = DateTime.Parse(vacina.dataValidade),
-                        //data = vacina.dataValidade,
+                        //data = DateTime.Parse(vacina.dataValidade),
+                        data = vacina.dataValidade,
                         grupo = vacina.grupoAlvo,
                         cnpj = vacina.postoCNPJ
                     });
@@ -223,7 +223,7 @@ namespace AiVacina.DAL
                         senha = posto.senha,
                         cpf = posto.cpfAdmPosto,
                         cnpj = posto.cnpj,
-                        cartaoCidadao = String.Empty
+                        cartaoCidadao = posto.cpfAdmPosto
                     });
                 }
                 if(atualizado <= 0 )
@@ -320,8 +320,8 @@ namespace AiVacina.DAL
         {
             bool agendado = false;
 
-            string insertCarteira = "INSERT INTO CarteiraVacinacao(cartaoCidadao,nomeCompleto,dataNascimento) "
-                              + "VALUES(@cartao,@nome,@nascimento)";
+            string insertCarteira = "INSERT INTO CarteiraVacinacao(cartaoCidadao,nomeCompleto,dataNascimento, dataCadastro) "
+                              + "VALUES(@cartao,@nome, (SELECT dataNascimento FROM Pacientes WHERE cartaoCidadao = @cartao), GETDATE())";
             try
             {
                 int resultado = 0;
@@ -330,8 +330,7 @@ namespace AiVacina.DAL
                     resultado = conn.Execute(insertCarteira, new
                     {
                         cartao = carteira.numCartaoCidadao,
-                        nome = carteira.nome,
-                        nascimento = Convert.ToDateTime(carteira.dataNascimento)
+                        nome = carteira.nome
                     });
                 }
 
@@ -371,11 +370,7 @@ namespace AiVacina.DAL
 
         public static CarteiraVacinacao GetCarteiraVacinacao(string cartao)
         {
-            //string selectCarteira = "SELECT carteira.id,carteira.nomeCompleto as nome,carteira.dataNascimento,carteira.cartaoCidadao as numCartaoCidadao,"
-            //                        + "postos.idEstabelecimento,postos.nomeEstabelecimento "
-            //                        + "FROM carteiravacinacao carteira LEFT JOIN postos on postos.idEstabelecimento = carteira.idPosto "
-            //                        + "WHERE carteira.cartaoCidadao = @cartao";
-            string selectCarteira = "SELECT carteira.id,carteira.nomeCompleto as nome,carteira.dataNascimento,carteira.cartaoCidadao as numCartaoCidadao "
+            string selectCarteira = "SELECT carteira.id,carteira.nomeCompleto as nome,carteira.dataNascimento,carteira.cartaoCidadao as numCartaoCidadao, carteira.dataCadastro as dataCadastro "
                                     + "FROM carteiravacinacao carteira WHERE carteira.cartaoCidadao = @cartao";
             string selectVacinas = "SELECT vacinas.idVacinaAplicada,vacinas.vacina,vacinas.dataVacinação,vacinas.dataReforco "
                                     + "FROM  VacinasAplicadas vacinas WHERE vacinas.idCarteira = @idCarteira ";
@@ -402,7 +397,7 @@ namespace AiVacina.DAL
             }
             catch (Exception ex)
             {
-                return null;
+                throw ex;
             }
         }
 
@@ -665,6 +660,8 @@ namespace AiVacina.DAL
             }
             catch (Exception ex)
             {
+                if(ex.Message.Equals("A sequência não contém elementos"))
+                    throw new Exception("Paciente não encontrado. Por favor, cadastre-se.");
                 throw new Exception(ex.Message);
             }
         }
@@ -733,7 +730,7 @@ namespace AiVacina.DAL
         public static Paciente GetDadosPaciente(string cartao)
         {
             string selectPaciente = "SELECT p.cartaoCidadao as numCartaoCidadao, p.nome, p.dataNascimento,  "
-                                  + "e.rua, e.bairro, e.cidade "
+                                  + "e.id, e.rua, e.bairro, e.cidade "
                                   + "FROM pacientes p join Enderecos e on p.idEndereco = e.id "
                                   + "WHERE cartaoCidadao = @cartao";
 
@@ -742,10 +739,11 @@ namespace AiVacina.DAL
                 Paciente paciente = null;
                 using (IDbConnection conn = new SqlConnection(connectionString))
                 {
-                    paciente = conn.QueryFirst<Paciente>(selectPaciente, new
+                    paciente = conn.Query<Paciente,Endereco,Paciente>(selectPaciente, 
+                        (paci, end) => { paci.endereco = end; return paci; }, new
                     {
                         cartao = cartao
-                    });
+                    }, splitOn: "id").First();
                 }
 
                 return paciente;

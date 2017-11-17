@@ -41,6 +41,19 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-2">
+            <strong>@Html.DisplayNameFor(model => model.dataCadastro)</strong>
+        </div>
+        <div class="col-md-5">
+            @{
+                var data2 = Model.dataCadastro.ToShortDateString();
+
+            }
+            @data2
+        </div>
+    </div>
+
 
 </div>
 <br />

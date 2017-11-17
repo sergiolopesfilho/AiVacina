@@ -48,10 +48,15 @@ namespace AiVacina.Controllers
                 String cartao = Session["Cartao"] == null ? String.Empty : Session["Cartao"].ToString();
                 if (String.IsNullOrEmpty(cartao))
                     return RedirectToAction("Entrar", "Home");
-
-                Paciente paciente = DataBase.GetDadosPaciente(cartao);
-                return View(paciente);
-
+                try
+                {
+                    Paciente paciente = DataBase.GetDadosPaciente(cartao);
+                    return View(paciente);
+                }
+                catch (Exception ex)
+                {
+                    return View();
+                }
             }
             else
             {
@@ -186,7 +191,6 @@ namespace AiVacina.Controllers
                 if (Valida.CartaoCidadao(carteira.numCartaoCidadao))
                 {
                     carteira.dataCadastro = DateTime.Now;
-
                     DataBase.CadastraCarteiraVacinacao(carteira);
                     return RedirectToAction("MinhaCarteira");
                 }
@@ -213,8 +217,15 @@ namespace AiVacina.Controllers
             else if (perfil.Equals("Paciente", StringComparison.InvariantCultureIgnoreCase))
             {
                 String cartao = Session["Cartao"] == null ? String.Empty : Session["Cartao"].ToString();
-                CarteiraVacinacao carteira = DataBase.GetCarteiraVacinacao(cartao);
-                return View(carteira);
+                try
+                {
+                    CarteiraVacinacao carteira = DataBase.GetCarteiraVacinacao(cartao);
+                    return View(carteira);
+                }
+                catch (Exception ex)
+                {
+                    return RedirectToAction("CadastrarCarteira","Paciente");
+                }
             }
             else
             {

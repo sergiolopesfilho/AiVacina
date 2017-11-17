@@ -19,7 +19,7 @@ $(document).ready(function () {
             success: function (result) {
                 console.log(result);
                 if (result.success != null && result.success) {
-                    if (result.sucess == "True") {
+                    if (result.success == "True") {
                         $("#modalSucesso").modal();
                     }
                     else {

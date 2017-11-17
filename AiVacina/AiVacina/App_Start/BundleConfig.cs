@@ -25,6 +25,7 @@ namespace AiVacina
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/jquery-ui.css",
+                      "~/Content/Glyphicon.css",
                       "~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/jqueryUi").Include(

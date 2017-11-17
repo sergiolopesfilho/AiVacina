@@ -39,7 +39,11 @@ namespace AiVacina.Controllers
                     //paciente.data = DateTime.Parse(paciente.dataNascimento);
                     if (DataBase.CadastrarPaciente(paciente))
                     {
-                        return RedirectToAction("MeusDados", "Paciente", paciente);
+                        FormsAuthentication.SetAuthCookie(paciente.nome, false);
+                        Session["Nome"] = paciente.nome;
+                        Session["Cartao"] = paciente.numCartaoCidadao;
+                        Session["Perfil"] = "Paciente";
+                        return RedirectToAction("Inicio", "Paciente");
 
                     }
                     else

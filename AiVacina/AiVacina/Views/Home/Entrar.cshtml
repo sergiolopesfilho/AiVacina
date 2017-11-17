@@ -11,7 +11,7 @@
 @using (Html.BeginForm("Entrar", "Home", FormMethod.Post))
 {
     @*@Html.AntiForgeryToken()*@
-
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="row form-inline">
         <div class="form-group">
             @Html.LabelFor(model => model.numCartaoCidadao, htmlAttributes: new { @class = "control-label col-md-3" })

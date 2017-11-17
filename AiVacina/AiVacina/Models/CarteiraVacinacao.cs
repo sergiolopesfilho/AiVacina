@@ -17,10 +17,11 @@ namespace AiVacina.Models
         [Display(Name = "Nome Completo: ")]
         public string nome { get; set; }
 
-        [Required(ErrorMessage = "Data de nascimento é obrigatório.")]
+        
         [Display(Name = "Data de Nascimento: ")]
         public string dataNascimento { get; set; }
 
+        [Display(Name = "Data de Cadastro: ")]
         public DateTime dataCadastro { get; set; }
         public Posto Posto { get; set; }
         public List<VacinaAplicada> minhasVacinas{ get; set; }

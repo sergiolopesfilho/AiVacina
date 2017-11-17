@@ -61,7 +61,8 @@ create table CarteiraVacinacao(
 	id int IDENTITY(1,1) primary key,  
     cartaoCidadao varchar(18) not null unique, 
 	nomeCompleto varchar(max) not null,
-	dataNascimento datetime2 not null
+	dataNascimento datetime2 not null,
+	dataCadastro datetime2 null
     --idPosto int,
     --constraint FK_CarteiraVacinacaoPosto foreign key(idPosto) references postos(idEstabelecimento)
 );

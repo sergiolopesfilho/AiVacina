@@ -115,6 +115,7 @@ namespace AiVacina.Controllers
                     String[] dataSplit = vacina.dataValidade.Split('/');
                     if(Convert.ToInt32(dataSplit[1]) == 2 && Convert.ToInt32(dataSplit[0]) > 28)
                         throw new Exception("O mês comercial de Fevereiro vai ate dia 28.");
+
                     if ((DateTime.Today.CompareTo(DateTime.ParseExact(vacina.dataValidade + " 00:00",
                          "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture))) >= 0)
                         throw new Exception("Data de validade não pode ser menor que o dia atual.");
@@ -221,23 +222,22 @@ namespace AiVacina.Controllers
         [HttpPost]
         public ActionResult CarteiraPaciente(string cartaoCidadao)
         {
-            CarteiraVacinacao carteira = DataBase.GetCarteiraVacinacao(cartaoCidadao);
+         
+            String perfil = Session["Perfil"] == null ? String.Empty : Session["Perfil"].ToString();
+            if (String.IsNullOrEmpty(perfil))
+            {
+                return RedirectToAction("Index");
+            }
+            else if (perfil.Equals("Administrador", StringComparison.InvariantCultureIgnoreCase))
+            {
+                CarteiraVacinacao carteira = DataBase.GetCarteiraVacinacao(cartaoCidadao);
                 return View(carteira);
-            //String perfil = Session["Perfil"] == null ? String.Empty : Session["Perfil"].ToString();
-            //if (String.IsNullOrEmpty(perfil))
-            //{
-            //    return RedirectToAction("Index");
-            //}
-            //else if (perfil.Equals("Administrador", StringComparison.InvariantCultureIgnoreCase))
-            //{
-            //    CarteiraVacinacao carteira = DataBase.GetCarteiraVacinacao(cartaoCidadao);
-            //    return View(carteira);
-            //}
-            //else
-            //{
-            //    ModelState.AddModelError("", "Você não está autorizado a acessar essa pagina.");
-            //    return RedirectToAction("Index", "Posto");
-            //}
+            }
+            else
+            {
+                ModelState.AddModelError("", "Você não está autorizado a acessar essa pagina.");
+                return RedirectToAction("Index", "Posto");
+            }
         }
 
         // GET: Posto/Vacinas/
