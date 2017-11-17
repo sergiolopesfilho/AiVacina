@@ -121,7 +121,7 @@ namespace AiVacina.Controllers
                         throw new Exception("Data de validade não pode ser menor que o dia atual.");
 
                     vacina.postoCNPJ = Session["CNPJ"] == null ? String.Empty : Session["CNPJ"].ToString();
-                
+                    vacina.dataValidade = dataSplit[1] + "/" + dataSplit[0] + "/" + dataSplit[2];
                     DataBase.CadastrarVacina(vacina);
                 }
                 return RedirectToAction("Vacinas");
