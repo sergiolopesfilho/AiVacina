@@ -4,6 +4,7 @@ using AiVacina.Validação;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 
@@ -144,6 +145,20 @@ namespace AiVacina.Controllers
                     {
                         agendamento.cartaocidadao = cartao;
                         DataBase.SalvaAgendamento(agendamento);
+
+                        String to = Session["Email"] == null ? String.Empty : Session["Email"].ToString();
+
+                        if (!String.IsNullOrEmpty(to))
+                        { 
+                            MailMessage mail = new MailMessage();
+                            mail.From = new MailAddress("aivacina.puc@gmail.com");
+                            mail.To.Add(new MailAddress(to));
+                            mail.Subject = "Agendamento de Vacina";
+                            mail.Body = "Você tem uma vacina agendada para " +agendamento.dataAgendamento.ToDateString()
+                                        + ". A vacina a ser tomada é "+ agendamento.vacina;
+
+                            SendEmail(mail);
+                        }
                     }
                 }
                 return RedirectToAction("Agenda");
@@ -374,6 +389,26 @@ namespace AiVacina.Controllers
         {
             IEnumerable<Vacina> vacinas = DataBase.ListaVacinas(cnpj);
             return PartialView("_VacinasPorPosto", vacinas);
+        }
+
+        private void SendEmail(MailMessage mail)
+        {
+            try
+            {
+                SmtpClient client = new SmtpClient();
+                client.Port = 25;
+                client.Host = "smtp.gmail.com";
+                client.EnableSsl = true;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new System.Net.NetworkCredential("aivacina.puc@gmail.com", "senha12345");
+
+                client.Send(mail);
+            }
+            catch (Exception e)
+            {
+
+            }
         }
     }
 }

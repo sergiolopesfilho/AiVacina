@@ -13,6 +13,7 @@ create table Pacientes(
     idEndereco int not null,
     cpfAdmPosto varchar(14) null,
 	perfil varchar(100),
+	email varchar(50) null
     constraint FK_PacienteEndereco foreign key(idEndereco) references enderecos(id)
 );
 

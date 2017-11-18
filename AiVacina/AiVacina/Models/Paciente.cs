@@ -41,6 +41,9 @@ namespace AiVacina.Models
 
         public string perfil { get; set; }
 
+        [Display(Name = "Email:")]
+        public string email { get; set; }
+
 
         [Display(Name = "CPF:")]
         public string cpfAdmPosto { get; set; }
@@ -56,6 +59,8 @@ namespace AiVacina.Models
         public string numCartaoCidadao { get; set; }
         
         public string perfil { get; set; }
+
+        public string email{ get; set; }
 
         public string nome { get; set; }
 

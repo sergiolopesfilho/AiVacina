@@ -23,8 +23,8 @@ namespace AiVacina.DAL
             int cadastrado = 0;
             string insertEndereco = "INSERT INTO enderecos (rua,bairro,cidade) "
                                 + "VALUES (@rua, @bairro, @cidade)";
-            string insertPaciente = "INSERT INTO pacientes (cartaoCidadao,nome,dataNascimento,senha,idEndereco,perfil) "
-                                + "VALUES (@cartao, @nome, @nascimento,@senha, @idEndereco,'Paciente')";
+            string insertPaciente = "INSERT INTO pacientes (cartaoCidadao,nome,dataNascimento,senha,idEndereco,perfil,email) "
+                                + "VALUES (@cartao, @nome, @nascimento,@senha, @idEndereco,'Paciente',@email)";
 
             try
             {
@@ -43,7 +43,8 @@ namespace AiVacina.DAL
                         nome = paciente.nome,
                         nascimento = paciente.data,
                         senha = paciente.senha,
-                        idEndereco = paciente.endereco.id
+                        idEndereco = paciente.endereco.id,
+                        email = String.IsNullOrEmpty(paciente.email)? null: paciente.email
                     });
                 }
 
@@ -631,7 +632,7 @@ namespace AiVacina.DAL
         public static PacienteLogin GetLoginPaciente(string cartaoCidadao)
         {
 
-            string selectPaciente = "SELECT nome, cartaoCidadao as numCartaoCidadao, senha, perfil from pacientes "
+            string selectPaciente = "SELECT nome, cartaoCidadao as numCartaoCidadao, senha, perfil, email from pacientes "
                                     + "WHERE cartaoCidadao = @cartao";
             try
             {

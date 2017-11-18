@@ -43,6 +43,7 @@ namespace AiVacina.Controllers
                         Session["Nome"] = paciente.nome;
                         Session["Cartao"] = paciente.numCartaoCidadao;
                         Session["Perfil"] = "Paciente";
+                        Session["Email"] = paciente.email;
                         return RedirectToAction("Inicio", "Paciente");
 
                     }
@@ -93,6 +94,7 @@ namespace AiVacina.Controllers
                                 Session["Nome"] = dbPaciente.nome;
                                 Session["Cartao"] = dbPaciente.numCartaoCidadao;
                                 Session["Perfil"] = dbPaciente.perfil;
+                                Session["Email"] = dbPaciente.email;
 
                                 return RedirectToAction("Inicio", "Paciente");
                             }

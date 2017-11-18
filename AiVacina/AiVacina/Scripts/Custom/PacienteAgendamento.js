@@ -30,6 +30,7 @@ $(document).ready(function () {
 
     $("#agendar").mouseover(function () {
         $("#dataAgendamento").val($("#dataDia").val() + " " + $("#horarioVacina").val() + ":00");
+        $("#vacina").val($("#selectListaVacinas option:selected").text().trim());
     });
 
     $("#selectListaVacinas").change(function () {
