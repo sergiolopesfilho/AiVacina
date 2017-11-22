@@ -279,6 +279,7 @@
     <Content Include="Scripts\Custom\Agenda.js" />
     <Content Include="Scripts\Custom\CadastrarCarteira.js" />
     <Content Include="Scripts\Custom\PacienteAgendamento.js" />
+    <Content Include="Scripts\Custom\PacienteCadastrarVacina.js" />
     <Content Include="Scripts\Custom\PacienteInicio.js" />
     <Content Include="Scripts\Custom\PartialPostoAgendamento.js" />
     <Content Include="Scripts\Custom\PostoAgenda.js" />
@@ -336,6 +337,7 @@
     <Content Include="Views\Shared\_PostoLayout.cshtml" />
     <Content Include="Views\Shared\_ModalSucesso.cshtml" />
     <Content Include="Views\Home\DadosTeste.cshtml" />
+    <Content Include="Views\Paciente\CadastrarVacina.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

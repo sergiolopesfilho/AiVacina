@@ -72,8 +72,9 @@ create table VacinasAplicadas(
 	idVacinaAplicada int IDENTITY(1,1) not null,
 	vacina varchar(200) not null,
 	dataVacinação datetime2 not null,
-	dataReforco datetime2 not null,
+	dataReforco datetime2 null,
 	idCarteira int not null,
+	posto varchar(200), 
 	CONSTRAINT Pk_VacinasAplicadas PRIMARY KEY (id),
     CONSTRAINT FK_VacinaAplicadaCarteira FOREIGN KEY (idCarteira) REFERENCES CarteiraVacinacao(id)
 );

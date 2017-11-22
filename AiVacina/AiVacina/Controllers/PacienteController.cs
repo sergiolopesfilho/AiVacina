@@ -154,7 +154,7 @@ namespace AiVacina.Controllers
                             mail.From = new MailAddress("aivacina.puc@gmail.com");
                             mail.To.Add(new MailAddress(to));
                             mail.Subject = "Agendamento de Vacina";
-                            mail.Body = "Você tem uma vacina agendada para " +agendamento.dataAgendamento.ToDateString()
+                            mail.Body = "Você tem uma vacina agendada para " +agendamento.dataAgendamento.ToShortDateString()
                                         + ". A vacina a ser tomada é "+ agendamento.vacina;
 
                             SendEmail(mail);
@@ -217,6 +217,85 @@ namespace AiVacina.Controllers
                 ModelState.AddModelError("", ex.Message);
                 return View(carteira);
             }
+        }
+
+        //GET: Paciente/CadastrarVacina
+        [Authorize]
+        public ActionResult CadastrarVacina()
+        {
+            String perfil = Session["Perfil"] == null ? String.Empty : Session["Perfil"].ToString();
+            if (String.IsNullOrEmpty(perfil))
+            {
+                return RedirectToAction("Entrar", "Home");
+            }
+            else if (perfil.Equals("Paciente", StringComparison.InvariantCultureIgnoreCase))
+            {
+                
+                    return View();
+            }
+            else
+            {
+                ModelState.AddModelError("", "Por favor, realizeseu cadastro para fazer um agendamento.");
+                return RedirectToAction("Entrar", "Home");
+            }
+        }
+
+        // POST: Paciente/CadastrarVacina
+        [HttpPost]
+        public ActionResult CadastrarVacina(VacinaAplicada aplicada)
+        {
+            try
+            {
+                String perfil = Session["Perfil"] == null ? String.Empty : Session["Perfil"].ToString();
+                if (String.IsNullOrEmpty(perfil))
+                {
+                    return RedirectToAction("Entrar", "Home");
+                }
+                else if (String.IsNullOrEmpty(aplicada.vacina))
+                {
+                    ModelState.AddModelError("", "Por favor selecionar a vacina que foi aplicada.");
+                    return View();
+                }
+
+                else if (aplicada.dataVacinação == null || aplicada.dataVacinação == DateTime.MinValue
+                    || aplicada.dataVacinação == DateTime.MaxValue)
+                {
+                    ModelState.AddModelError("", "Data invalida, por favor selecione uma valida.");
+                    return View();
+                }
+                else if (perfil.Equals("Paciente", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    String cartao = Session["Cartao"] == null ? String.Empty : Session["Cartao"].ToString();
+
+                    if (!String.IsNullOrEmpty(cartao))
+                    {
+                        aplicada.posto = String.IsNullOrEmpty(aplicada.posto) ? String.Empty : aplicada.posto;
+                        bool salva = DataBase.SalvaVacinaAplicada(aplicada.vacina, aplicada.dataVacinação, cartao, aplicada.posto);
+                        if (salva)
+                        {
+                            return RedirectToAction("MinhaCarteira", "Paciente");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Ocorreu um erro, por favor tente adicionar vacinas mais tarde.");
+                            return View();
+                        }
+                    }
+                    else
+                        return View();
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Por favor, realizeseu cadastro para fazer um agendamento.");
+                    return RedirectToAction("Entrar", "Home");
+                }
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("", "Não foi possível cadastrar a vacina.");
+                return View();
+            }
+
         }
 
         //GET: Paciente/MinhaCarteira

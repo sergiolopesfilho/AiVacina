@@ -69,6 +69,9 @@
                 <table class="table">
                     <tr>
                         <th>
+                            @Html.DisplayNameFor(model => model.minhasVacinas[0].posto)
+                        </th>
+                        <th>
                             @Html.DisplayNameFor(model => model.minhasVacinas[0].vacina)
                         </th>
                         <th>
@@ -80,8 +83,14 @@
                     </tr>
 
                     @foreach (var vacina in Model.minhasVacinas)
-                {
+                    {
                         <tr>
+                            <td>
+                                @{
+                                    string nomePosto = String.IsNullOrEmpty(vacina.posto) ? "-" : vacina.posto;
+                                }
+                                @nomePosto
+                            </td>
                             <td>
                                 @Html.DisplayFor(modelItem => vacina.vacina)
                             </td>
@@ -89,7 +98,14 @@
                                 @vacina.dataVacinação.ToShortDateString()
                             </td>
                             <td>
-                                @vacina.dataReforco.ToShortDateString()
+                                @{
+                                    var dataReforco = (vacina.dataReforco.CompareTo(DateTime.MinValue) == 0
+                                                    || vacina.dataReforco.CompareTo(DateTime.MaxValue) == 0)  ?
+                                                    "-" : vacina.dataReforco.ToShortDateString();
+
+                                }
+                                @dataReforco
+
                             </td>
 
                         </tr>

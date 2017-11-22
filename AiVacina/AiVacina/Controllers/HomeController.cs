@@ -95,6 +95,7 @@ namespace AiVacina.Controllers
                                 Session["Cartao"] = dbPaciente.numCartaoCidadao;
                                 Session["Perfil"] = dbPaciente.perfil;
                                 Session["Email"] = dbPaciente.email;
+                                Session["CarteiraVacinacao"] = DataBase.CarteiraVacinacaoCadastrada(dbPaciente.numCartaoCidadao);
 
                                 return RedirectToAction("Inicio", "Paciente");
                             }

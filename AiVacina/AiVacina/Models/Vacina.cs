@@ -48,5 +48,8 @@ namespace AiVacina.Models
             [Display(Name = "N° Carteira de Vacinação")]
             public int idCarteira { get; set; }
 
-        }
+            [Display(Name = "Posto")]
+            public string posto { get; set; }
+
+    }
     }

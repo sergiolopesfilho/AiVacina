@@ -22,7 +22,8 @@ namespace AiVacina.DAL
         {
             int cadastrado = 0;
             string insertEndereco = "INSERT INTO enderecos (rua,bairro,cidade) "
-                                + "VALUES (@rua, @bairro, @cidade)";
+                                + "VALUES (@rua, @bairro, @cidade); "
+                                + "SELECT CAST(SCOPE_IDENTITY() as int) ";
             string insertPaciente = "INSERT INTO pacientes (cartaoCidadao,nome,dataNascimento,senha,idEndereco,perfil,email) "
                                 + "VALUES (@cartao, @nome, @nascimento,@senha, @idEndereco,'Paciente',@email)";
 
@@ -30,12 +31,12 @@ namespace AiVacina.DAL
             {
                 using (IDbConnection conn = new SqlConnection(connectionString))
                 {
-                    paciente.endereco.id = conn.Execute(insertEndereco, new
+                    paciente.endereco.id = conn.Query<int>(insertEndereco, new
                     {
                         rua = paciente.endereco.rua,
                         bairro = paciente.endereco.bairro,
                         cidade = paciente.endereco.cidade
-                    });
+                    }).Single();
 
                     cadastrado = conn.Execute(insertPaciente, new
                     {
@@ -282,11 +283,12 @@ namespace AiVacina.DAL
             return agendado;
         }
 
-        public static bool SalvaVacinaAplicada(string vacina, DateTime dataVacinacao, DateTime dataReforco, string cartao)
+        public static bool SalvaVacinaAplicada(string vacina, DateTime dataVacinacao, DateTime dataReforco, string cartao, string cnpj)
         {
-            string insertVacina = "INSERT INTO VacinasAplicadas(vacina, dataVacinação, dataReforco, idCarteira) "
+            string insertVacina = "INSERT INTO VacinasAplicadas(vacina, dataVacinação, dataReforco, idCarteira,posto) "
                                 + "VALUES(@vacina, @dataAplicada, @dataReforceo, "
-                                + "(SELECT id from CarteiraVacinacao WHERE cartaoCidadao = @cartao)) ";
+                                + "(SELECT id from CarteiraVacinacao WHERE cartaoCidadao = @cartao), "
+                                + " (SELECT nomeEstabelecimento from postos WHERE cnpj = @cnpj)) ";
             bool agendado = false;
 
             try
@@ -299,7 +301,8 @@ namespace AiVacina.DAL
                         vacina = vacina,
                         dataAplicada = dataVacinacao,
                         dataReforceo = dataReforco,
-                        cartao = cartao
+                        cartao = cartao,
+                        cnpj = cnpj
                     });
                 }
 
@@ -309,6 +312,41 @@ namespace AiVacina.DAL
             catch (SqlException ex)
             {
                 throw new Exception("Não foi possível adicionar a vacina "+vacina +" a carteira de Vacinacao. Por favor, tente mais tarde.");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Houve um erro, por favor contate o adminstrador e tente mais tarde.");
+            }
+            return agendado;
+        }
+
+        public static bool SalvaVacinaAplicada(string vacina, DateTime dataVacinacao, string cartao, string posto)
+        {
+            string insertVacina = "INSERT INTO VacinasAplicadas(vacina, dataVacinação, idCarteira, posto) "
+                                + "VALUES(@vacina, @dataAplicada, "
+                                + "(SELECT id from CarteiraVacinacao WHERE cartaoCidadao = @cartao),@posto) ";
+            bool agendado = false;
+
+            try
+            {
+                int resultado = 0;
+                using (IDbConnection conn = new SqlConnection(connectionString))
+                {
+                    resultado = conn.Execute(insertVacina, new
+                    {
+                        vacina = vacina,
+                        dataAplicada = dataVacinacao,
+                        cartao = cartao,
+                        posto = posto
+                    });
+                }
+
+                agendado = (resultado > 0);
+
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Não foi possível adicionar a vacina " + vacina + " a carteira de Vacinacao. Por favor, tente mais tarde.");
             }
             catch (Exception ex)
             {
@@ -373,7 +411,7 @@ namespace AiVacina.DAL
         {
             string selectCarteira = "SELECT carteira.id,carteira.nomeCompleto as nome,carteira.dataNascimento,carteira.cartaoCidadao as numCartaoCidadao, carteira.dataCadastro as dataCadastro "
                                     + "FROM carteiravacinacao carteira WHERE carteira.cartaoCidadao = @cartao";
-            string selectVacinas = "SELECT vacinas.idVacinaAplicada,vacinas.vacina,vacinas.dataVacinação,vacinas.dataReforco "
+            string selectVacinas = "SELECT vacinas.idVacinaAplicada,vacinas.vacina,vacinas.dataVacinação,vacinas.dataReforco, vacinas.posto "
                                     + "FROM  VacinasAplicadas vacinas WHERE vacinas.idCarteira = @idCarteira ";
 
             try

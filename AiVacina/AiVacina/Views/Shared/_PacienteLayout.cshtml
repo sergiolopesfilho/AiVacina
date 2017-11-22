@@ -1,7 +1,7 @@
 ﻿
 <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-9 ">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
         <div class="row">
             <div class="col-md-1">
                 @Html.ActionLink("Inicio", "Inicio", "Paciente", null, new { @class = "btn btn-sm btn-outline-info " })
@@ -12,9 +12,23 @@
             <div class="col-md-2" style="margin-right: 23px;">
                 @Html.ActionLink("Realizar Agendamento", "Agendamento", "Paciente", null, new { @class = "btn btn-sm btn-outline-info" })
             </div>
-            <div class="col-md-2">
-                @Html.ActionLink("Cadastrar Carteira", "CadastrarCarteira", "Paciente", null, new { @class = "btn btn-sm btn-outline-info " })
-            </div>
+            
+            @{  
+                var possuiCarteira = Session["CarteiraVacinacao"] != null ? Convert.ToBoolean(Session["CarteiraVacinacao"].ToString()) : false;
+                if (!possuiCarteira)
+                {
+                <div class="col-md-2" >
+                    @Html.ActionLink("Cadastrar Carteira", "CadastrarCarteira", "Paciente", new { @class = " btn btn-sm btn-outline-info " })
+                </div>
+                }
+                else
+                { 
+                <div class="col-md-1" style="margin-right: 48px;">
+                    @Html.ActionLink("Cadastrar Vacina", "CadastrarVacina", "Paciente", null, new { @class = "btn btn-sm btn-outline-info " })
+                </div>
+                }
+            }
+
             <div class="col-md-1" style="margin-right: 36px;">
                 @Html.ActionLink("Meus Dados", "MeusDados", "Paciente", null, new { @class = "btn btn-sm btn-outline-info " })
             </div>

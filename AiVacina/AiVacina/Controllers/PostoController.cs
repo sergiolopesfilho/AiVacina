@@ -418,8 +418,9 @@ namespace AiVacina.Controllers
                     {
                         DateTime dataAplic = DateTime.Parse(aplicacao);
                         DateTime dataRef = DateTime.Parse(reforco);
+                        string cnpj = Session["CNPJ"] != null ? Session["CNPJ"].ToString() : String.Empty;
 
-                        if (DataBase.SalvaVacinaAplicada(vacina, dataAplic, dataRef, cartao))
+                        if (DataBase.SalvaVacinaAplicada(vacina, dataAplic, dataRef, cartao, cnpj))
                             resultado = "Vacina adicionada com sucesso!";
                         else
                             resultado = "A vacina não pôde ser adicionada. Tente novamente mais tarde.";
